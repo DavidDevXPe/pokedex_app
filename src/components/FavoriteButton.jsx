@@ -19,7 +19,7 @@ const FavoriteButton = ({ pokemonId, pokemonName, className = '' }) => {
             title={accessibleLabel}
             onClick={() => dispatch(toggleFavoritePokemon(pokemonId))}
         >
-            <span aria-hidden='true'>{isFavorite ? '★' : '☆'}</span>
+            <span aria-hidden='true'>{isFavorite ? '♥' : '♡'}</span>
         </button>
     )
 }

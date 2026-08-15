@@ -38,7 +38,7 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 
 - Node.js 20.19 o superior, o Node.js 22.12 o superior.
 - npm.
-- Conexión a internet para consultar PokéAPI y cargar la fuente Nunito.
+- Conexión a internet para consultar PokéAPI y cargar la fuente Inter.
 
 ## Instalación
 

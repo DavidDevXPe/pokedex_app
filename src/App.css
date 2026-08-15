@@ -1,19 +1,19 @@
-@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 :root {
   color: #20242a;
   background-color: #f6f7f9;
-  font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --color-primary: #d93f3f;
-  --color-primary-dark: #a92727;
-  --color-ink: #20242a;
+  --color-primary: #df1423;
+  --color-primary-dark: #b90815;
+  --color-ink: #191c20;
   --color-muted: #667085;
   --color-surface: #ffffff;
   --color-border: #d9dde3;
-  --shadow-sm: 0 4px 12px rgba(31, 41, 55, 0.12);
-  --shadow-md: 0 14px 35px rgba(31, 41, 55, 0.14);
+  --shadow-sm: 0 6px 16px rgba(31, 41, 55, 0.11);
+  --shadow-md: 0 16px 38px rgba(31, 41, 55, 0.16);
 }
 
 *,
@@ -169,7 +169,7 @@ a {
 }
 
 .favoriteButton.isFavorite {
-  color: #d59700;
+  color: #df1423;
 }
 
 @media (prefers-reduced-motion: reduce) {

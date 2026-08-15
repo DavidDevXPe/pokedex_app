@@ -1,76 +1,268 @@
 .headerBar {
-    position: relative;
-    z-index: 10;
-    display: flex;
+    position: sticky;
+    top: 0;
+    z-index: 20;
     width: 100%;
-    height: clamp(86px, 12vw, 116px);
-    padding: 0.85rem clamp(1rem, 5vw, 3rem);
+    height: 100px;
+    background: linear-gradient(105deg, #c90012 0%, #e20d1b 48%, #c40012 100%);
+    color: #ffffff;
+}
+
+.headerInner {
+    display: flex;
+    width: min(1440px, 100%);
+    height: 94px;
+    margin: 0 auto;
+    padding: 0 clamp(1.25rem, 4vw, 3.25rem);
     align-items: center;
-    border-bottom: clamp(20px, 3vw, 32px) solid #171717;
-    background-color: #dc1a1a;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
 }
 
 .headerBrand {
-    display: block;
-    width: clamp(190px, 34vw, 360px);
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    color: #ffffff;
+    filter: drop-shadow(0 2px 0 rgba(64, 0, 4, 0.28));
+    font-size: clamp(1.9rem, 3vw, 2.75rem);
+    font-weight: 900;
+    letter-spacing: -0.08em;
+    line-height: 1;
 }
 
-.headerBrand img {
-    width: 100%;
-    max-height: 74px;
+.brandBall {
+    position: relative;
+    display: inline-block;
+    width: 0.8em;
+    margin: 0 0.04em;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 0.09em solid #ffffff;
+    border-radius: 50%;
+    background: linear-gradient(#ffffff 0 44%, #1c2025 44% 56%, #ffffff 56%);
+}
+
+.brandBall i {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 34%;
+    aspect-ratio: 1;
+    border: 0.08em solid #1c2025;
+    border-radius: 50%;
+    background-color: #ffffff;
+    transform: translate(-50%, -50%);
+}
+
+.headerNav {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.headerNavLink {
+    display: inline-flex;
+    min-height: 48px;
+    padding: 0.75rem 1rem;
+    align-items: center;
+    gap: 0.6rem;
+    border-radius: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.headerNavLink:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+
+.headerNavLink.active {
+    padding-inline: 1.25rem;
+    background: linear-gradient(145deg, #272b30, #111315);
+    box-shadow: 0 8px 18px rgba(63, 0, 5, 0.25);
+    color: #ffffff;
+}
+
+.navBall {
+    position: relative;
+    width: 20px;
+    aspect-ratio: 1;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    background: linear-gradient(#ef3340 0 44%, #22262b 44% 56%, #ffffff 56%);
+}
+
+.navBall::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    aspect-ratio: 1;
+    border: 2px solid #22262b;
+    border-radius: 50%;
+    background-color: #ffffff;
+    content: '';
+    transform: translate(-50%, -50%);
 }
 
 .trainerSwitch {
-    min-height: 40px;
+    display: flex;
+    min-height: 58px;
     margin-left: auto;
-    margin-right: clamp(4.25rem, 9vw, 6.5rem);
-    padding: 0.55rem 0.85rem;
-    border: 2px solid rgba(255, 255, 255, 0.72);
-    background-color: rgba(32, 36, 42, 0.88);
+    padding: 0.35rem 0.45rem;
+    align-items: center;
+    gap: 0.7rem;
+    border-radius: 0.9rem;
+    background-color: transparent;
     box-shadow: none;
-    font-size: 0.9rem;
+    text-align: left;
+}
+
+.trainerSwitch:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+.trainerAvatar {
+    display: grid;
+    width: 50px;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 3px solid rgba(255, 255, 255, 0.76);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 50% 38%, #ffd6b3 0 20%, transparent 21%),
+        linear-gradient(145deg, #22262b 0 48%, #f3f5f7 49% 100%);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 900;
+    text-shadow: 0 1px 2px #111315;
+}
+
+.trainerIdentity {
+    display: flex;
+    min-width: 88px;
+    flex-direction: column;
+}
+
+.trainerIdentity strong {
+    max-width: 150px;
+    overflow: hidden;
+    font-size: 1rem;
+    text-overflow: ellipsis;
     white-space: nowrap;
+}
+
+.trainerIdentity small {
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.trainerChevron {
+    width: 9px;
+    height: 9px;
+    margin: 0 0.55rem 0.25rem 0.2rem;
+    border-right: 2px solid #ffffff;
+    border-bottom: 2px solid #ffffff;
+    transform: rotate(45deg);
+}
+
+.headerRail {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 6px;
+    background-color: #17191c;
 }
 
 .headerDot {
     position: absolute;
-    right: clamp(1rem, 5vw, 3rem);
-    bottom: clamp(-30px, -3vw, -20px);
-    z-index: 11;
+    top: 50%;
+    left: 50%;
     display: flex;
-    width: clamp(54px, 8vw, 72px);
+    width: 70px;
     aspect-ratio: 1;
     align-items: center;
     justify-content: center;
-    border: clamp(6px, 1vw, 8px) solid #171717;
+    border: 7px solid #17191c;
+    border-radius: 50%;
+    background: linear-gradient(#ef3340 0 45%, #ffffff 45% 100%);
+    box-shadow: 0 4px 8px rgba(22, 24, 28, 0.16);
+    transform: translate(-50%, -50%);
+}
+
+.headerDot::before {
+    position: absolute;
+    right: 0;
+    left: 0;
+    height: 7px;
+    background-color: #17191c;
+    content: '';
+}
+
+.headerDot2 {
+    position: relative;
+    z-index: 1;
+    width: 34%;
+    aspect-ratio: 1;
+    border: 5px solid #17191c;
     border-radius: 50%;
     background-color: #ffffff;
 }
 
-.headerDot2 {
-    width: 50%;
-    aspect-ratio: 1;
-    border: 5px solid #171717;
-    border-radius: 50%;
-    background-color: #2b2f35;
+@media (max-width: 880px) {
+    .headerNav {
+        display: none;
+    }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 560px) {
     .headerBar {
-        padding-left: 0.75rem;
+        height: 82px;
+    }
+
+    .headerInner {
+        height: 76px;
+        padding-inline: 1rem;
     }
 
     .headerBrand {
-        width: min(158px, 45vw);
-    }
-
-    .headerBrand img {
-        width: 100%;
+        font-size: clamp(1.55rem, 8vw, 2rem);
     }
 
     .trainerSwitch {
-        margin-right: 3.5rem;
-        padding: 0.45rem 0.6rem;
-        font-size: 0.75rem;
+        min-height: 50px;
+        gap: 0.4rem;
+    }
+
+    .trainerAvatar {
+        width: 42px;
+    }
+
+    .trainerIdentity {
+        min-width: 0;
+    }
+
+    .trainerIdentity strong {
+        max-width: 72px;
+        font-size: 0.85rem;
+    }
+
+    .trainerIdentity small,
+    .trainerChevron {
+        display: none;
+    }
+
+    .headerDot {
+        width: 56px;
+        border-width: 6px;
+    }
+
+    .headerDot2 {
+        border-width: 4px;
     }
 }

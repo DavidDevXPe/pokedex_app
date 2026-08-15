@@ -7,6 +7,17 @@ import PokemonArtwork from '../PokemonArtwork'
 import FavoriteButton from '../FavoriteButton'
 import './styles/pokeCard.css'
 
+const STAT_LABELS = {
+  hp: 'HP',
+  attack: 'ATK',
+  defense: 'DEF',
+  'special-attack': 'SP. ATK',
+  'special-defense': 'SP. DEF',
+  speed: 'SPD',
+}
+
+const MAX_STAT_PREVIEW = 180
+
 const PokeCard = ({url}) => {
     const location = useLocation()
     const {
@@ -38,9 +49,12 @@ const PokeCard = ({url}) => {
     const primaryType = pokemon.types?.[0]?.type.name ?? 'normal'
     const formattedName = formatPokemonName(pokemon.name)
     const returnPath = `${location.pathname}${location.search}`
+    const displayId = String(pokemon.id).padStart(3, '0')
 
   return (
     <article className={`pokeCard type-${primaryType}`}>
+      <span className='pokeNumber'>#{displayId}</span>
+      <span className='cardBallMark' aria-hidden='true'></span>
       <FavoriteButton
         className='cardFavorite'
         pokemonId={pokemon.id}
@@ -64,23 +78,35 @@ const PokeCard = ({url}) => {
             loading='lazy'
           />
         </figure>
-          <h3>{formattedName}</h3>
-          <ul className='pokeTypes'>
-            {
-              pokemon.types.map(type=> (
-                <li key={type.type.url} className={`slot${type.slot}`}>{formatPokemonName(type.type.name)} </li>
-              ))
-            }
-          </ul>
-          <p>type</p>
-          <hr />
-          <ul className='pokeStats'>
-            {
-              pokemon.stats.map(stat => (
-                <li key={stat.stat.url}>{formatPokemonName(stat.stat.name)} <span>{stat.base_stat}</span></li>
-              ))
-            }
-          </ul>
+          <div className='pokeCardBody'>
+            <h3>{formattedName}</h3>
+            <ul className='pokeTypes' aria-label={`${formattedName} types`}>
+              {pokemon.types.map(type => (
+                <li
+                  key={type.type.url}
+                  className={`pokemonTypeBadge type-${type.type.name}`}
+                >
+                  {formatPokemonName(type.type.name)}
+                </li>
+              ))}
+            </ul>
+            <ul className='pokeStats' aria-label={`${formattedName} base stats`}>
+              {pokemon.stats.map(stat => (
+                <li key={stat.stat.url}>
+                  <span className='statLabel'>
+                    {STAT_LABELS[stat.stat.name] ?? formatPokemonName(stat.stat.name)}
+                  </span>
+                  <strong>{stat.base_stat}</strong>
+                  <span className='statTrack' aria-hidden='true'>
+                    <span
+                      className='statBar'
+                      style={{ width: `${Math.min(stat.base_stat / MAX_STAT_PREVIEW * 100, 100)}%` }}
+                    ></span>
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
       </Link>
     </article>
   )

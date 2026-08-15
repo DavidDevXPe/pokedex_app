@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useSearchParams } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import useFetch from '../hooks/useFetch'
 import useDocumentTitle from '../hooks/useDocumentTitle'
 import PokeCard from '../components/pokedexPage/PokeCard'
@@ -22,6 +22,7 @@ const POKEMON_TYPE_URL = 'https://pokeapi.co/api/v2/type'
 const PokedexPage = () => {
     const trainerName = useSelector(store => store.trainerName)
     const favoritePokemonIds = useSelector(store => store.favoritePokemonIds ?? [])
+    const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
     const searchTerm = normalizeSearch(searchParams.get('search') ?? '')
     const selectedType = normalizeSearch(searchParams.get('type') ?? ALL_POKEMONS) || ALL_POKEMONS
@@ -69,6 +70,16 @@ const PokedexPage = () => {
     useEffect(() => {
         setSearchInput(searchTerm)
     }, [searchTerm])
+
+    useEffect(() => {
+        const sectionId = location.hash.slice(1)
+        if (!sectionId) return
+
+        document.getElementById(sectionId)?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+        })
+    }, [location.hash])
 
     const searchedPokemons = useMemo(
         () => filterPokemons(pokemons?.results ?? [], searchTerm),
@@ -131,11 +142,12 @@ const PokedexPage = () => {
 
     return (
         <main className='pokedex'>
-            <section className='pokeHeader'>
-                <h3><span>Welcome {trainerName}!</span> Here you will find your favorite pokémon</h3>
+            <section className='pokeHeader' id='filters'>
+                <h1 className='srOnly'>Pokédex for {trainerName}</h1>
                 <div className='pokeControls'>
-                    <form onSubmit={handleSubmit}>
+                    <form className='pokemonSearchForm' onSubmit={handleSubmit}>
                         <label className='srOnly' htmlFor='pokemonSearch'>Search a Pokémon</label>
+                        <span className='searchIcon' aria-hidden='true'></span>
                         <input
                             id='pokemonSearch'
                             type='search'
@@ -143,7 +155,10 @@ const PokedexPage = () => {
                             onChange={event => setSearchInput(event.target.value)}
                             placeholder='Pokémon name...'
                         />
-                        <button type='submit'>Find Pokémon</button>
+                        <button type='submit'>
+                            <span className='buttonBall' aria-hidden='true'></span>
+                            Find Pokémon
+                        </button>
                     </form>
                     <SelectType
                         value={selectedType}
@@ -155,7 +170,7 @@ const PokedexPage = () => {
                         aria-pressed={showFavorites}
                         onClick={handleFavoritesFilter}
                     >
-                        <span aria-hidden='true'>★</span> Favorites ({favoritePokemonIds.length})
+                        <span aria-hidden='true'>♥</span> Favorites ({favoritePokemonIds.length})
                     </button>
                 </div>
                 {searchTerm && (
@@ -201,6 +216,45 @@ const PokedexPage = () => {
                         totalPosts={filteredPokemons.length}
                         onPageChange={handlePageChange}
                     />
+                </section>
+            )}
+
+            {!isLoading && !error && (
+                <section className='pokedexFeatures' id='about' aria-label='About this Pokédex'>
+                    <article className='featureItem'>
+                        <span className='featureIcon featureIconRed' aria-hidden='true'>
+                            <span className='featureBall'></span>
+                        </span>
+                        <div>
+                            <strong>1,000+</strong>
+                            <b>Pokémon</b>
+                            <p>Discover them all</p>
+                        </div>
+                    </article>
+                    <article className='featureItem'>
+                        <span className='featureIcon featureIconBlue' aria-hidden='true'>18</span>
+                        <div>
+                            <strong>18</strong>
+                            <b>Types</b>
+                            <p>Filter by type</p>
+                        </div>
+                    </article>
+                    <article className='featureItem'>
+                        <span className='featureIcon featureIconGold' aria-hidden='true'>★</span>
+                        <div>
+                            <strong>{favoritePokemonIds.length}</strong>
+                            <b>Favorites</b>
+                            <p>Build your own team</p>
+                        </div>
+                    </article>
+                    <article className='featureItem'>
+                        <span className='featureIcon featureIconPurple' aria-hidden='true'>↻</span>
+                        <div>
+                            <strong>Real-time</strong>
+                            <b>Data</b>
+                            <p>Powered by PokéAPI</p>
+                        </div>
+                    </article>
                 </section>
             )}
         </main>
