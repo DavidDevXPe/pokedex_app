@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import {
     filterPokemons,
+    formatPokemonName,
     getPageFromSearchParams,
+    getPokedexReturnPath,
     normalizeSearch,
 } from './pokedex'
 
@@ -25,5 +27,16 @@ describe('Pokédex utilities', () => {
         expect(getPageFromSearchParams(new URLSearchParams('page=3'))).toBe(3)
         expect(getPageFromSearchParams(new URLSearchParams('page=-4'))).toBe(1)
         expect(getPageFromSearchParams(new URLSearchParams('page=abc'))).toBe(1)
+    })
+
+    it('formats API names for display', () => {
+        expect(formatPokemonName('mr-mime')).toBe('Mr Mime')
+        expect(formatPokemonName('tapu-koko')).toBe('Tapu Koko')
+    })
+
+    it('only restores safe Pokédex result paths', () => {
+        expect(getPokedexReturnPath('/pokedex?type=grass&page=2')).toBe('/pokedex?type=grass&page=2')
+        expect(getPokedexReturnPath('/admin')).toBe('/pokedex')
+        expect(getPokedexReturnPath(undefined)).toBe('/pokedex')
     })
 })

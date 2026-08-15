@@ -1,12 +1,13 @@
-import { useEffect } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import './styles/pokemonTypes.css'
-import PokedexPage from './pages/PokedexPage'
-import HomePage from './pages/HomePage'
-import PokeIdPage from './pages/PokeIdPage'
 import ProtectedRoutes from './pages/ProtectedRoutes'
-import NotFoundPage from './pages/NotFoundPage'
+
+const HomePage = lazy(() => import('./pages/HomePage'))
+const PokedexPage = lazy(() => import('./pages/PokedexPage'))
+const PokeIdPage = lazy(() => import('./pages/PokeIdPage'))
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 function App() {
   const { pathname } = useLocation()
@@ -16,6 +17,7 @@ function App() {
   }, [pathname])
 
   return (
+    <Suspense fallback={<p className='routeLoading' role='status'>Loading page...</p>}>
       <Routes>
         <Route path='/' element={<HomePage/>}/>
         <Route element={<ProtectedRoutes/>}>
@@ -24,6 +26,7 @@ function App() {
         </Route>
         <Route path='*' element={<NotFoundPage/>}/>
       </Routes>
+    </Suspense>
   )
 }
 

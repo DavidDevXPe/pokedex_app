@@ -1,10 +1,13 @@
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 import './styles/notFoundPage.css'
 
 const NotFoundPage = () => {
     const trainerName = useSelector(store => store.trainerName)
     const destination = trainerName ? '/pokedex' : '/'
+
+    useDocumentTitle('Page not found | Pokédex')
 
     return (
         <main className='notFoundPage'>

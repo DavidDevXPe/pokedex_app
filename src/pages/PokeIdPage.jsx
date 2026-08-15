@@ -1,6 +1,8 @@
 import { useCallback, useEffect } from 'react'
 import useFetch from '../hooks/useFetch'
-import { useParams } from 'react-router-dom'
+import useDocumentTitle from '../hooks/useDocumentTitle'
+import { Link, useLocation, useParams } from 'react-router-dom'
+import { formatPokemonName, getPokedexReturnPath } from '../utils/pokedex'
 import './styles/pokeIdPage.css'
 import Atributes from '../components/pokeIdPage/Atributes'
 import Stats from '../components/pokeIdPage/Stats'
@@ -8,12 +10,17 @@ import MoveSet from '../components/pokeIdPage/MoveSet'
 
 const PokeIdPage = () => {
   const { id } = useParams()
+  const location = useLocation()
   const {
     apiData: pokeData,
     isLoading,
     error,
     getApi: getPokeData,
   } = useFetch()
+  const formattedName = pokeData ? formatPokemonName(pokeData.name) : ''
+  const returnPath = getPokedexReturnPath(location.state?.from)
+
+  useDocumentTitle(formattedName ? `${formattedName} | Pokédex` : 'Pokémon details | Pokédex')
 
   const loadPokemon = useCallback(() => {
     getPokeData(`https://pokeapi.co/api/v2/pokemon/${id}`)
@@ -39,15 +46,14 @@ const PokeIdPage = () => {
   if (!pokeData) return null
 
   const primaryType = pokeData.types[0]?.type.name ?? 'normal'
-  const formattedName = pokeData.name.charAt(0).toUpperCase() + pokeData.name.slice(1)
-
   return (
     <article className='idWrapper'>
+      <Link className='detailBackLink' to={returnPath}>← Back to results</Link>
       <div className={`typeBox pokemonTypeSurface type-${primaryType}`} aria-hidden='true'></div>
       <div className='idCard profileCard'>
         <img
           src={pokeData.sprites.other['official-artwork'].front_default}
-          alt={`${pokeData.name} official artwork`}
+          alt={`${formattedName} official artwork`}
         />
         <h2 className={`pokemonTypeTitle type-${primaryType} id`}>#{pokeData.id}</h2>
         <div className='divider'>

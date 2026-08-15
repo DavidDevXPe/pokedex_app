@@ -1,10 +1,12 @@
 import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useFetch from '../../hooks/useFetch'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
+import { formatPokemonName } from '../../utils/pokedex'
 import './styles/pokeCard.css'
 
 const PokeCard = ({url}) => {
+    const location = useLocation()
     const {
       apiData: pokemon,
       isLoading,
@@ -32,12 +34,15 @@ const PokeCard = ({url}) => {
     if (!pokemon) return null
 
     const primaryType = pokemon.types?.[0]?.type.name ?? 'normal'
+    const formattedName = formatPokemonName(pokemon.name)
+    const returnPath = `${location.pathname}${location.search}`
 
   return (
     <Link
       to={`/pokedex/${pokemon.id}`}
+      state={{ from: returnPath }}
       className={`pokeCard type-${primaryType}`}
-      aria-label={`View details for ${pokemon.name}`}
+      aria-label={`View details for ${formattedName}`}
     >
       <div
         className={`pokeCardBackdrop pokemonTypeSurface type-${primaryType}`}
@@ -46,11 +51,11 @@ const PokeCard = ({url}) => {
       <figure>
         <img
           src={pokemon.sprites.other['official-artwork'].front_default}
-          alt={`${pokemon.name} official artwork`}
+          alt={`${formattedName} official artwork`}
           loading='lazy'
         />
       </figure>
-        <h3>{pokemon.name}</h3>
+        <h3>{formattedName}</h3>
         <ul className='pokeTypes'>
           {
             pokemon.types.map(type=> (

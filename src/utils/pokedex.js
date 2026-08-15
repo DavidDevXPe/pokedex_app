@@ -3,6 +3,18 @@ export const POKEMON_PER_PAGE = 24
 
 export const normalizeSearch = value => value.trim().toLowerCase()
 
+export const formatPokemonName = value => value
+    .split('-')
+    .filter(Boolean)
+    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ')
+
+export const getPokedexReturnPath = from => (
+    typeof from === 'string' && (from === '/pokedex' || from.startsWith('/pokedex?'))
+        ? from
+        : '/pokedex'
+)
+
 export const getPageFromSearchParams = searchParams => {
     const parsedPage = Number.parseInt(searchParams.get('page') ?? '1', 10)
     return Number.isInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1

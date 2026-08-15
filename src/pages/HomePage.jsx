@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { setTrainerName } from '../store/slices/trainerName.slice'
 import { useNavigate } from 'react-router-dom'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 import './styles/homePage.css'
 
 const HomePage = () => {
@@ -9,6 +10,8 @@ const HomePage = () => {
     const [validationError, setValidationError] = useState('')
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    useDocumentTitle('Welcome | Pokédex')
 
     const handleSubmit = e => {
         e.preventDefault()

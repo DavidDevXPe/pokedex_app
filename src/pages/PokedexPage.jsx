@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 import useFetch from '../hooks/useFetch'
+import useDocumentTitle from '../hooks/useDocumentTitle'
 import PokeCard from '../components/pokedexPage/PokeCard'
 import SelectType from '../components/pokedexPage/SelectType'
 import Pagination from '../components/pokedexPage/Pagination'
@@ -31,6 +32,8 @@ const PokedexPage = () => {
         getApi: getPokemons,
         getApiType: getPerType,
     } = useFetch()
+
+    useDocumentTitle('Pokédex | Pokémon Explorer')
 
     const updateSearchParams = useCallback((updates, options = {}) => {
         setSearchParams(currentParams => {

@@ -17,6 +17,8 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 - Diseño adaptable para escritorio, tablet y móvil.
 - Persistencia del entrenador durante la sesión.
 - Búsqueda, tipo y página guardados en la URL.
+- Retorno desde el detalle conservando los filtros y la página activa.
+- Carga diferida de páginas para reducir el JavaScript inicial.
 - Página 404 para rutas inexistentes.
 
 ## Tecnologías
@@ -32,7 +34,7 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 
 ## Requisitos
 
-- Node.js 18 o superior.
+- Node.js 20.19 o superior, o Node.js 22.12 o superior.
 - npm.
 - Conexión a internet para consultar PokéAPI y cargar la fuente Nunito.
 
@@ -64,6 +66,7 @@ npm.cmd run dev
 | `npm run preview` | Sirve localmente la compilación de producción. |
 | `npm test` | Ejecuta la suite automatizada una vez. |
 | `npm run test:watch` | Ejecuta pruebas en modo interactivo. |
+| `npm run check` | Ejecuta lint, pruebas y build en secuencia. |
 
 ## Estructura principal
 
@@ -101,6 +104,8 @@ npm audit
 ```
 
 La aplicación utiliza `HashRouter`, por lo que la carpeta `dist/` puede desplegarse en un alojamiento estático sin configurar redirecciones de rutas.
+
+El workflow `.github/workflows/quality.yml` ejecuta estas validaciones automáticamente en las ramas de trabajo y en cada pull request dirigido a `main`.
 
 ## Créditos
 

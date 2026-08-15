@@ -124,6 +124,15 @@ a {
   font-weight: 700;
 }
 
+.routeLoading {
+  display: grid;
+  min-height: 100vh;
+  min-height: 100svh;
+  place-items: center;
+  color: var(--color-muted);
+  font-weight: 700;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
