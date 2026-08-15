@@ -10,9 +10,26 @@
     background-color: #dc1a1a;
 }
 
-.headerBar > img {
+.headerBrand {
+    display: block;
     width: clamp(190px, 34vw, 360px);
+}
+
+.headerBrand img {
+    width: 100%;
     max-height: 74px;
+}
+
+.trainerSwitch {
+    min-height: 40px;
+    margin-left: auto;
+    margin-right: clamp(4.25rem, 9vw, 6.5rem);
+    padding: 0.55rem 0.85rem;
+    border: 2px solid rgba(255, 255, 255, 0.72);
+    background-color: rgba(32, 36, 42, 0.88);
+    box-shadow: none;
+    font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 .headerDot {
@@ -43,7 +60,17 @@
         padding-left: 0.75rem;
     }
 
-    .headerBar > img {
-        width: min(210px, 62vw);
+    .headerBrand {
+        width: min(158px, 45vw);
+    }
+
+    .headerBrand img {
+        width: 100%;
+    }
+
+    .trainerSwitch {
+        margin-right: 3.5rem;
+        padding: 0.45rem 0.6rem;
+        font-size: 0.75rem;
     }
 }

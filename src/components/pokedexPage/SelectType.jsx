@@ -27,9 +27,9 @@ const SelectType = ({ value, onTypeChange }) => {
             className='selector'
             disabled={isLoading}
         >
-            <option value='allPokemons'>All Pokémon</option>
+            <option value='all'>All Pokémon</option>
             {types?.results.map(type => (
-                <option value={type.url} key={type.url}>{type.name}</option>
+                <option value={type.name} key={type.url}>{type.name}</option>
             ))}
         </select>
         {error && <span className='selectorError' role='alert'>Types unavailable</span>}

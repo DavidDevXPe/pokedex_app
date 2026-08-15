@@ -47,6 +47,35 @@
     white-space: nowrap;
 }
 
+.activeSearch {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    margin: -0.5rem auto 0;
+    padding: 0.4rem 0.5rem 0.4rem 0.8rem;
+    align-items: center;
+    gap: 0.65rem;
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    background-color: var(--color-surface);
+    color: var(--color-muted);
+    font-size: 0.9rem;
+}
+
+.activeSearch span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.activeSearch button {
+    min-height: 32px;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    box-shadow: none;
+    font-size: 0.8rem;
+}
+
 .pagContainer {
     display: flex;
     width: 100%;

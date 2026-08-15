@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { loadTrainerName } from '../../utils/trainerStorage.js';
 
 const trainerNameSlice = createSlice({
     name: 'trainerName',
-    initialState: '',
-    reducers:{ //acctions
-        setTrainerName: (currenValue, action) => action.payload,
+    initialState: loadTrainerName(),
+    reducers:{
+        setTrainerName: (currentValue, action) => action.payload,
     }
 })
 

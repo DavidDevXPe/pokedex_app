@@ -15,6 +15,9 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 - Caché en memoria y cancelación de peticiones obsoletas.
 - Navegación accesible mediante teclado.
 - Diseño adaptable para escritorio, tablet y móvil.
+- Persistencia del entrenador durante la sesión.
+- Búsqueda, tipo y página guardados en la URL.
+- Página 404 para rutas inexistentes.
 
 ## Tecnologías
 
@@ -59,6 +62,8 @@ npm.cmd run dev
 | `npm run lint` | Revisa JavaScript y JSX con ESLint. |
 | `npm run build` | Genera la compilación de producción en `dist/`. |
 | `npm run preview` | Sirve localmente la compilación de producción. |
+| `npm test` | Ejecuta la suite automatizada una vez. |
+| `npm run test:watch` | Ejecuta pruebas en modo interactivo. |
 
 ## Estructura principal
 
@@ -80,6 +85,7 @@ src/
 | `/#/` | Formulario de acceso del entrenador. |
 | `/#/pokedex` | Listado, búsqueda, filtros y paginación. |
 | `/#/pokedex/:id` | Detalle del Pokémon seleccionado. |
+| Cualquier otra ruta | Página 404 con retorno seguro. |
 
 Las rutas de la Pokédex requieren que el usuario introduzca primero un nombre válido.
 
@@ -89,6 +95,7 @@ Antes de publicar cambios se recomienda ejecutar:
 
 ```bash
 npm run lint
+npm test
 npm run build
 npm audit
 ```

@@ -6,6 +6,7 @@ import PokedexPage from './pages/PokedexPage'
 import HomePage from './pages/HomePage'
 import PokeIdPage from './pages/PokeIdPage'
 import ProtectedRoutes from './pages/ProtectedRoutes'
+import NotFoundPage from './pages/NotFoundPage'
 
 function App() {
   const { pathname } = useLocation()
@@ -21,6 +22,7 @@ function App() {
           <Route path='/pokedex' element={<PokedexPage/>}/>
           <Route path='/pokedex/:id' element={<PokeIdPage/>}/>
         </Route>
+        <Route path='*' element={<NotFoundPage/>}/>
       </Routes>
   )
 }
