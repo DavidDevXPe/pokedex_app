@@ -47,6 +47,26 @@
     white-space: nowrap;
 }
 
+.favoriteFilter {
+    border-color: var(--color-primary);
+    background-color: var(--color-surface);
+    color: var(--color-primary-dark);
+    white-space: nowrap;
+}
+
+.favoriteFilter:hover:not(:disabled) {
+    background-color: #fff4f4;
+}
+
+.favoriteFilter.active {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+
+.favoriteFilter.active:hover:not(:disabled) {
+    background-color: var(--color-primary-dark);
+}
+
 .activeSearch {
     display: flex;
     width: fit-content;
@@ -104,7 +124,8 @@
     }
 
     .pokeControls form,
-    .selectorGroup {
+    .selectorGroup,
+    .favoriteFilter {
         width: 100%;
         max-width: none;
     }

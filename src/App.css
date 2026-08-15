@@ -146,6 +146,32 @@ a {
   text-align: center;
 }
 
+.favoriteButton {
+  display: grid;
+  width: 44px;
+  min-width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(102, 112, 133, 0.35);
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-sm);
+  color: #667085;
+  font-size: 1.65rem;
+  line-height: 1;
+}
+
+.favoriteButton:hover:not(:disabled) {
+  background-color: #ffffff;
+  color: #a92727;
+}
+
+.favoriteButton.isFavorite {
+  color: #d59700;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

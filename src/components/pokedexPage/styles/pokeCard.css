@@ -9,21 +9,34 @@
 
 .pokeCard {
     position: relative;
-    display: flex;
     width: 100%;
     max-width: 285px;
     min-height: 430px;
     margin: 0 auto;
     overflow: hidden;
-    align-items: center;
-    flex-direction: column;
-    gap: 0.35rem;
     border: 2px solid var(--type-accent, var(--color-border));
     border-radius: 1.25rem;
     background-color: var(--color-surface);
     box-shadow: var(--shadow-sm);
     cursor: pointer;
     transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.pokeCardLink {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-height: 426px;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.cardFavorite {
+    position: absolute;
+    z-index: 3;
+    top: 0.75rem;
+    right: 0.75rem;
 }
 
 .pokeCardBackdrop {
@@ -64,7 +77,7 @@
     content: ' / ';
 }
 
-.pokeCard > p {
+.pokeCardLink > p {
     color: #8a929d;
     font-size: 0.8rem;
     text-transform: uppercase;
@@ -102,9 +115,9 @@
     font-weight: 700;
 }
 
-.pokeCard:focus-visible {
+.pokeCardLink:focus-visible {
     outline: 4px solid #fac100;
-    outline-offset: 3px;
+    outline-offset: -5px;
 }
 
 .pokeCardStatus {

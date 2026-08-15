@@ -54,6 +54,13 @@
     margin-top: -64px;
 }
 
+.detailFavorite {
+    position: absolute;
+    z-index: 3;
+    top: 1rem;
+    right: 1rem;
+}
+
 .profileCard > .detailArtwork {
     position: relative;
     z-index: 2;

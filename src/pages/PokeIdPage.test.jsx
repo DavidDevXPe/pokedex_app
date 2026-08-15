@@ -45,6 +45,10 @@ vi.mock('../components/pokeIdPage/MoveSet', () => ({
     default: () => <div>Moves</div>,
 }))
 
+vi.mock('../components/FavoriteButton', () => ({
+    default: () => <button type='button'>Favorite</button>,
+}))
+
 const renderDetails = initialEntry => render(
     <MemoryRouter initialEntries={[initialEntry]}>
         <Routes>

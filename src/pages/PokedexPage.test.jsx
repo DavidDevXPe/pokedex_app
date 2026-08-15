@@ -38,9 +38,12 @@ const LocationDisplay = () => {
     return <output data-testid='location-search'>{location.search}</output>
 }
 
-const renderPage = initialEntry => {
+const renderPage = (initialEntry, favoritePokemonIds = []) => {
     const store = configureStore({
-        reducer: { trainerName: () => 'Ash' },
+        reducer: {
+            trainerName: () => 'Ash',
+            favoritePokemonIds: () => favoritePokemonIds,
+        },
     })
 
     render(
@@ -85,5 +88,16 @@ describe('PokedexPage URL state', () => {
 
         expect(screen.getByTestId('location-search')).toHaveTextContent('?page=2')
         expect(screen.getAllByTestId('pokemon-card')).toHaveLength(6)
+    })
+
+    it('filters favorites and stores that choice in the URL', () => {
+        renderPage('/pokedex', [1, 3])
+
+        fireEvent.click(screen.getByRole('button', { name: 'Favorites (2)' }))
+
+        expect(screen.getByTestId('location-search')).toHaveTextContent('?favorites=1')
+        expect(screen.getAllByTestId('pokemon-card')).toHaveLength(2)
+        expect(screen.getByRole('button', { name: 'Favorites (2)' }))
+            .toHaveAttribute('aria-pressed', 'true')
     })
 })

@@ -9,6 +9,7 @@ import Pagination from '../components/pokedexPage/Pagination'
 import {
     ALL_POKEMONS,
     POKEMON_PER_PAGE,
+    filterFavoritePokemons,
     filterPokemons,
     getPageFromSearchParams,
     normalizeSearch,
@@ -20,10 +21,12 @@ const POKEMON_TYPE_URL = 'https://pokeapi.co/api/v2/type'
 
 const PokedexPage = () => {
     const trainerName = useSelector(store => store.trainerName)
+    const favoritePokemonIds = useSelector(store => store.favoritePokemonIds ?? [])
     const [searchParams, setSearchParams] = useSearchParams()
     const searchTerm = normalizeSearch(searchParams.get('search') ?? '')
     const selectedType = normalizeSearch(searchParams.get('type') ?? ALL_POKEMONS) || ALL_POKEMONS
     const currentPage = getPageFromSearchParams(searchParams)
+    const showFavorites = searchParams.get('favorites') === '1'
     const [searchInput, setSearchInput] = useState(searchTerm)
     const {
         apiData: pokemons,
@@ -67,9 +70,15 @@ const PokedexPage = () => {
         setSearchInput(searchTerm)
     }, [searchTerm])
 
-    const filteredPokemons = useMemo(
+    const searchedPokemons = useMemo(
         () => filterPokemons(pokemons?.results ?? [], searchTerm),
         [pokemons, searchTerm],
+    )
+    const filteredPokemons = useMemo(
+        () => showFavorites
+            ? filterFavoritePokemons(searchedPokemons, favoritePokemonIds)
+            : searchedPokemons,
+        [favoritePokemonIds, searchedPokemons, showFavorites],
     )
     const totalPages = Math.max(1, Math.ceil(filteredPokemons.length / POKEMON_PER_PAGE))
 
@@ -99,6 +108,13 @@ const PokedexPage = () => {
     const handlePageChange = page => {
         updateSearchParams({ page: page === 1 ? null : page })
         window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+
+    const handleFavoritesFilter = () => {
+        updateSearchParams({
+            favorites: showFavorites ? null : '1',
+            page: null,
+        })
     }
 
     const clearSearch = () => {
@@ -133,6 +149,14 @@ const PokedexPage = () => {
                         value={selectedType}
                         onTypeChange={handleTypeChange}
                     />
+                    <button
+                        className={`favoriteFilter ${showFavorites ? 'active' : ''}`}
+                        type='button'
+                        aria-pressed={showFavorites}
+                        onClick={handleFavoritesFilter}
+                    >
+                        <span aria-hidden='true'>★</span> Favorites ({favoritePokemonIds.length})
+                    </button>
                 </div>
                 {searchTerm && (
                     <div className='activeSearch'>
@@ -152,7 +176,13 @@ const PokedexPage = () => {
             )}
 
             {!isLoading && !error && currentPokemons.length === 0 && (
-                <p className='statusMessage'>No Pokémon match your search.</p>
+                <p className='statusMessage'>
+                    {showFavorites
+                        ? favoritePokemonIds.length === 0
+                            ? 'You have no favorite Pokémon yet.'
+                            : 'No favorite Pokémon match the active filters.'
+                        : 'No Pokémon match your search.'}
+                </p>
             )}
 
             {!isLoading && !error && currentPokemons.length > 0 && (

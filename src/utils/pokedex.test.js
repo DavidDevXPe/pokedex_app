@@ -1,17 +1,19 @@
 import { describe, expect, it } from 'vitest'
 import {
     filterPokemons,
+    filterFavoritePokemons,
     formatPokemonName,
     getPokemonArtwork,
     getPageFromSearchParams,
+    getPokemonIdFromUrl,
     getPokedexReturnPath,
     normalizeSearch,
 } from './pokedex'
 
 const pokemons = [
-    { name: 'bulbasaur', url: '/1' },
-    { name: 'ivysaur', url: '/2' },
-    { name: 'venusaur', url: '/3' },
+    { name: 'bulbasaur', url: 'https://pokeapi.co/api/v2/pokemon/1/' },
+    { name: 'ivysaur', url: 'https://pokeapi.co/api/v2/pokemon/2/' },
+    { name: 'venusaur', url: 'https://pokeapi.co/api/v2/pokemon/3/' },
 ]
 
 describe('Pokédex utilities', () => {
@@ -54,5 +56,14 @@ describe('Pokédex utilities', () => {
 
         expect(getPokemonArtwork(pokemon)).toBe('/home.png')
         expect(getPokemonArtwork({ sprites: {} })).toBeNull()
+    })
+
+    it('extracts ids and filters the result list by favorites', () => {
+        expect(getPokemonIdFromUrl('https://pokeapi.co/api/v2/pokemon/25/')).toBe(25)
+        expect(getPokemonIdFromUrl('/invalid/25')).toBeNull()
+        expect(filterFavoritePokemons(pokemons, [1, 3])).toEqual([
+            pokemons[0],
+            pokemons[2],
+        ])
     })
 })

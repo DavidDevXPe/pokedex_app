@@ -10,4 +10,5 @@ Object.defineProperty(window, 'scrollTo', {
 afterEach(() => {
     cleanup()
     window.sessionStorage.clear()
+    window.localStorage.clear()
 })

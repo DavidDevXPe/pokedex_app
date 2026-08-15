@@ -8,6 +8,7 @@ import Atributes from '../components/pokeIdPage/Atributes'
 import Stats from '../components/pokeIdPage/Stats'
 import MoveSet from '../components/pokeIdPage/MoveSet'
 import PokemonArtwork from '../components/PokemonArtwork'
+import FavoriteButton from '../components/FavoriteButton'
 
 const PokeIdPage = () => {
   const { id } = useParams()
@@ -65,6 +66,11 @@ const PokeIdPage = () => {
       <Link className='detailBackLink' to={returnPath}>← Back to results</Link>
       <div className={`typeBox pokemonTypeSurface type-${primaryType}`} aria-hidden='true'></div>
       <div className='idCard profileCard'>
+        <FavoriteButton
+          className='detailFavorite'
+          pokemonId={pokeData.id}
+          pokemonName={formattedName}
+        />
         <PokemonArtwork
           pokemon={pokeData}
           className='detailArtwork'

@@ -16,6 +16,7 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 - Navegación accesible mediante teclado.
 - Diseño adaptable para escritorio, tablet y móvil.
 - Persistencia del entrenador durante la sesión.
+- Favoritos persistentes entre sesiones y filtro combinable con búsqueda y tipo.
 - Búsqueda, tipo y página guardados en la URL.
 - Retorno desde el detalle conservando los filtros y la página activa.
 - Detalles resilientes con fallback de imagen y movimientos expandibles.

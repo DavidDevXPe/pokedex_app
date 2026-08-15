@@ -16,6 +16,18 @@ export const getPokemonArtwork = pokemon => (
     ?? null
 )
 
+export const getPokemonIdFromUrl = url => {
+    if (typeof url !== 'string') return null
+
+    const match = url.match(/\/pokemon\/(\d+)\/?$/)
+    return match ? Number(match[1]) : null
+}
+
+export const filterFavoritePokemons = (pokemons, favoritePokemonIds) => {
+    const favoriteIds = new Set(favoritePokemonIds)
+    return pokemons.filter(pokemon => favoriteIds.has(getPokemonIdFromUrl(pokemon.url)))
+}
+
 export const getPokedexReturnPath = from => (
     typeof from === 'string' && (from === '/pokedex' || from.startsWith('/pokedex?'))
         ? from
