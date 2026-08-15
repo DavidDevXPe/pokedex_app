@@ -57,11 +57,13 @@
 }
 
 :root[data-theme='dark'] .searchIcon {
-  border-color: #e3e8ef;
+  filter: brightness(0) invert(1);
 }
 
-:root[data-theme='dark'] .searchIcon::after {
-  background-color: #e3e8ef;
+:root[data-theme='dark'] .selectorFilterIcon,
+:root[data-theme='dark'] .pageArrow,
+:root[data-theme='dark'] .favoriteIconOutline {
+  filter: brightness(0) invert(1);
 }
 
 :root[data-theme='dark'] .favoriteFilter:hover:not(:disabled),

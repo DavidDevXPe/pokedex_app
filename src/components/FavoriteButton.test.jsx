@@ -26,10 +26,12 @@ describe('FavoriteButton', () => {
         const addButton = screen.getByRole('button', { name: 'Añadir a Pikachu a favoritos' })
 
         expect(addButton).toHaveAttribute('aria-pressed', 'false')
+        expect(addButton.querySelector('img')).toHaveAttribute('src', '/assets/ui/heart_outline.png')
         fireEvent.click(addButton)
 
         const removeButton = screen.getByRole('button', { name: 'Quitar a Pikachu de favoritos' })
         expect(removeButton).toHaveAttribute('aria-pressed', 'true')
+        expect(removeButton.querySelector('img')).toHaveAttribute('src', '/assets/ui/heart_filled.png')
         expect(store.getState().favoritePokemonIds).toEqual([25])
 
         fireEvent.click(removeButton)

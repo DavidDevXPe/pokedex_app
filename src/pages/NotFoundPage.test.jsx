@@ -23,7 +23,9 @@ describe('NotFoundPage', () => {
     it('returns a visitor to the home page', () => {
         renderNotFound('')
 
-        expect(screen.getByRole('link', { name: 'Volver al inicio' })).toHaveAttribute('href', '/')
+        const homeLink = screen.getByRole('link', { name: 'Volver al inicio' })
+        expect(homeLink).toHaveAttribute('href', '/')
+        expect(homeLink.querySelector('img')).toHaveAttribute('src', '/assets/ui/home.png')
     })
 
     it('returns an identified trainer to the Pokédex', () => {

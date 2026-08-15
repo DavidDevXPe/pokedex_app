@@ -21,7 +21,10 @@ const SelectType = ({ value, onTypeChange }) => {
 
     return (
     <div className='selectorGroup'>
-        <label htmlFor='pokemonType'>{t('select.type')}</label>
+        <label htmlFor='pokemonType'>
+            <img className='selectorFilterIcon' src='/assets/ui/filter.png' alt='' aria-hidden='true' />
+            {t('select.type')}
+        </label>
         <select
             id='pokemonType'
             value={value}

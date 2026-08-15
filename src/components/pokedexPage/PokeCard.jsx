@@ -6,6 +6,7 @@ import { formatPokemonName } from '../../utils/pokedex'
 import { getPokemonTypeAsset } from '../../utils/pokemonTypeAssets'
 import PokemonArtwork from '../PokemonArtwork'
 import FavoriteButton from '../FavoriteButton'
+import LoadingIndicator from '../LoadingIndicator'
 import useTranslation from '../../hooks/useTranslation'
 import './styles/pokeCard.css'
 
@@ -26,7 +27,7 @@ const PokeCard = ({url}) => {
     }, [getPokemon, url])
 
     if (isLoading) {
-      return <div className='pokeCard pokeCardStatus' role='status'>{t('card.loading')}</div>
+      return <LoadingIndicator className='pokeCard pokeCardStatus' label={t('card.loading')} />
     }
 
     if (error) {

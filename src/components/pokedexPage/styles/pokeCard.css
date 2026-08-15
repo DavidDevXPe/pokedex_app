@@ -247,6 +247,11 @@
     margin-top: 1rem;
 }
 
+.pokeCardStatus .loadingSpinnerAsset {
+    width: 52px;
+    height: 52px;
+}
+
 @media (hover: hover) {
     .pokeCard:hover {
         box-shadow: 0 20px 42px rgba(31, 41, 55, 0.18);

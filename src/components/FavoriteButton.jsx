@@ -21,7 +21,13 @@ const FavoriteButton = ({ pokemonId, pokemonName, className = '' }) => {
             title={accessibleLabel}
             onClick={() => dispatch(toggleFavoritePokemon(pokemonId))}
         >
-            <span aria-hidden='true'>{isFavorite ? '♥' : '♡'}</span>
+            <span className='favoriteIconViewport' aria-hidden='true'>
+                <img
+                    className={`favoriteIconAsset ${isFavorite ? 'favoriteIconFilled' : 'favoriteIconOutline'}`}
+                    src={`/assets/ui/heart_${isFavorite ? 'filled' : 'outline'}.png`}
+                    alt=''
+                />
+            </span>
         </button>
     )
 }

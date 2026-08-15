@@ -7,6 +7,7 @@ import useTranslation from '../hooks/useTranslation'
 import PokeCard from '../components/pokedexPage/PokeCard'
 import SelectType from '../components/pokedexPage/SelectType'
 import Pagination from '../components/pokedexPage/Pagination'
+import LoadingIndicator from '../components/LoadingIndicator'
 import {
     ALL_POKEMONS,
     POKEMON_PER_PAGE,
@@ -149,7 +150,12 @@ const PokedexPage = () => {
                 <div className='pokeControls'>
                     <form className='pokemonSearchForm' onSubmit={handleSubmit}>
                         <label className='srOnly' htmlFor='pokemonSearch'>{t('pokedex.searchLabel')}</label>
-                        <span className='searchIcon' aria-hidden='true'></span>
+                        <img
+                            className='searchIcon'
+                            src='/assets/ui/search.png'
+                            alt=''
+                            aria-hidden='true'
+                        />
                         <input
                             id='pokemonSearch'
                             type='search'
@@ -172,18 +178,22 @@ const PokedexPage = () => {
                         aria-pressed={showFavorites}
                         onClick={handleFavoritesFilter}
                     >
-                        <span aria-hidden='true'>♥</span> {t('pokedex.favorites', { count: favoritePokemonIds.length })}
+                        <img className='filterHeartAsset' src='/assets/ui/heart_filled.png' alt='' aria-hidden='true' />
+                        {t('pokedex.favorites', { count: favoritePokemonIds.length })}
                     </button>
                 </div>
                 {searchTerm && (
                     <div className='activeSearch'>
                         <span>{t('pokedex.activeSearch', { term: searchTerm })}</span>
-                        <button type='button' onClick={clearSearch}>{t('pokedex.clear')}</button>
+                        <button className='activeSearchClear' type='button' onClick={clearSearch}>
+                            <img src='/assets/ui/close.png' alt='' aria-hidden='true' />
+                            <span>{t('pokedex.clear')}</span>
+                        </button>
                     </div>
                 )}
             </section>
 
-            {isLoading && <p className='statusMessage' role='status'>{t('pokedex.loading')}</p>}
+            {isLoading && <LoadingIndicator className='statusMessage' label={t('pokedex.loading')} />}
 
             {error && (
                 <div className='statusMessage' role='alert'>
@@ -242,7 +252,9 @@ const PokedexPage = () => {
                         </div>
                     </article>
                     <article className='featureItem'>
-                        <span className='featureIcon featureIconGold' aria-hidden='true'>★</span>
+                        <span className='featureIcon featureIconGold' aria-hidden='true'>
+                            <img className='featureStarAsset' src='/assets/ui/star_filled.png' alt='' />
+                        </span>
                         <div>
                             <strong>{favoritePokemonIds.length}</strong>
                             <b>{t('pokedex.favoritesLabel')}</b>

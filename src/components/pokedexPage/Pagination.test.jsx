@@ -17,7 +17,9 @@ describe('Pagination', () => {
 
         expect(screen.getByRole('button', { name: '5' })).toHaveAttribute('aria-current', 'page')
 
-        fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
+        const nextButton = screen.getByRole('button', { name: 'Siguiente' })
+        expect(nextButton.querySelector('img')).toHaveAttribute('src', '/assets/ui/arrow_right.png')
+        fireEvent.click(nextButton)
 
         expect(onPageChange).toHaveBeenCalledWith(6)
     })
@@ -32,6 +34,8 @@ describe('Pagination', () => {
             />,
         )
 
-        expect(screen.getByRole('button', { name: 'Anterior' })).toBeDisabled()
+        const previousButton = screen.getByRole('button', { name: 'Anterior' })
+        expect(previousButton).toBeDisabled()
+        expect(previousButton.querySelector('img')).toHaveAttribute('src', '/assets/ui/arrow_left.png')
     })
 })

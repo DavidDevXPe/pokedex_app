@@ -5,6 +5,7 @@ import './styles/pokemonTypes.css'
 import './styles/theme.css'
 import ProtectedRoutes from './pages/ProtectedRoutes'
 import useTranslation from './hooks/useTranslation'
+import LoadingIndicator from './components/LoadingIndicator'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const PokedexPage = lazy(() => import('./pages/PokedexPage'))
@@ -20,7 +21,7 @@ function App() {
   }, [pathname])
 
   return (
-    <Suspense fallback={<p className='routeLoading' role='status'>{t('app.loading')}</p>}>
+    <Suspense fallback={<LoadingIndicator className='routeLoading' label={t('app.loading')} />}>
       <Routes>
         <Route path='/' element={<HomePage/>}/>
         <Route element={<ProtectedRoutes/>}>

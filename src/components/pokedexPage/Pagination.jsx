@@ -43,11 +43,13 @@ const Pagination = ({ currentPage, postPerPage, totalPosts, onPageChange }) => {
             <li>
                 <button
                     type='button'
-                    className='pageButton'
+                    className='pageButton pageDirection'
+                    aria-label={t('pagination.previous')}
                     disabled={currentPage === 1}
                     onClick={() => onPageChange(currentPage - 1)}
                 >
-                    {t('pagination.previous')}
+                    <img className='pageArrow' src='/assets/ui/arrow_left.png' alt='' aria-hidden='true' />
+                    <span>{t('pagination.previous')}</span>
                 </button>
             </li>
             {visiblePages.map(page => (
@@ -69,11 +71,13 @@ const Pagination = ({ currentPage, postPerPage, totalPosts, onPageChange }) => {
             <li>
                 <button
                     type='button'
-                    className='pageButton'
+                    className='pageButton pageDirection'
+                    aria-label={t('pagination.next')}
                     disabled={currentPage === totalPages}
                     onClick={() => onPageChange(currentPage + 1)}
                 >
-                    {t('pagination.next')}
+                    <span>{t('pagination.next')}</span>
+                    <img className='pageArrow' src='/assets/ui/arrow_right.png' alt='' aria-hidden='true' />
                 </button>
             </li>
         </ul>

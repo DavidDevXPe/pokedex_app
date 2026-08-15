@@ -6,10 +6,18 @@
 }
 
 .selectorGroup label {
+    display: inline-flex;
     color: var(--color-muted);
     padding-left: 0.45rem;
+    align-items: center;
+    gap: 0.35rem;
     font-size: 0.84rem;
     font-weight: 600;
+}
+
+.selectorFilterIcon {
+    width: 16px;
+    height: 16px;
 }
 
 .selector {

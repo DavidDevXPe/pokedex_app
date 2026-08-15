@@ -22,6 +22,12 @@ const NotFoundPage = () => {
             <h1>{t('notFound.title')}</h1>
             <p>{t('notFound.description')}</p>
             <Link className='notFoundLink' to={destination}>
+                <img
+                    className='notFoundLinkIcon'
+                    src={trainerName ? '/pokeball-icon.png' : '/assets/ui/home.png'}
+                    alt=''
+                    aria-hidden='true'
+                />
                 {trainerName ? t('notFound.returnPokedex') : t('notFound.returnHome')}
             </Link>
         </main>

@@ -10,6 +10,7 @@ import MoveSet from '../components/pokeIdPage/MoveSet'
 import PokemonArtwork from '../components/PokemonArtwork'
 import FavoriteButton from '../components/FavoriteButton'
 import useTranslation from '../hooks/useTranslation'
+import LoadingIndicator from '../components/LoadingIndicator'
 
 const PokeIdPage = () => {
   const { t, translateError } = useTranslation()
@@ -42,7 +43,7 @@ const PokeIdPage = () => {
   }, [loadPokemon])
 
   if (isLoading) {
-    return <p className='detailStatus' role='status'>{t('detail.loading')}</p>
+    return <LoadingIndicator className='detailStatus' label={t('detail.loading')} />
   }
 
   if (error) {

@@ -27,6 +27,17 @@
     font-weight: 700;
 }
 
+.pageDirection {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.pageArrow {
+    width: 14px;
+    height: 20px;
+}
+
 .pageButton:hover:not(:disabled),
 .pageButton:focus-visible {
     background: #f3f4f6;
@@ -57,5 +68,19 @@
         min-height: 36px;
         padding: 0.35rem 0.45rem;
         font-size: 0.8rem;
+    }
+
+    .pageDirection span {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+    }
+
+    .pageArrow {
+        width: 12px;
+        height: 18px;
     }
 }
