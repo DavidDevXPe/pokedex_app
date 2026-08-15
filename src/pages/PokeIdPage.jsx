@@ -42,21 +42,30 @@ const PokeIdPage = () => {
   }, [loadPokemon])
 
   if (isLoading) {
-    return <p className='detailStatus' role='status'>{t('detail.loading')}</p>
+    return (
+      <main className='detailStatus'>
+        <h1 className='srOnly'>{t('detail.document')}</h1>
+        <p role='status'>{t('detail.loading')}</p>
+      </main>
+    )
   }
 
   if (error) {
     return (
-      <div className='detailStatus' role='alert'>
-        {statusCode === 404 && <h1>{t('detail.notFound')}</h1>}
-        <p>{translateError(error)}</p>
-        <div className='detailStatusActions'>
-          {statusCode !== 404 && (
-            <button type='button' onClick={loadPokemon}>{t('pokedex.retry')}</button>
-          )}
-          <Link className='detailStatusLink' to={returnPath}>{t('detail.backPlain')}</Link>
+      <main className='detailStatus'>
+        <h1 className={statusCode === 404 ? '' : 'srOnly'}>
+          {statusCode === 404 ? t('detail.notFound') : t('detail.document')}
+        </h1>
+        <div role='alert'>
+          <p>{translateError(error)}</p>
+          <div className='detailStatusActions'>
+            {statusCode !== 404 && (
+              <button type='button' onClick={loadPokemon}>{t('pokedex.retry')}</button>
+            )}
+            <Link className='detailStatusLink' to={returnPath}>{t('detail.backPlain')}</Link>
+          </div>
         </div>
-      </div>
+      </main>
     )
   }
 
@@ -64,10 +73,10 @@ const PokeIdPage = () => {
 
   const primaryType = pokeData.types[0]?.type.name ?? 'normal'
   return (
-    <article className='idWrapper'>
+    <main className='idWrapper'>
       <Link className='detailBackLink' to={returnPath}>{t('detail.back')}</Link>
       <div className={`typeBox pokemonTypeSurface type-${primaryType}`} aria-hidden='true'></div>
-      <div className='idCard profileCard'>
+      <section className='idCard profileCard' aria-labelledby='pokemonDetailTitle'>
         <FavoriteButton
           className='detailFavorite'
           pokemonId={pokeData.id}
@@ -78,11 +87,13 @@ const PokeIdPage = () => {
           className='detailArtwork'
           alt={t('detail.renderAlt', { name: formattedName })}
         />
-        <h2 className={`pokemonTypeTitle type-${primaryType} id`}>#{pokeData.id}</h2>
+        <p className={`pokemonTypeTitle type-${primaryType} id`}>#{pokeData.id}</p>
         <div className='divider'>
-          <div className="linea">&nbsp;</div>
-          <h3 className={`pokemonTypeTitle type-${primaryType}`}>{formattedName}</h3>
-          <div className="linea">&nbsp;</div>
+          <div className='linea' aria-hidden='true'></div>
+          <h1 id='pokemonDetailTitle' className={`pokemonTypeTitle type-${primaryType}`}>
+            {formattedName}
+          </h1>
+          <div className='linea' aria-hidden='true'></div>
         </div>
         <ul className='pokeSize'>
           <li>{t('detail.weight')} <span>{pokeData.weight / 10} kg</span></li>
@@ -101,17 +112,17 @@ const PokeIdPage = () => {
           />
         </div>
 
-      </div>
+      </section>
 
-      <div className='idCard movesCard'>
+      <section className='idCard movesCard'>
         <div className='moveSet'>
           <MoveSet
           key={pokeData.id}
           pokeData={pokeData}
           />
         </div>
-      </div>
-    </article>
+      </section>
+    </main>
   )
 }
 

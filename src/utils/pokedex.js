@@ -1,7 +1,16 @@
 export const ALL_POKEMONS = 'all'
 export const POKEMON_PER_PAGE = 24
 
-export const normalizeSearch = value => value.trim().toLowerCase()
+export const normalizeSearch = value => (
+    typeof value === 'string'
+        ? value.trim().toLowerCase().replace(/\s+/g, ' ')
+        : ''
+)
+
+const getPokemonSearchKey = value => normalizeSearch(value)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[-_\s]+/g, ' ')
 
 export const formatPokemonName = value => value
     .split('-')
@@ -40,9 +49,13 @@ export const getPageFromSearchParams = searchParams => {
 }
 
 export const filterPokemons = (pokemons, searchTerm) => {
-    const normalizedSearch = normalizeSearch(searchTerm)
+    if (!Array.isArray(pokemons)) return []
+
+    const normalizedSearch = getPokemonSearchKey(searchTerm)
 
     if (!normalizedSearch) return pokemons
 
-    return pokemons.filter(pokemon => pokemon.name.includes(normalizedSearch))
+    return pokemons.filter(pokemon => (
+        getPokemonSearchKey(pokemon?.name).includes(normalizedSearch)
+    ))
 }

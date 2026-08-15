@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import useFetch from '../hooks/useFetch'
 import useDocumentTitle from '../hooks/useDocumentTitle'
 import useTranslation from '../hooks/useTranslation'
+import usePrefersReducedMotion from '../hooks/usePrefersReducedMotion'
 import PokeCard from '../components/pokedexPage/PokeCard'
 import SelectType from '../components/pokedexPage/SelectType'
 import Pagination from '../components/pokedexPage/Pagination'
@@ -15,10 +16,13 @@ import {
     getPageFromSearchParams,
     normalizeSearch,
 } from '../utils/pokedex'
+import { POKEMON_TYPE_NAMES } from '../utils/pokemonTypeAssets'
+import { getPublicAssetUrl } from '../utils/publicAsset'
 import './styles/pokedexPage.css'
 
 const POKEMON_LIST_URL = 'https://pokeapi.co/api/v2/pokemon/?limit=1500'
 const POKEMON_TYPE_URL = 'https://pokeapi.co/api/v2/type'
+const POKEBALL_ASSET_URL = getPublicAssetUrl('pokeball-icon.png')
 
 const PokedexPage = () => {
     const trainerName = useSelector(store => store.trainerName)
@@ -26,10 +30,16 @@ const PokedexPage = () => {
     const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
     const searchTerm = normalizeSearch(searchParams.get('search') ?? '')
-    const selectedType = normalizeSearch(searchParams.get('type') ?? ALL_POKEMONS) || ALL_POKEMONS
+    const requestedType = normalizeSearch(searchParams.get('type') ?? ALL_POKEMONS) || ALL_POKEMONS
+    const selectedType = requestedType === ALL_POKEMONS || POKEMON_TYPE_NAMES.includes(requestedType)
+        ? requestedType
+        : ALL_POKEMONS
     const currentPage = getPageFromSearchParams(searchParams)
     const showFavorites = searchParams.get('favorites') === '1'
     const [searchInput, setSearchInput] = useState(searchTerm)
+    const resultsHeadingRef = useRef(null)
+    const previousResultCountRef = useRef(null)
+    const prefersReducedMotion = usePrefersReducedMotion()
     const { t, translateError } = useTranslation()
     const {
         apiData: pokemons,
@@ -74,14 +84,19 @@ const PokedexPage = () => {
     }, [searchTerm])
 
     useEffect(() => {
+        if (requestedType === selectedType) return
+        updateSearchParams({ type: null, page: null }, { replace: true })
+    }, [requestedType, selectedType, updateSearchParams])
+
+    useEffect(() => {
         const sectionId = location.hash.slice(1)
         if (!sectionId) return
 
         document.getElementById(sectionId)?.scrollIntoView({
-            behavior: 'smooth',
+            behavior: prefersReducedMotion ? 'auto' : 'smooth',
             block: 'start',
         })
-    }, [location.hash])
+    }, [location.hash, prefersReducedMotion])
 
     const searchedPokemons = useMemo(
         () => filterPokemons(pokemons?.results ?? [], searchTerm),
@@ -94,6 +109,15 @@ const PokedexPage = () => {
         [favoritePokemonIds, searchedPokemons, showFavorites],
     )
     const totalPages = Math.max(1, Math.ceil(filteredPokemons.length / POKEMON_PER_PAGE))
+
+    useEffect(() => {
+        const previousCount = previousResultCountRef.current
+        previousResultCountRef.current = filteredPokemons.length
+
+        if (showFavorites && previousCount !== null && filteredPokemons.length < previousCount) {
+            resultsHeadingRef.current?.focus({ preventScroll: true })
+        }
+    }, [filteredPokemons.length, showFavorites])
 
     useEffect(() => {
         if (!pokemons || isLoading || currentPage <= totalPages) return
@@ -120,7 +144,10 @@ const PokedexPage = () => {
 
     const handlePageChange = page => {
         updateSearchParams({ page: page === 1 ? null : page })
-        window.scrollTo({ top: 0, behavior: 'smooth' })
+        window.scrollTo({
+            top: 0,
+            behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        })
     }
 
     const handleFavoritesFilter = () => {
@@ -143,7 +170,7 @@ const PokedexPage = () => {
     )
 
     return (
-        <main className='pokedex'>
+        <main className='pokedex' aria-busy={isLoading}>
             <section className='pokeHeader' id='filters'>
                 <h1 className='srOnly'>{t('pokedex.heading', { name: trainerName })}</h1>
                 <div className='pokeControls'>
@@ -156,9 +183,10 @@ const PokedexPage = () => {
                             value={searchInput}
                             onChange={event => setSearchInput(event.target.value)}
                             placeholder={t('pokedex.searchPlaceholder')}
+                            maxLength='80'
                         />
                         <button type='submit'>
-                            <img className='buttonBallImage' src='/pokeball-icon.png' alt='' aria-hidden='true' />
+                            <img className='buttonBallImage' src={POKEBALL_ASSET_URL} alt='' aria-hidden='true' />
                             {t('pokedex.find')}
                         </button>
                     </form>
@@ -183,6 +211,19 @@ const PokedexPage = () => {
                 )}
             </section>
 
+            <h2 ref={resultsHeadingRef} className='resultsHeading' tabIndex='-1'>
+                {t('pokedex.resultsHeading')}
+            </h2>
+            {pokemons && !isLoading && !error && (
+                <p className='srOnly' role='status' aria-live='polite' aria-atomic='true'>
+                    {t('pokedex.resultsSummary', {
+                        count: filteredPokemons.length,
+                        page: currentPage,
+                        totalPages,
+                    })}
+                </p>
+            )}
+
             {isLoading && <p className='statusMessage' role='status'>{t('pokedex.loading')}</p>}
 
             {error && (
@@ -192,7 +233,7 @@ const PokedexPage = () => {
                 </div>
             )}
 
-            {!isLoading && !error && currentPokemons.length === 0 && (
+            {pokemons && !isLoading && !error && currentPokemons.length === 0 && (
                 <p className='statusMessage'>
                     {showFavorites
                         ? favoritePokemonIds.length === 0
@@ -203,7 +244,10 @@ const PokedexPage = () => {
             )}
 
             {!isLoading && !error && currentPokemons.length > 0 && (
-                <section className='pokeContainer' aria-label={t('pokedex.results')}>
+                <section
+                    className='pokeContainer'
+                    aria-label={t('pokedex.results')}
+                >
                     {currentPokemons.map(pokemon => (
                         <PokeCard key={pokemon.url} url={pokemon.url} />
                     ))}
@@ -221,11 +265,11 @@ const PokedexPage = () => {
                 </section>
             )}
 
-            {!isLoading && !error && (
+            {pokemons && !isLoading && !error && (
                 <section className='pokedexFeatures' id='about' aria-label={t('pokedex.aboutLabel')}>
                     <article className='featureItem'>
                         <span className='featureIcon featureIconRed' aria-hidden='true'>
-                            <img className='featureBallImage' src='/pokeball-icon.png' alt='' />
+                            <img className='featureBallImage' src={POKEBALL_ASSET_URL} alt='' />
                         </span>
                         <div>
                             <strong>1,000+</strong>

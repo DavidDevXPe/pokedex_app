@@ -1,3 +1,5 @@
+import { getPublicAssetUrl } from './publicAsset'
+
 export const TRAINER_GENDER_STORAGE_KEY = 'pokedex.trainerGender'
 
 export const TRAINER_GENDERS = Object.freeze({
@@ -14,7 +16,7 @@ export const normalizeTrainerGender = gender => (
 )
 
 export const getTrainerAvatarPath = gender => (
-    `/assets/trainers/${normalizeTrainerGender(gender)}.png`
+    getPublicAssetUrl(`assets/trainers/${normalizeTrainerGender(gender)}.png`)
 )
 
 export const getTrainerGenderLabel = gender => (
@@ -22,25 +24,36 @@ export const getTrainerGenderLabel = gender => (
 )
 
 const getSessionStorage = () => {
-    if (typeof window === 'undefined') return null
-    return window.sessionStorage
+    try {
+        if (typeof window === 'undefined') return null
+        return window.sessionStorage
+    } catch {
+        return null
+    }
 }
 
-export const loadTrainerGender = (storage = getSessionStorage()) => {
-    if (!storage) return DEFAULT_TRAINER_GENDER
-
+export const loadTrainerGender = storage => {
     try {
-        return normalizeTrainerGender(storage.getItem(TRAINER_GENDER_STORAGE_KEY))
+        const resolvedStorage = storage === undefined ? getSessionStorage() : storage
+        if (!resolvedStorage) return DEFAULT_TRAINER_GENDER
+
+        return normalizeTrainerGender(
+            resolvedStorage.getItem(TRAINER_GENDER_STORAGE_KEY),
+        )
     } catch {
         return DEFAULT_TRAINER_GENDER
     }
 }
 
-export const persistTrainerGender = (gender, storage = getSessionStorage()) => {
-    if (!storage) return
-
+export const persistTrainerGender = (gender, storage) => {
     try {
-        storage.setItem(TRAINER_GENDER_STORAGE_KEY, normalizeTrainerGender(gender))
+        const resolvedStorage = storage === undefined ? getSessionStorage() : storage
+        if (!resolvedStorage) return
+
+        resolvedStorage.setItem(
+            TRAINER_GENDER_STORAGE_KEY,
+            normalizeTrainerGender(gender),
+        )
     } catch {
         // Storage can be unavailable in private or restricted browser contexts.
     }

@@ -53,9 +53,9 @@
     }
 
     .pageButton {
-        min-width: 34px;
-        min-height: 36px;
-        padding: 0.35rem 0.45rem;
+        min-width: 44px;
+        min-height: 44px;
+        padding: 0.4rem 0.55rem;
         font-size: 0.8rem;
     }
 }

@@ -10,6 +10,7 @@ import {
     getTrainerAvatarPath,
     TRAINER_GENDERS,
 } from '../utils/trainerGender'
+import { getPublicAssetUrl } from '../utils/publicAsset'
 import './styles/homePage.css'
 
 const HomePage = () => {
@@ -43,7 +44,7 @@ const HomePage = () => {
   return (
     <main className='hpWrapper'>
         <PreferenceControls className='homePreferences' />
-        <img src='/pokedex.png' alt='Pokédex' />
+        <img src={getPublicAssetUrl('pokedex.png')} alt='Pokédex' />
 
         <h1 className='hpTitle'>{t('home.title')}</h1>
         <h2>{t('home.subtitle')}</h2>
@@ -80,7 +81,10 @@ const HomePage = () => {
                     ref={textInput}
                     placeholder={t('home.namePlaceholder')}
                     minLength='3'
+                    maxLength='40'
+                    autoComplete='nickname'
                     required
+                    aria-invalid={Boolean(validationError)}
                     aria-describedby={validationError ? 'trainerNameError' : undefined}
                 />
                 <button type='submit'>{t('home.submit')}</button>

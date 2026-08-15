@@ -28,16 +28,21 @@ export const normalizeTheme = theme => (
 )
 
 const getLocalStorage = () => {
-    if (typeof window === 'undefined') return null
-    return window.localStorage
+    try {
+        if (typeof window === 'undefined') return null
+        return window.localStorage
+    } catch {
+        return null
+    }
 }
 
-export const loadPreferences = (storage = getLocalStorage()) => {
-    if (!storage) return { ...DEFAULT_PREFERENCES }
-
+export const loadPreferences = storage => {
     try {
+        const resolvedStorage = storage === undefined ? getLocalStorage() : storage
+        if (!resolvedStorage) return { ...DEFAULT_PREFERENCES }
+
         const storedPreferences = JSON.parse(
-            storage.getItem(PREFERENCES_STORAGE_KEY) ?? '{}',
+            resolvedStorage.getItem(PREFERENCES_STORAGE_KEY) ?? '{}',
         )
 
         return {
@@ -51,12 +56,13 @@ export const loadPreferences = (storage = getLocalStorage()) => {
 
 export const persistPreferences = (
     preferences,
-    storage = getLocalStorage(),
+    storage,
 ) => {
-    if (!storage) return
-
     try {
-        storage.setItem(PREFERENCES_STORAGE_KEY, JSON.stringify({
+        const resolvedStorage = storage === undefined ? getLocalStorage() : storage
+        if (!resolvedStorage) return
+
+        resolvedStorage.setItem(PREFERENCES_STORAGE_KEY, JSON.stringify({
             language: normalizeLanguage(preferences.language),
             theme: normalizeTheme(preferences.theme),
         }))

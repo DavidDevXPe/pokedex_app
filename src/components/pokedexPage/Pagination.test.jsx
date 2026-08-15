@@ -15,7 +15,7 @@ describe('Pagination', () => {
             />,
         )
 
-        expect(screen.getByRole('button', { name: '5' })).toHaveAttribute('aria-current', 'page')
+        expect(screen.getByRole('button', { name: 'Página 5' })).toHaveAttribute('aria-current', 'page')
 
         fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
 

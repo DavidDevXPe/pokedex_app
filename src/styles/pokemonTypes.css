@@ -8,7 +8,7 @@
 
 .pokemonTypeBadge {
   background-color: var(--type-accent, #8b95a5);
-  color: var(--type-contrast, #ffffff);
+  color: var(--type-contrast, #111827);
 }
 
 .type-normal {
@@ -49,15 +49,17 @@
 }
 
 .type-fighting {
-  --type-accent: #ce4963;
+  --type-accent: #c7405a;
   --type-soft: #f8dce2;
   --type-title: #8b2f43;
+  --type-contrast: #ffffff;
 }
 
 .type-poison {
-  --type-accent: #a85db7;
+  --type-accent: #9c50ad;
   --type-soft: #efdff3;
   --type-title: #713d7c;
+  --type-contrast: #ffffff;
 }
 
 .type-ground {
@@ -94,18 +96,21 @@
   --type-accent: #6f6ca5;
   --type-soft: #e5e4f2;
   --type-title: #484574;
+  --type-contrast: #ffffff;
 }
 
 .type-dragon {
   --type-accent: #596bc7;
   --type-soft: #dfe4fb;
   --type-title: #354595;
+  --type-contrast: #ffffff;
 }
 
 .type-dark {
   --type-accent: #5b5361;
   --type-soft: #e6e2e8;
   --type-title: #37313c;
+  --type-contrast: #ffffff;
 }
 
 .type-steel {
@@ -126,4 +131,5 @@
   --type-accent: #62748a;
   --type-soft: #e2e8f0;
   --type-title: #3d4a5a;
+  --type-contrast: #ffffff;
 }

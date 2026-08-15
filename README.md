@@ -8,7 +8,7 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 
 - Acceso mediante el nombre y el género visual del entrenador.
 - Listado paginado de Pokémon.
-- Renders 3D de Pokémon obtenidos desde PokéAPI, con imágenes alternativas cuando no están disponibles.
+- Ilustraciones de Pokémon obtenidas desde PokéAPI, con una alternativa accesible cuando no están disponibles.
 - Interfaz en español de forma predeterminada y cambio inmediato a inglés.
 - Modos claro y oscuro con preferencias persistentes entre sesiones.
 - Búsqueda por nombre.
@@ -35,6 +35,7 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 - Axios
 - Vite
 - ESLint
+- Vitest, Playwright y axe-core
 - PropTypes
 - PokéAPI
 
@@ -72,7 +73,10 @@ npm.cmd run dev
 | `npm run preview` | Sirve localmente la compilación de producción. |
 | `npm test` | Ejecuta la suite automatizada una vez. |
 | `npm run test:watch` | Ejecuta pruebas en modo interactivo. |
-| `npm run check` | Ejecuta lint, pruebas y build en secuencia. |
+| `npm run test:coverage` | Ejecuta las pruebas unitarias y genera cobertura. |
+| `npm run test:e2e` | Ejecuta los smoke tests de Playwright. |
+| `npm run test:e2e:install` | Instala Chromium para Playwright. |
+| `npm run check` | Ejecuta lint, cobertura y build en secuencia. |
 
 ## Estructura principal
 
@@ -85,6 +89,9 @@ src/
 ├── styles/           Estilos globales compartidos
 ├── App.jsx           Definición de rutas
 └── main.jsx          Punto de entrada de React
+e2e/                   Smoke tests de Playwright
+public/                Activos estáticos, manifest y robots.txt
+.github/workflows/     Validación y despliegue automatizados
 ```
 
 ## Rutas
@@ -103,16 +110,85 @@ Las rutas de la Pokédex requieren que el usuario introduzca primero un nombre v
 Antes de publicar cambios se recomienda ejecutar:
 
 ```bash
-npm run lint
-npm test
-npm run build
+npm run check
+npm run test:e2e
 npm audit
 ```
 
 La aplicación utiliza `HashRouter`, por lo que la carpeta `dist/` puede desplegarse en un alojamiento estático sin configurar redirecciones de rutas.
 
-El workflow `.github/workflows/quality.yml` ejecuta estas validaciones automáticamente en las ramas de trabajo y en cada pull request dirigido a `main`.
+El workflow `.github/workflows/quality.yml` ejecuta lint, cobertura con umbrales, build, auditoría de dependencias y pruebas E2E en las ramas de trabajo y en cada pull request dirigido a `main`.
+
+## Base pública y compilación para subrutas
+
+Vite usa `/` como base predeterminada. Para alojar la aplicación dentro de una subruta, define `VITE_BASE_PATH` con barras inicial y final:
+
+```bash
+VITE_BASE_PATH=/pokedex_app/ npm run build
+```
+
+En PowerShell:
+
+```powershell
+$env:VITE_BASE_PATH = '/pokedex_app/'
+npm.cmd run build
+```
+
+La configuración acepta también `./` para generar rutas relativas. Las referencias de la interfaz a archivos de `public/` pasan por `src/utils/publicAsset.js`, por lo que respetan la base configurada sin mantener una lista manual de nombres.
+
+## Despliegue en GitHub Pages
+
+El workflow `.github/workflows/deploy-pages.yml` valida, audita, ejecuta los E2E sobre la subruta, compila y publica `dist/` al hacer push a `main` o al ejecutarse manualmente. Está preparado para el repositorio `pokedex_app` con `VITE_BASE_PATH=/pokedex_app/`.
+
+Para activarlo:
+
+1. Abre **Settings → Pages** en GitHub.
+2. Selecciona **GitHub Actions** como fuente de publicación.
+3. Envía los cambios a `main` o ejecuta **Deploy to GitHub Pages** desde la pestaña Actions.
+4. Usa la URL que devuelve el job `deploy`; el README no fija un usuario, organización ni dominio final.
+
+Si el repositorio cambia de nombre, ajusta `VITE_BASE_PATH` en el workflow. Para un sitio de usuario u organización (`<usuario>.github.io`) o un dominio personalizado servido desde la raíz, utiliza `/`.
+
+La aplicación usa `HashRouter`, por lo que sus rutas internas no requieren reglas de reescritura en Pages.
+
+## SEO y aplicación instalable
+
+`index.html` incluye descripción, directivas de indexación, Open Graph, Twitter Cards y un aviso para navegadores sin JavaScript. `public/site.webmanifest` aporta metadatos básicos de instalación y `public/robots.txt` permite el rastreo.
+
+No se declara todavía `canonical` ni `og:url`, porque ambos deben contener la URL pública definitiva. Cuando exista el dominio final:
+
+1. añade una URL canónica absoluta;
+2. añade `og:url` con esa misma URL;
+3. sustituye las imágenes sociales relativas por una imagen absoluta optimizada para compartir;
+4. valora añadir un sitemap con URLs absolutas.
+
+En un GitHub Pages de proyecto, `robots.txt` queda dentro de `/pokedex_app/`; si se configura un dominio propio conviene revisar también el archivo servido en la raíz del host.
+
+## Pruebas E2E
+
+`playwright.config.js`, `scripts/run-e2e.js` y `e2e/smoke.spec.js` definen un recorrido determinista con PokéAPI simulada: entrada del entrenador, listado, detalle y ruta 404. Se ejecuta en escritorio y móvil, cubre los temas claro y oscuro y realiza auditorías WCAG 2.0–2.2 con axe-core. El comando compila la aplicación, levanta `vite preview` en el puerto 4173 y lo cierra al finalizar, también en Windows.
+
+Después de `npm ci`, instala Chromium una vez y ejecuta la suite:
+
+```bash
+npm run test:e2e:install
+npm run test:e2e
+```
+
+En CI, instala Chromium y sus dependencias del sistema con:
+
+```bash
+npx playwright install --with-deps chromium
+```
+
+Para ejecutar el smoke test contra un despliegue ya existente, define `E2E_BASE_URL` con la URL que contiene la aplicación y ejecuta Playwright; en ese caso no se inicia el servidor local.
 
 ## Créditos
 
-Los datos e ilustraciones oficiales se obtienen desde [PokéAPI](https://pokeapi.co/). Pokémon y sus nombres relacionados pertenecen a sus respectivos propietarios.
+Los datos e ilustraciones se obtienen desde [PokéAPI](https://pokeapi.co/). Pokémon y los nombres, personajes, ilustraciones y marcas relacionados pertenecen a sus respectivos titulares. Este proyecto no afirma afiliación ni patrocinio oficial.
+
+Consulta [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) para ver atribuciones, dependencias y activos cuya procedencia aún debe confirmarse.
+
+## Licencia
+
+La licencia del código de este repositorio está **pendiente de elección por su titular**. No debe inferirse una licencia abierta por la ausencia de un archivo `LICENSE`. Antes de distribuir o aceptar contribuciones, el titular debe seleccionar una licencia compatible con el objetivo del proyecto y añadir su texto completo.

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import useFetch from '../../hooks/useFetch'
 import { Link, useLocation } from 'react-router-dom'
@@ -12,6 +12,10 @@ import './styles/pokeCard.css'
 const MAX_STAT_PREVIEW = 180
 
 const PokeCard = ({url}) => {
+    const cardRef = useRef(null)
+    const [shouldLoad, setShouldLoad] = useState(
+      () => typeof IntersectionObserver === 'undefined',
+    )
     const location = useLocation()
     const { t, translateStat, translateType } = useTranslation()
     const {
@@ -22,19 +26,47 @@ const PokeCard = ({url}) => {
     } = useFetch()
 
     useEffect(() => {
-      getPokemon(url)
-    }, [getPokemon, url])
+      if (shouldLoad || typeof IntersectionObserver === 'undefined') return undefined
 
-    if (isLoading) {
-      return <div className='pokeCard pokeCardStatus' role='status'>{t('card.loading')}</div>
+      const card = cardRef.current
+      if (!card) return undefined
+
+      const observer = new IntersectionObserver(entries => {
+        if (entries.some(entry => entry.isIntersecting)) {
+          setShouldLoad(true)
+          observer.disconnect()
+        }
+      }, { rootMargin: '320px 0px' })
+
+      observer.observe(card)
+      return () => observer.disconnect()
+    }, [shouldLoad])
+
+    useEffect(() => {
+      if (shouldLoad) getPokemon(url)
+    }, [getPokemon, shouldLoad, url])
+
+    if (!shouldLoad || isLoading || (!pokemon && !error)) {
+      return (
+        <article
+          ref={cardRef}
+          className='pokeCard pokeCardStatus pokeCardSkeleton'
+          aria-hidden='true'
+        >
+          <span className='cardSkeletonArtwork'></span>
+          <span className='cardSkeletonLine cardSkeletonTitle'></span>
+          <span className='cardSkeletonLine'></span>
+          <span className='cardSkeletonLine'></span>
+        </article>
+      )
     }
 
     if (error) {
       return (
-        <div className='pokeCard pokeCardStatus' role='alert'>
+        <article className='pokeCard pokeCardStatus'>
           <p>{t('card.error')}</p>
           <button type='button' onClick={() => getPokemon(url)}>{t('pokedex.retry')}</button>
-        </div>
+        </article>
       )
     }
 

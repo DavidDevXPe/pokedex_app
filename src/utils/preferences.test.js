@@ -25,4 +25,22 @@ describe('preferences storage', () => {
 
         expect(loadPreferences()).toEqual(DEFAULT_PREFERENCES)
     })
+
+    it('recovers when the browser blocks access to localStorage itself', () => {
+        const descriptor = Object.getOwnPropertyDescriptor(window, 'localStorage')
+        Object.defineProperty(window, 'localStorage', {
+            configurable: true,
+            get: () => {
+                throw new DOMException('Blocked', 'SecurityError')
+            },
+        })
+
+        try {
+            expect(loadPreferences()).toEqual(DEFAULT_PREFERENCES)
+            expect(() => persistPreferences({ language: 'en', theme: 'dark' }))
+                .not.toThrow()
+        } finally {
+            Object.defineProperty(window, 'localStorage', descriptor)
+        }
+    })
 })

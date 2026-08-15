@@ -24,4 +24,21 @@ describe('trainer session storage', () => {
 
         expect(loadTrainerName()).toBe('')
     })
+
+    it('recovers when the browser blocks access to sessionStorage itself', () => {
+        const descriptor = Object.getOwnPropertyDescriptor(window, 'sessionStorage')
+        Object.defineProperty(window, 'sessionStorage', {
+            configurable: true,
+            get: () => {
+                throw new DOMException('Blocked', 'SecurityError')
+            },
+        })
+
+        try {
+            expect(loadTrainerName()).toBe('')
+            expect(() => persistTrainerName('Misty')).not.toThrow()
+        } finally {
+            Object.defineProperty(window, 'sessionStorage', descriptor)
+        }
+    })
 })

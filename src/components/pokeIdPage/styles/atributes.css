@@ -12,8 +12,9 @@
     flex-direction: column;
 }
 
-.aContainer h3 {
+.aContainer h2 {
     margin-bottom: 0.75rem;
+    font-size: 1.17em;
 }
 
 .aBoxer {

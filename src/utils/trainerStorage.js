@@ -1,28 +1,34 @@
 export const TRAINER_STORAGE_KEY = 'pokedex.trainerName'
 
 const getSessionStorage = () => {
-    if (typeof window === 'undefined') return null
-    return window.sessionStorage
+    try {
+        if (typeof window === 'undefined') return null
+        return window.sessionStorage
+    } catch {
+        return null
+    }
 }
 
-export const loadTrainerName = (storage = getSessionStorage()) => {
-    if (!storage) return ''
-
+export const loadTrainerName = storage => {
     try {
-        return storage.getItem(TRAINER_STORAGE_KEY) ?? ''
+        const resolvedStorage = storage === undefined ? getSessionStorage() : storage
+        if (!resolvedStorage) return ''
+
+        return resolvedStorage.getItem(TRAINER_STORAGE_KEY) ?? ''
     } catch {
         return ''
     }
 }
 
-export const persistTrainerName = (trainerName, storage = getSessionStorage()) => {
-    if (!storage) return
-
+export const persistTrainerName = (trainerName, storage) => {
     try {
+        const resolvedStorage = storage === undefined ? getSessionStorage() : storage
+        if (!resolvedStorage) return
+
         if (trainerName) {
-            storage.setItem(TRAINER_STORAGE_KEY, trainerName)
+            resolvedStorage.setItem(TRAINER_STORAGE_KEY, trainerName)
         } else {
-            storage.removeItem(TRAINER_STORAGE_KEY)
+            resolvedStorage.removeItem(TRAINER_STORAGE_KEY)
         }
     } catch {
         // Storage can be unavailable in private or restricted browser contexts.

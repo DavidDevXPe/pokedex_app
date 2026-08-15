@@ -1,72 +1,176 @@
-import axios from 'axios'
 import { useCallback, useEffect, useRef, useState } from 'react'
+import {
+    API_ERROR_CODES,
+    createInvalidResponseError,
+    normalizeApiError,
+    subscribeToApiRequest,
+} from '../api/pokeApiClient'
 
-const responseCache = new Map()
+const isNamedApiResource = value => (
+    typeof value?.name === 'string'
+    && typeof value?.url === 'string'
+)
 
-const getErrorMessage = (error) => {
-    if (error.response?.status === 404) {
-        return 'The requested information could not be found.'
+const isPokemonListPayload = data => (
+    Array.isArray(data?.results)
+    && data.results.every(isNamedApiResource)
+)
+
+const isPokemonDetailPayload = data => (
+    Number.isInteger(data?.id)
+    && typeof data.name === 'string'
+    && Number.isFinite(data.height)
+    && Number.isFinite(data.weight)
+    && Array.isArray(data.types)
+    && data.types.every(item => isNamedApiResource(item?.type))
+    && Array.isArray(data.abilities)
+    && data.abilities.every(item => isNamedApiResource(item?.ability))
+    && Array.isArray(data.stats)
+    && data.stats.every(item => (
+        Number.isFinite(item?.base_stat)
+        && isNamedApiResource(item?.stat)
+    ))
+    && Array.isArray(data.moves)
+    && data.moves.every(item => isNamedApiResource(item?.move))
+)
+
+const validateDefaultPayload = (url, data) => {
+    try {
+        const parsedUrl = new URL(url)
+        if (parsedUrl.hostname !== 'pokeapi.co') return data !== undefined
+
+        const pathname = parsedUrl.pathname.replace(/\/+$/, '')
+        if (pathname === '/api/v2/pokemon') return isPokemonListPayload(data)
+        if (pathname.startsWith('/api/v2/pokemon/')) return isPokemonDetailPayload(data)
+
+        return data !== undefined
+    } catch {
+        return data !== undefined
     }
-
-    return 'Could not connect to PokéAPI. Please try again.'
 }
+
+const isPokemonTypePayload = data => (
+    Array.isArray(data?.pokemon)
+    && data.pokemon.every(item => isNamedApiResource(item?.pokemon))
+)
 
 const useFetch = () => {
     const [apiData, setApiData] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [errorDetails, setErrorDetails] = useState(null)
     const [statusCode, setStatusCode] = useState(null)
-    const controllerRef = useRef(null)
+    const activeRequestRef = useRef(null)
+    const requestVersionRef = useRef(0)
 
-    const request = useCallback(async (url, transform = data => data) => {
-        controllerRef.current?.abort()
-
-        if (responseCache.has(url)) {
-            setApiData(transform(responseCache.get(url)))
-            setError(null)
-            setStatusCode(null)
-            setIsLoading(false)
-            return
+    const request = useCallback(async (
+        url,
+        transform = data => data,
+        validateResponse = data => data !== undefined,
+    ) => {
+        if (activeRequestRef.current) {
+            activeRequestRef.current.canceled = true
+            activeRequestRef.current.release()
+            activeRequestRef.current = null
         }
 
-        const controller = new AbortController()
-        controllerRef.current = controller
-        setApiData(null)
+        const requestVersion = requestVersionRef.current + 1
+        requestVersionRef.current = requestVersion
         setError(null)
+        setErrorDetails(null)
         setStatusCode(null)
-        setIsLoading(true)
+
+        let subscription
+        const requestContext = {
+            canceled: false,
+            release: () => {},
+        }
 
         try {
-            const response = await axios.get(url, { signal: controller.signal })
-            responseCache.set(url, response.data)
-            setApiData(transform(response.data))
+            subscription = subscribeToApiRequest(url, validateResponse)
+            requestContext.release = subscription.release
+
+            if (!subscription.cached) {
+                activeRequestRef.current = requestContext
+                setApiData(null)
+                setIsLoading(true)
+            }
+
+            const responseData = subscription.cached
+                ? subscription.data
+                : await subscription.promise
+
+            if (requestContext.canceled || requestVersionRef.current !== requestVersion) {
+                return
+            }
+
+            try {
+                setApiData(transform(responseData))
+            } catch (transformError) {
+                throw createInvalidResponseError(transformError)
+            }
         } catch (requestError) {
-            if (requestError.code !== 'ERR_CANCELED') {
-                setError(getErrorMessage(requestError))
-                setStatusCode(requestError.response?.status ?? null)
+            const normalizedError = normalizeApiError(requestError)
+            const isCurrentRequest = requestVersionRef.current === requestVersion
+
+            if (
+                !requestContext.canceled
+                && isCurrentRequest
+                && normalizedError.code !== API_ERROR_CODES.CANCELED
+            ) {
+                const details = normalizedError.toDetails()
+                setApiData(null)
+                setError(details.message)
+                setErrorDetails(details)
+                setStatusCode(details.statusCode)
             }
         } finally {
-            if (controllerRef.current === controller) {
+            subscription?.release()
+
+            if (activeRequestRef.current === requestContext) {
+                activeRequestRef.current = null
+            }
+
+            if (
+                !requestContext.canceled
+                && requestVersionRef.current === requestVersion
+            ) {
                 setIsLoading(false)
             }
         }
     }, [])
 
     const getApi = useCallback(
-        url => request(url),
+        url => request(url, data => data, data => validateDefaultPayload(url, data)),
         [request],
     )
 
     const getApiType = useCallback(
         url => request(url, data => ({
             results: data.pokemon.map(({ pokemon }) => pokemon),
-        })),
+        }), isPokemonTypePayload),
         [request],
     )
 
-    useEffect(() => () => controllerRef.current?.abort(), [])
+    useEffect(() => () => {
+        requestVersionRef.current += 1
 
-    return { apiData, isLoading, error, statusCode, getApi, getApiType }
+        if (activeRequestRef.current) {
+            activeRequestRef.current.canceled = true
+            activeRequestRef.current.release()
+            activeRequestRef.current = null
+        }
+    }, [])
+
+    return {
+        apiData,
+        isLoading,
+        error,
+        errorDetails,
+        statusCode,
+        getApi,
+        getApiType,
+    }
 }
 
 export default useFetch

@@ -84,7 +84,7 @@ describe('PokedexPage URL state', () => {
     it('writes the selected page to the URL', () => {
         renderPage('/pokedex')
 
-        fireEvent.click(screen.getByRole('button', { name: '2' }))
+        fireEvent.click(screen.getByRole('button', { name: 'Página 2' }))
 
         expect(screen.getByTestId('location-search')).toHaveTextContent('?page=2')
         expect(screen.getAllByTestId('pokemon-card')).toHaveLength(6)
@@ -99,5 +99,15 @@ describe('PokedexPage URL state', () => {
         expect(screen.getAllByTestId('pokemon-card')).toHaveLength(2)
         expect(screen.getByRole('button', { name: 'Favoritos (2)' }))
             .toHaveAttribute('aria-pressed', 'true')
+    })
+
+    it('removes an unsupported type from the URL instead of requesting it', async () => {
+        renderPage('/pokedex?type=not-a-real-type')
+
+        await waitFor(() => {
+            expect(screen.getByTestId('location-search')).toHaveTextContent('')
+        })
+        expect(apiMocks.getApi).toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon/?limit=1500')
+        expect(apiMocks.getApiType).not.toHaveBeenCalled()
     })
 })

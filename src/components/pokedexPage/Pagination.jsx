@@ -57,6 +57,7 @@ const Pagination = ({ currentPage, postPerPage, totalPosts, onPageChange }) => {
                             type='button'
                             className={`pageButton ${page === currentPage ? 'active' : ''}`}
                             aria-current={page === currentPage ? 'page' : undefined}
+                            aria-label={t('pagination.page', { page })}
                             onClick={() => onPageChange(page)}
                         >
                             {page}

@@ -28,8 +28,23 @@ describe('trainer gender session storage', () => {
 
     it('returns the matching avatar path', () => {
         expect(getTrainerAvatarPath(TRAINER_GENDERS.FEMALE))
-            .toBe('/assets/trainers/female.png')
+            .toBe(`${import.meta.env.BASE_URL}assets/trainers/female.png`)
         expect(getTrainerAvatarPath(TRAINER_GENDERS.MALE))
-            .toBe('/assets/trainers/male.png')
+            .toBe(`${import.meta.env.BASE_URL}assets/trainers/male.png`)
+    })
+
+    it('recovers when sessionStorage access is restricted', () => {
+        const storage = {
+            getItem: () => {
+                throw new DOMException('Blocked', 'SecurityError')
+            },
+            setItem: () => {
+                throw new DOMException('Blocked', 'SecurityError')
+            },
+        }
+
+        expect(loadTrainerGender(storage)).toBe(DEFAULT_TRAINER_GENDER)
+        expect(() => persistTrainerGender(TRAINER_GENDERS.FEMALE, storage))
+            .not.toThrow()
     })
 })

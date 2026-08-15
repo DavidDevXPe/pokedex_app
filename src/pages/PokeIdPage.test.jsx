@@ -74,7 +74,8 @@ describe('PokeIdPage navigation', () => {
         })
         expect(screen.getByRole('link', { name: '← Volver a resultados' }))
             .toHaveAttribute('href', '/pokedex?search=mime&type=psychic&page=2')
-        expect(screen.getByRole('heading', { name: 'Mr Mime' })).toBeInTheDocument()
+        expect(screen.getByRole('main')).toBeInTheDocument()
+        expect(screen.getByRole('heading', { level: 1, name: 'Mr Mime' })).toBeInTheDocument()
         expect(document.title).toBe('Mr Mime | Pokédex')
     })
 
@@ -96,7 +97,8 @@ describe('PokeIdPage navigation', () => {
 
         renderDetails('/pokedex/not-a-pokemon')
 
-        expect(screen.getByRole('heading', { name: 'Pokémon no encontrado' })).toBeInTheDocument()
+        expect(screen.getByRole('main')).toBeInTheDocument()
+        expect(screen.getByRole('heading', { level: 1, name: 'Pokémon no encontrado' })).toBeInTheDocument()
         expect(screen.queryByRole('button', { name: 'Reintentar' })).not.toBeInTheDocument()
         expect(screen.getByRole('link', { name: 'Volver a resultados' })).toHaveAttribute('href', '/pokedex')
         expect(document.title).toBe('Pokémon no encontrado | Pokédex')

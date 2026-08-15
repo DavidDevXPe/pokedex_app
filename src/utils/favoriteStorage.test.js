@@ -36,4 +36,18 @@ describe('favorite storage', () => {
         persistFavoritePokemonIds([], storage)
         expect(storage.removeItem).toHaveBeenCalledWith(FAVORITES_STORAGE_KEY)
     })
+
+    it('recovers when storage methods are restricted', () => {
+        const storage = {
+            getItem: vi.fn(() => {
+                throw new DOMException('Blocked', 'SecurityError')
+            }),
+            setItem: vi.fn(() => {
+                throw new DOMException('Blocked', 'SecurityError')
+            }),
+        }
+
+        expect(loadFavoritePokemonIds(storage)).toEqual([])
+        expect(() => persistFavoritePokemonIds([25], storage)).not.toThrow()
+    })
 })

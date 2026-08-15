@@ -19,11 +19,29 @@ const pokemons = [
 describe('Pokédex utilities', () => {
     it('normalizes searches before using them in the URL', () => {
         expect(normalizeSearch('  BulBaSaur  ')).toBe('bulbasaur')
+        expect(normalizeSearch('  Mr   Mime  ')).toBe('mr mime')
+        expect(normalizeSearch(null)).toBe('')
     })
 
     it('filters Pokémon by a partial normalized name', () => {
         expect(filterPokemons(pokemons, '  SAUR ')).toEqual(pokemons)
         expect(filterPokemons(pokemons, 'ivy')).toEqual([pokemons[1]])
+    })
+
+    it('matches displayed spaces and API hyphens interchangeably', () => {
+        const compoundNames = [
+            { name: 'mr-mime', url: '/pokemon/122/' },
+            { name: 'tapu-koko', url: '/pokemon/785/' },
+        ]
+
+        expect(filterPokemons(compoundNames, 'Mr Mime')).toEqual([compoundNames[0]])
+        expect(filterPokemons(compoundNames, 'tapu-koko')).toEqual([compoundNames[1]])
+        expect(filterPokemons(compoundNames, 'TAPU KOKO')).toEqual([compoundNames[1]])
+    })
+
+    it('handles invalid result collections safely', () => {
+        expect(filterPokemons(null, 'pikachu')).toEqual([])
+        expect(filterPokemons([{ name: null }], 'pikachu')).toEqual([])
     })
 
     it('returns a safe page for valid and invalid URL values', () => {

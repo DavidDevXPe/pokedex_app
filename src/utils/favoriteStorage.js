@@ -1,8 +1,12 @@
 export const FAVORITES_STORAGE_KEY = 'pokedex.favoritePokemonIds'
 
 const getLocalStorage = () => {
-    if (typeof window === 'undefined') return null
-    return window.localStorage
+    try {
+        if (typeof window === 'undefined') return null
+        return window.localStorage
+    } catch {
+        return null
+    }
 }
 
 export const normalizeFavoritePokemonIds = favoritePokemonIds => {
@@ -15,11 +19,12 @@ export const normalizeFavoritePokemonIds = favoritePokemonIds => {
     )]
 }
 
-export const loadFavoritePokemonIds = (storage = getLocalStorage()) => {
-    if (!storage) return []
-
+export const loadFavoritePokemonIds = storage => {
     try {
-        const storedValue = storage.getItem(FAVORITES_STORAGE_KEY)
+        const resolvedStorage = storage === undefined ? getLocalStorage() : storage
+        if (!resolvedStorage) return []
+
+        const storedValue = resolvedStorage.getItem(FAVORITES_STORAGE_KEY)
         return storedValue ? normalizeFavoritePokemonIds(JSON.parse(storedValue)) : []
     } catch {
         return []
@@ -28,17 +33,18 @@ export const loadFavoritePokemonIds = (storage = getLocalStorage()) => {
 
 export const persistFavoritePokemonIds = (
     favoritePokemonIds,
-    storage = getLocalStorage(),
+    storage,
 ) => {
-    if (!storage) return
-
     try {
+        const resolvedStorage = storage === undefined ? getLocalStorage() : storage
+        if (!resolvedStorage) return
+
         const normalizedIds = normalizeFavoritePokemonIds(favoritePokemonIds)
 
         if (normalizedIds.length > 0) {
-            storage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(normalizedIds))
+            resolvedStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(normalizedIds))
         } else {
-            storage.removeItem(FAVORITES_STORAGE_KEY)
+            resolvedStorage.removeItem(FAVORITES_STORAGE_KEY)
         }
     } catch {
         // Storage can be unavailable in private or restricted browser contexts.

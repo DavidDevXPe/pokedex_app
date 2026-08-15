@@ -15,6 +15,7 @@
   --color-border: #d9dde3;
   --color-canvas: #f6f7f9;
   --color-soft: #e9edf2;
+  --color-focus: #005fcc;
   --shadow-sm: 0 6px 16px rgba(31, 41, 55, 0.11);
   --shadow-md: 0 16px 38px rgba(31, 41, 55, 0.16);
 }
@@ -101,9 +102,18 @@ select:disabled {
 input:focus-visible,
 button:focus-visible,
 select:focus-visible,
+textarea:focus-visible,
 a:focus-visible {
-  outline: 3px solid #f4c430;
+  outline: 3px solid var(--color-focus);
   outline-offset: 3px;
+}
+
+:root .trainerGenderOption:focus-within {
+  outline-color: var(--color-focus);
+}
+
+main[tabindex='-1']:focus {
+  outline: none;
 }
 
 ul {
@@ -140,6 +150,23 @@ a {
   place-items: center;
   color: var(--color-muted);
   font-weight: 700;
+}
+
+.fatalError {
+  display: grid;
+  width: min(640px, calc(100% - 2rem));
+  min-height: 100svh;
+  margin: 0 auto;
+  padding: 2rem;
+  align-content: center;
+  justify-items: center;
+  gap: 1.25rem;
+  text-align: center;
+}
+
+.fatalError h1 {
+  margin-bottom: 0.75rem;
+  font-size: clamp(1.6rem, 4vw, 2.25rem);
 }
 
 .pokemonArtworkFallback {

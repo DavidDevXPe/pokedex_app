@@ -91,7 +91,7 @@
     gap: 1rem;
 }
 
-.divider h3 {
+.divider h1 {
     font-size: clamp(1.8rem, 5vw, 2.75rem);
 }
 

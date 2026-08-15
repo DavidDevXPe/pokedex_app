@@ -60,7 +60,23 @@ describe('ProtectedRoutes', () => {
         renderProtectedRoute('Misty', TRAINER_GENDERS.FEMALE)
 
         expect(screen.getByRole('button', { name: 'Cambiar entrenador' }).querySelector('img'))
-            .toHaveAttribute('src', '/assets/trainers/female.png')
+            .toHaveAttribute(
+                'src',
+                `${import.meta.env.BASE_URL}assets/trainers/female.png`,
+            )
         expect(screen.getByText('Entrenadora')).toBeInTheDocument()
+    })
+
+    it('identifies the current navigation destination', () => {
+        renderProtectedRoute('Ash')
+
+        const pokemonLink = screen.getByRole('link', { name: 'Pokémon' })
+        const typesLink = screen.getByRole('link', { name: 'Tipos' })
+        expect(pokemonLink).toHaveAttribute('aria-current', 'page')
+
+        fireEvent.click(typesLink)
+
+        expect(pokemonLink).not.toHaveAttribute('aria-current')
+        expect(typesLink).toHaveAttribute('aria-current', 'location')
     })
 })

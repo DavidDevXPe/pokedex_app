@@ -8,7 +8,7 @@ const Atributes = ({ pokeData }) => {
     return (
         <div className='aWrapper'>
             <div className='aContainer'>
-                <h3>{t('attributes.type')}</h3>
+                <h2>{t('attributes.type')}</h2>
                 <ul className='aBoxer'>
                     {
                         pokeData?.types.map(type => (
@@ -24,7 +24,7 @@ const Atributes = ({ pokeData }) => {
             </div>
 
             <div className='aContainer'>
-                <h3>{t('attributes.abilities')}</h3>
+                <h2>{t('attributes.abilities')}</h2>
                 <ul className='aBoxer'>
                     {
                         pokeData?.abilities.map(ability => (

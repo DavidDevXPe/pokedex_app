@@ -8,6 +8,7 @@
   --color-border: #35404e;
   --color-canvas: #0d1117;
   --color-soft: #252d38;
+  --color-focus: #ffd43b;
   --shadow-sm: 0 7px 18px rgba(0, 0, 0, 0.34);
   --shadow-md: 0 18px 42px rgba(0, 0, 0, 0.46);
 }
@@ -92,6 +93,10 @@
 
 :root[data-theme='dark'] .pokeCard h3,
 :root[data-theme='dark'] .pokeStats li {
+  color: var(--color-ink);
+}
+
+:root[data-theme='dark'] .pokemonTypeTitle {
   color: var(--color-ink);
 }
 
