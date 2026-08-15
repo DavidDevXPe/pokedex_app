@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import useFetch from '../../hooks/useFetch'
 import { Link, useLocation } from 'react-router-dom'
 import { formatPokemonName } from '../../utils/pokedex'
+import { getPokemonTypeAsset } from '../../utils/pokemonTypeAssets'
 import PokemonArtwork from '../PokemonArtwork'
 import FavoriteButton from '../FavoriteButton'
 import './styles/pokeCard.css'
@@ -81,14 +82,25 @@ const PokeCard = ({url}) => {
           <div className='pokeCardBody'>
             <h3>{formattedName}</h3>
             <ul className='pokeTypes' aria-label={`${formattedName} types`}>
-              {pokemon.types.map(type => (
-                <li
-                  key={type.type.url}
-                  className={`pokemonTypeBadge type-${type.type.name}`}
-                >
-                  {formatPokemonName(type.type.name)}
-                </li>
-              ))}
+              {pokemon.types.map(type => {
+                const typeName = type.type.name
+                const typeAsset = getPokemonTypeAsset(typeName)
+
+                return (
+                  <li
+                    key={type.type.url}
+                    className={`pokemonTypeBadge type-${typeName} ${typeAsset ? 'pokemonTypeBadgeAsset' : ''}`}
+                  >
+                    {typeAsset ? (
+                      <img
+                        src={typeAsset}
+                        alt={formatPokemonName(typeName)}
+                        loading='lazy'
+                      />
+                    ) : formatPokemonName(typeName)}
+                  </li>
+                )
+              })}
             </ul>
             <ul className='pokeStats' aria-label={`${formattedName} base stats`}>
               {pokemon.stats.map(stat => (

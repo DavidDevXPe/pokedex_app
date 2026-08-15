@@ -166,6 +166,18 @@
     text-transform: uppercase;
 }
 
+.pokeTypes .pokemonTypeBadgeAsset {
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+}
+
+.pokemonTypeBadgeAsset img {
+    width: auto;
+    height: 28px;
+    object-fit: contain;
+}
+
 .pokeStats {
     display: grid;
     margin-top: 1rem;

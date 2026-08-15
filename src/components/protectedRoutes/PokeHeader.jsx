@@ -1,12 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { setTrainerName } from '../../store/slices/trainerName.slice'
+import {
+  getTrainerAvatarPath,
+  getTrainerGenderLabel,
+} from '../../utils/trainerGender'
 import './styles/pokeHeader.css'
 
 const PokeHeader = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const trainerName = useSelector(store => store.trainerName)
+  const trainerGender = useSelector(store => store.trainerGender)
 
   const handleChangeTrainer = () => {
     dispatch(setTrainerName(''))
@@ -40,13 +45,13 @@ const PokeHeader = () => {
           >
             <img
               className='trainerAvatar'
-              src='/trainer-avatar.png'
+              src={getTrainerAvatarPath(trainerGender)}
               alt=''
               aria-hidden='true'
             />
             <span className='trainerIdentity'>
               <strong>{trainerName}</strong>
-              <small>Trainer</small>
+              <small>{getTrainerGenderLabel(trainerGender)} trainer</small>
             </span>
             <span className='trainerChevron' aria-hidden='true'></span>
           </button>

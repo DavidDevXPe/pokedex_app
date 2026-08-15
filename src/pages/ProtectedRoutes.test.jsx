@@ -4,12 +4,20 @@ import { Provider } from 'react-redux'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
 import { describe, expect, it } from 'vitest'
 import trainerName from '../store/slices/trainerName.slice'
+import trainerGender from '../store/slices/trainerGender.slice'
+import { TRAINER_GENDERS } from '../utils/trainerGender'
 import ProtectedRoutes from './ProtectedRoutes'
 
-const renderProtectedRoute = initialTrainerName => {
+const renderProtectedRoute = (
+    initialTrainerName,
+    initialTrainerGender = TRAINER_GENDERS.MALE,
+) => {
     const store = configureStore({
-        reducer: { trainerName },
-        preloadedState: { trainerName: initialTrainerName },
+        reducer: { trainerGender, trainerName },
+        preloadedState: {
+            trainerGender: initialTrainerGender,
+            trainerName: initialTrainerName,
+        },
     })
 
     return render(
@@ -46,5 +54,13 @@ describe('ProtectedRoutes', () => {
         fireEvent.click(screen.getByRole('button', { name: 'Change trainer' }))
 
         expect(screen.getByText('Home page')).toBeInTheDocument()
+    })
+
+    it('shows the avatar selected by the trainer', () => {
+        renderProtectedRoute('Misty', TRAINER_GENDERS.FEMALE)
+
+        expect(screen.getByRole('button', { name: 'Change trainer' }).querySelector('img'))
+            .toHaveAttribute('src', '/assets/trainers/female.png')
+        expect(screen.getByText('Woman trainer')).toBeInTheDocument()
     })
 })

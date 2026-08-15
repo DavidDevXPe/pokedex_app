@@ -1,12 +1,21 @@
 import { useRef, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setTrainerName } from '../store/slices/trainerName.slice'
+import { setTrainerGender } from '../store/slices/trainerGender.slice'
 import { useNavigate } from 'react-router-dom'
 import useDocumentTitle from '../hooks/useDocumentTitle'
+import {
+    getTrainerAvatarPath,
+    TRAINER_GENDERS,
+} from '../utils/trainerGender'
 import './styles/homePage.css'
 
 const HomePage = () => {
     const textInput = useRef();
+    const storedGender = useSelector(store => store.trainerGender)
+    const [trainerGender, selectTrainerGender] = useState(
+        storedGender ?? TRAINER_GENDERS.MALE,
+    )
     const [validationError, setValidationError] = useState('')
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -24,6 +33,7 @@ const HomePage = () => {
         }
 
         setValidationError('')
+        dispatch(setTrainerGender(trainerGender))
         dispatch(setTrainerName(trainerName))
         navigate('/pokedex');
     }
@@ -32,20 +42,45 @@ const HomePage = () => {
         <img src='/pokedex.png' alt='Pokédex' />
 
         <h1 className='hpTitle'>Welcome trainer!</h1>
-        <h2>To begin, give us your name</h2>
-        <br /><br />
+        <h2>Choose your trainer and give us your name</h2>
         <form onSubmit={handleSubmit} className='hpForm'>
-            <label className='srOnly' htmlFor='trainerName'>Trainer name</label>
-            <input
-                id='trainerName'
-                type='text'
-                ref={textInput}
-                placeholder='Your name...'
-                minLength='3'
-                required
-                aria-describedby={validationError ? 'trainerNameError' : undefined}
-            />
-            <button type='submit'>Catch them all!</button>
+            <fieldset className='trainerGenderPicker'>
+                <legend>Select your trainer</legend>
+                <div className='trainerGenderOptions'>
+                    {[
+                        { value: TRAINER_GENDERS.FEMALE, label: 'Woman' },
+                        { value: TRAINER_GENDERS.MALE, label: 'Man' },
+                    ].map(option => (
+                        <label
+                            className={`trainerGenderOption ${trainerGender === option.value ? 'selected' : ''}`}
+                            key={option.value}
+                        >
+                            <input
+                                type='radio'
+                                name='trainerGender'
+                                value={option.value}
+                                checked={trainerGender === option.value}
+                                onChange={() => selectTrainerGender(option.value)}
+                            />
+                            <img src={getTrainerAvatarPath(option.value)} alt='' aria-hidden='true' />
+                            <span>{option.label}</span>
+                        </label>
+                    ))}
+                </div>
+            </fieldset>
+            <div className='hpNameRow'>
+                <label className='srOnly' htmlFor='trainerName'>Trainer name</label>
+                <input
+                    id='trainerName'
+                    type='text'
+                    ref={textInput}
+                    placeholder='Your name...'
+                    minLength='3'
+                    required
+                    aria-describedby={validationError ? 'trainerNameError' : undefined}
+                />
+                <button type='submit'>Catch them all!</button>
+            </div>
         </form>
         {validationError && (
           <p id='trainerNameError' className='formError' role='alert'>{validationError}</p>

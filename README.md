@@ -6,7 +6,7 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 
 ## Funcionalidades
 
-- Acceso mediante el nombre del entrenador.
+- Acceso mediante el nombre y el género visual del entrenador.
 - Listado paginado de Pokémon.
 - Búsqueda por nombre.
 - Filtro por tipo compatible con la búsqueda activa.
@@ -15,7 +15,8 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 - Caché en memoria y cancelación de peticiones obsoletas.
 - Navegación accesible mediante teclado.
 - Diseño adaptable para escritorio, tablet y móvil.
-- Persistencia del entrenador durante la sesión.
+- Persistencia del nombre y género visual del entrenador durante la sesión.
+- Avatares masculino/femenino e insignias gráficas para los 18 tipos principales.
 - Favoritos persistentes entre sesiones y filtro combinable con búsqueda y tipo.
 - Búsqueda, tipo y página guardados en la URL.
 - Retorno desde el detalle conservando los filtros y la página activa.
