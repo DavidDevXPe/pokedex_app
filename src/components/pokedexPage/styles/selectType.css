@@ -1,6 +1,22 @@
+.selectorGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.selectorGroup label {
+    font-weight: 700;
+}
+
 .selector {
     width: 10rem;
+    min-height: 3rem;
+    padding: 0 0.5rem;
     border-radius: 8px;
     box-shadow: 0px 4px 9px 0px rgba(138, 136, 136, 0.75);
+}
 
+.selectorError {
+    color: #a40000;
+    font-size: 0.8rem;
 }

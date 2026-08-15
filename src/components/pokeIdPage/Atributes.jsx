@@ -1,9 +1,7 @@
-import React from 'react'
+import PropTypes from 'prop-types'
 import './styles/atributes.css'
 
 const Atributes = ({ pokeData }) => {
-    //console.log(pokeData)
-
     return (
         <div className='aWrapper'>
             <div className='aContainer'>
@@ -30,6 +28,23 @@ const Atributes = ({ pokeData }) => {
 
         </div>
     )
+}
+
+Atributes.propTypes = {
+    pokeData: PropTypes.shape({
+        types: PropTypes.arrayOf(PropTypes.shape({
+            slot: PropTypes.number.isRequired,
+            type: PropTypes.shape({
+                name: PropTypes.string.isRequired,
+            }).isRequired,
+        })).isRequired,
+        abilities: PropTypes.arrayOf(PropTypes.shape({
+            slot: PropTypes.number.isRequired,
+            ability: PropTypes.shape({
+                name: PropTypes.string.isRequired,
+            }).isRequired,
+        })).isRequired,
+    }).isRequired,
 }
 
 export default Atributes

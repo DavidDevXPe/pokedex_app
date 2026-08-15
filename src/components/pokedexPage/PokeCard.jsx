@@ -1,32 +1,56 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
+import PropTypes from 'prop-types'
 import useFetch from '../../hooks/useFetch'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import './styles/pokeCard.css'
 
 const PokeCard = ({url}) => {
-    const navigate = useNavigate()
-    const [pokemon, getPokemon] = useFetch()
+    const {
+      apiData: pokemon,
+      isLoading,
+      error,
+      getApi: getPokemon,
+    } = useFetch()
 
     useEffect(() => {
       getPokemon(url)
-    
-    }, [])
-    
-    //console.log(pokemon)
+    }, [getPokemon, url])
 
-    const handleClick = () => {
-      navigate(`/pokedex/${pokemon.id}`)
+    if (isLoading) {
+      return <div className='pokeCard pokeCardStatus' role='status'>Loading...</div>
     }
+
+    if (error) {
+      return (
+        <div className='pokeCard pokeCardStatus' role='alert'>
+          <p>Could not load this Pokémon.</p>
+          <button type='button' onClick={() => getPokemon(url)}>Try again</button>
+        </div>
+      )
+    }
+
+    if (!pokemon) return null
+
+    const primaryType = pokemon.types?.[0]?.type.name ?? 'normal'
+
   return (
-    <article onClick={handleClick} className='pokeCard'>
-      <div className={pokemon?.types[0].type.name}></div>
+    <Link
+      to={`/pokedex/${pokemon.id}`}
+      className='pokeCard'
+      aria-label={`View details for ${pokemon.name}`}
+    >
+      <div className={primaryType} aria-hidden='true'></div>
       <figure>
-        <img src={pokemon?.sprites.other['official-artwork'].front_default} alt="" />
+        <img
+          src={pokemon.sprites.other['official-artwork'].front_default}
+          alt={`${pokemon.name} official artwork`}
+          loading='lazy'
+        />
       </figure>
-        <h3>{pokemon?.name}</h3>
+        <h3>{pokemon.name}</h3>
         <ul className='pokeTypes'>
           {
-            pokemon?.types.map(type=> (
+            pokemon.types.map(type=> (
               <li key={type.type.url} className={`slot${type.slot}`}>{type.type.name} </li>
             ))
           }
@@ -35,13 +59,17 @@ const PokeCard = ({url}) => {
         <hr />
         <ul className='pokeStats'>
           {
-            pokemon?.stats.map(stat => (
+            pokemon.stats.map(stat => (
               <li key={stat.stat.url}>{stat.stat.name} <span>{stat.base_stat}</span></li>
             ))
           }
         </ul>
-    </article>
+    </Link>
   )
+}
+
+PokeCard.propTypes = {
+  url: PropTypes.string.isRequired,
 }
 
 export default PokeCard

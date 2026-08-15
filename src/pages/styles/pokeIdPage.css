@@ -296,3 +296,15 @@ background: linear-gradient(0deg, rgba(156,82,180,0.04843304843304841) 2%, rgba(
         display: none;
     }
 }
+
+.detailStatus {
+    margin: 4rem auto;
+    padding: 2rem;
+    max-width: 640px;
+    text-align: center;
+}
+
+.detailStatus button {
+    margin-top: 1rem;
+    border-radius: 5px;
+}

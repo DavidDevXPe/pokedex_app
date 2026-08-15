@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import useFetch from '../hooks/useFetch'
 import { useParams } from 'react-router-dom'
 import './styles/pokeIdPage.css'
@@ -7,30 +7,57 @@ import Stats from '../components/pokeIdPage/Stats'
 import MoveSet from '../components/pokeIdPage/MoveSet'
 
 const PokeIdPage = () => {
-  const param = useParams();
-  const url = `https://pokeapi.co/api/v2/pokemon/${param.id}`
-  const [pokeData, getPokeData] = useFetch();
+  const { id } = useParams()
+  const {
+    apiData: pokeData,
+    isLoading,
+    error,
+    getApi: getPokeData,
+  } = useFetch()
+
+  const loadPokemon = useCallback(() => {
+    getPokeData(`https://pokeapi.co/api/v2/pokemon/${id}`)
+  }, [getPokeData, id])
 
   useEffect(() => {
-    getPokeData(url)
-  }, [])
+    loadPokemon()
+  }, [loadPokemon])
 
+  if (isLoading) {
+    return <p className='detailStatus' role='status'>Loading Pokémon details...</p>
+  }
 
-  //console.log(pokeData)
+  if (error) {
+    return (
+      <div className='detailStatus' role='alert'>
+        <p>{error}</p>
+        <button type='button' onClick={loadPokemon}>Try again</button>
+      </div>
+    )
+  }
+
+  if (!pokeData) return null
+
+  const primaryType = pokeData.types[0]?.type.name ?? 'normal'
+  const formattedName = pokeData.name.charAt(0).toUpperCase() + pokeData.name.slice(1)
+
   return (
     <article className='idWrapper'>
-      <div className={`${pokeData?.types[0].type.name} typeBox`}></div>
+      <div className={`${primaryType} typeBox`} aria-hidden='true'></div>
       <div className='idCard'>
-        <img src={pokeData?.sprites.other['official-artwork'].front_default} alt="pokemon photo" />
-        <h2 className={`${pokeData?.types[0].type.name} title id`}>#{pokeData?.id}</h2>
+        <img
+          src={pokeData.sprites.other['official-artwork'].front_default}
+          alt={`${pokeData.name} official artwork`}
+        />
+        <h2 className={`${primaryType} title id`}>#{pokeData.id}</h2>
         <div className='divider'>
           <div className="linea">&nbsp;</div>
-          <h3 className={`${pokeData?.types[0].type.name} title`}>{pokeData?.name.charAt(0).toUpperCase() + pokeData?.name.slice(1)}</h3>
+          <h3 className={`${primaryType} title`}>{formattedName}</h3>
           <div className="linea">&nbsp;</div>
         </div>
         <ul className='pokeSize'>
-          <li>Weight <span>{pokeData?.weight}0g</span></li>
-          <li>Height <span>{pokeData?.height}0cm</span></li>
+          <li>Weight <span>{pokeData.weight / 10} kg</span></li>
+          <li>Height <span>{pokeData.height / 10} m</span></li>
         </ul>
 
         <div className='atributes'>
