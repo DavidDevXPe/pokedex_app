@@ -1,12 +1,14 @@
 import PropTypes from 'prop-types'
 import { formatPokemonName } from '../../utils/pokedex'
+import useTranslation from '../../hooks/useTranslation'
 import './styles/atributes.css'
 
 const Atributes = ({ pokeData }) => {
+    const { t, translateType } = useTranslation()
     return (
         <div className='aWrapper'>
             <div className='aContainer'>
-                <h3>Type</h3>
+                <h3>{t('attributes.type')}</h3>
                 <ul className='aBoxer'>
                     {
                         pokeData?.types.map(type => (
@@ -14,7 +16,7 @@ const Atributes = ({ pokeData }) => {
                                 key={type.slot}
                                 className={`aBox pokemonTypeBadge type-${type.type.name}`}
                             >
-                                {formatPokemonName(type.type.name)}
+                                {translateType(type.type.name)}
                             </li>
                         ))
                     }
@@ -22,7 +24,7 @@ const Atributes = ({ pokeData }) => {
             </div>
 
             <div className='aContainer'>
-                <h3>Abilities</h3>
+                <h3>{t('attributes.abilities')}</h3>
                 <ul className='aBoxer'>
                     {
                         pokeData?.abilities.map(ability => (

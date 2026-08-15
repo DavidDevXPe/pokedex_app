@@ -9,8 +9,10 @@ import Stats from '../components/pokeIdPage/Stats'
 import MoveSet from '../components/pokeIdPage/MoveSet'
 import PokemonArtwork from '../components/PokemonArtwork'
 import FavoriteButton from '../components/FavoriteButton'
+import useTranslation from '../hooks/useTranslation'
 
 const PokeIdPage = () => {
+  const { t, translateError } = useTranslation()
   const { id } = useParams()
   const location = useLocation()
   const {
@@ -24,10 +26,10 @@ const PokeIdPage = () => {
   const returnPath = getPokedexReturnPath(location.state?.from)
 
   const pageTitle = statusCode === 404
-    ? 'Pokémon not found | Pokédex'
+    ? t('detail.notFoundDocument')
     : formattedName
       ? `${formattedName} | Pokédex`
-      : 'Pokémon details | Pokédex'
+      : t('detail.document')
 
   useDocumentTitle(pageTitle)
 
@@ -40,19 +42,19 @@ const PokeIdPage = () => {
   }, [loadPokemon])
 
   if (isLoading) {
-    return <p className='detailStatus' role='status'>Loading Pokémon details...</p>
+    return <p className='detailStatus' role='status'>{t('detail.loading')}</p>
   }
 
   if (error) {
     return (
       <div className='detailStatus' role='alert'>
-        {statusCode === 404 && <h1>Pokémon not found</h1>}
-        <p>{error}</p>
+        {statusCode === 404 && <h1>{t('detail.notFound')}</h1>}
+        <p>{translateError(error)}</p>
         <div className='detailStatusActions'>
           {statusCode !== 404 && (
-            <button type='button' onClick={loadPokemon}>Try again</button>
+            <button type='button' onClick={loadPokemon}>{t('pokedex.retry')}</button>
           )}
-          <Link className='detailStatusLink' to={returnPath}>Back to results</Link>
+          <Link className='detailStatusLink' to={returnPath}>{t('detail.backPlain')}</Link>
         </div>
       </div>
     )
@@ -63,7 +65,7 @@ const PokeIdPage = () => {
   const primaryType = pokeData.types[0]?.type.name ?? 'normal'
   return (
     <article className='idWrapper'>
-      <Link className='detailBackLink' to={returnPath}>← Back to results</Link>
+      <Link className='detailBackLink' to={returnPath}>{t('detail.back')}</Link>
       <div className={`typeBox pokemonTypeSurface type-${primaryType}`} aria-hidden='true'></div>
       <div className='idCard profileCard'>
         <FavoriteButton
@@ -74,7 +76,7 @@ const PokeIdPage = () => {
         <PokemonArtwork
           pokemon={pokeData}
           className='detailArtwork'
-          alt={`${formattedName} official artwork`}
+          alt={t('detail.renderAlt', { name: formattedName })}
         />
         <h2 className={`pokemonTypeTitle type-${primaryType} id`}>#{pokeData.id}</h2>
         <div className='divider'>
@@ -83,8 +85,8 @@ const PokeIdPage = () => {
           <div className="linea">&nbsp;</div>
         </div>
         <ul className='pokeSize'>
-          <li>Weight <span>{pokeData.weight / 10} kg</span></li>
-          <li>Height <span>{pokeData.height / 10} m</span></li>
+          <li>{t('detail.weight')} <span>{pokeData.weight / 10} kg</span></li>
+          <li>{t('detail.height')} <span>{pokeData.height / 10} m</span></li>
         </ul>
 
         <div className='atributes'>

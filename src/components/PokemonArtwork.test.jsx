@@ -17,27 +17,27 @@ describe('PokemonArtwork', () => {
         render(
             <PokemonArtwork
                 pokemon={pokemon}
-                alt='Pikachu official artwork'
+                alt='Render 3D de Pikachu'
                 className='testArtwork'
             />,
         )
 
-        expect(screen.getByRole('img', { name: 'Pikachu official artwork' }))
-            .toHaveAttribute('src', '/official.png')
+        expect(screen.getByRole('img', { name: 'Render 3D de Pikachu' }))
+            .toHaveAttribute('src', '/home.png')
     })
 
     it('replaces an image that fails to load with an accessible fallback', () => {
         render(
             <PokemonArtwork
                 pokemon={pokemon}
-                alt='Pikachu official artwork'
+                alt='Render 3D de Pikachu'
                 className='testArtwork'
             />,
         )
 
-        fireEvent.error(screen.getByRole('img', { name: 'Pikachu official artwork' }))
+        fireEvent.error(screen.getByRole('img', { name: 'Render 3D de Pikachu' }))
 
-        expect(screen.getByRole('img', { name: /Artwork unavailable/ }))
-            .toHaveTextContent('Artwork unavailable')
+        expect(screen.getByRole('img', { name: /Imagen no disponible/ }))
+            .toHaveTextContent('Imagen no disponible')
     })
 })

@@ -23,12 +23,12 @@ describe('NotFoundPage', () => {
     it('returns a visitor to the home page', () => {
         renderNotFound('')
 
-        expect(screen.getByRole('link', { name: 'Return home' })).toHaveAttribute('href', '/')
+        expect(screen.getByRole('link', { name: 'Volver al inicio' })).toHaveAttribute('href', '/')
     })
 
     it('returns an identified trainer to the Pokédex', () => {
         renderNotFound('Ash')
 
-        expect(screen.getByRole('link', { name: 'Return to the Pokédex' })).toHaveAttribute('href', '/pokedex')
+        expect(screen.getByRole('link', { name: 'Volver a la Pokédex' })).toHaveAttribute('href', '/pokedex')
     })
 })

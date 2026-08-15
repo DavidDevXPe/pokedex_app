@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import useTranslation from '../../hooks/useTranslation'
 import './styles/pagination.css'
 
 const getVisiblePages = (currentPage, totalPages) => {
@@ -32,11 +33,12 @@ const getVisiblePages = (currentPage, totalPages) => {
 }
 
 const Pagination = ({ currentPage, postPerPage, totalPosts, onPageChange }) => {
+    const { t } = useTranslation()
     const totalPages = Math.ceil(totalPosts / postPerPage)
     const visiblePages = getVisiblePages(currentPage, totalPages)
 
     return (
-    <nav aria-label='Pokémon result pages'>
+    <nav aria-label={t('pagination.label')}>
         <ul className='pagination'>
             <li>
                 <button
@@ -45,7 +47,7 @@ const Pagination = ({ currentPage, postPerPage, totalPosts, onPageChange }) => {
                     disabled={currentPage === 1}
                     onClick={() => onPageChange(currentPage - 1)}
                 >
-                    Previous
+                    {t('pagination.previous')}
                 </button>
             </li>
             {visiblePages.map(page => (
@@ -71,7 +73,7 @@ const Pagination = ({ currentPage, postPerPage, totalPosts, onPageChange }) => {
                     disabled={currentPage === totalPages}
                     onClick={() => onPageChange(currentPage + 1)}
                 >
-                    Next
+                    {t('pagination.next')}
                 </button>
             </li>
         </ul>

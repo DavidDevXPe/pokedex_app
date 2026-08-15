@@ -8,6 +8,9 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 
 - Acceso mediante el nombre y el género visual del entrenador.
 - Listado paginado de Pokémon.
+- Renders 3D de Pokémon obtenidos desde PokéAPI, con imágenes alternativas cuando no están disponibles.
+- Interfaz en español de forma predeterminada y cambio inmediato a inglés.
+- Modos claro y oscuro con preferencias persistentes entre sesiones.
 - Búsqueda por nombre.
 - Filtro por tipo compatible con la búsqueda activa.
 - Página de detalle con estadísticas, habilidades y movimientos.

@@ -48,7 +48,7 @@ describe('Pokédex utilities', () => {
             sprites: {
                 front_default: '/sprite.png',
                 other: {
-                    'official-artwork': { front_default: null },
+                    'official-artwork': { front_default: '/official.png' },
                     home: { front_default: '/home.png' },
                 },
             },

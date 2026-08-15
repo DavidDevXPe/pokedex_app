@@ -72,7 +72,7 @@ describe('PokeIdPage navigation', () => {
         await waitFor(() => {
             expect(apiMocks.getApi).toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon/122')
         })
-        expect(screen.getByRole('link', { name: '← Back to results' }))
+        expect(screen.getByRole('link', { name: '← Volver a resultados' }))
             .toHaveAttribute('href', '/pokedex?search=mime&type=psychic&page=2')
         expect(screen.getByRole('heading', { name: 'Mr Mime' })).toBeInTheDocument()
         expect(document.title).toBe('Mr Mime | Pokédex')
@@ -81,7 +81,7 @@ describe('PokeIdPage navigation', () => {
     it('returns to the unfiltered Pokédex when opened directly', () => {
         renderDetails('/pokedex/122')
 
-        expect(screen.getByRole('link', { name: '← Back to results' }))
+        expect(screen.getByRole('link', { name: '← Volver a resultados' }))
             .toHaveAttribute('href', '/pokedex')
     })
 
@@ -96,9 +96,9 @@ describe('PokeIdPage navigation', () => {
 
         renderDetails('/pokedex/not-a-pokemon')
 
-        expect(screen.getByRole('heading', { name: 'Pokémon not found' })).toBeInTheDocument()
-        expect(screen.queryByRole('button', { name: 'Try again' })).not.toBeInTheDocument()
-        expect(screen.getByRole('link', { name: 'Back to results' })).toHaveAttribute('href', '/pokedex')
-        expect(document.title).toBe('Pokémon not found | Pokédex')
+        expect(screen.getByRole('heading', { name: 'Pokémon no encontrado' })).toBeInTheDocument()
+        expect(screen.queryByRole('button', { name: 'Reintentar' })).not.toBeInTheDocument()
+        expect(screen.getByRole('link', { name: 'Volver a resultados' })).toHaveAttribute('href', '/pokedex')
+        expect(document.title).toBe('Pokémon no encontrado | Pokédex')
     })
 })

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useLocation, useSearchParams } from 'react-router-dom'
 import useFetch from '../hooks/useFetch'
 import useDocumentTitle from '../hooks/useDocumentTitle'
+import useTranslation from '../hooks/useTranslation'
 import PokeCard from '../components/pokedexPage/PokeCard'
 import SelectType from '../components/pokedexPage/SelectType'
 import Pagination from '../components/pokedexPage/Pagination'
@@ -29,6 +30,7 @@ const PokedexPage = () => {
     const currentPage = getPageFromSearchParams(searchParams)
     const showFavorites = searchParams.get('favorites') === '1'
     const [searchInput, setSearchInput] = useState(searchTerm)
+    const { t, translateError } = useTranslation()
     const {
         apiData: pokemons,
         isLoading,
@@ -37,7 +39,7 @@ const PokedexPage = () => {
         getApiType: getPerType,
     } = useFetch()
 
-    useDocumentTitle('Pokédex | Pokémon Explorer')
+    useDocumentTitle(t('pokedex.documentTitle'))
 
     const updateSearchParams = useCallback((updates, options = {}) => {
         setSearchParams(currentParams => {
@@ -143,21 +145,21 @@ const PokedexPage = () => {
     return (
         <main className='pokedex'>
             <section className='pokeHeader' id='filters'>
-                <h1 className='srOnly'>Pokédex for {trainerName}</h1>
+                <h1 className='srOnly'>{t('pokedex.heading', { name: trainerName })}</h1>
                 <div className='pokeControls'>
                     <form className='pokemonSearchForm' onSubmit={handleSubmit}>
-                        <label className='srOnly' htmlFor='pokemonSearch'>Search a Pokémon</label>
+                        <label className='srOnly' htmlFor='pokemonSearch'>{t('pokedex.searchLabel')}</label>
                         <span className='searchIcon' aria-hidden='true'></span>
                         <input
                             id='pokemonSearch'
                             type='search'
                             value={searchInput}
                             onChange={event => setSearchInput(event.target.value)}
-                            placeholder='Pokémon name...'
+                            placeholder={t('pokedex.searchPlaceholder')}
                         />
                         <button type='submit'>
                             <img className='buttonBallImage' src='/pokeball-icon.png' alt='' aria-hidden='true' />
-                            Find Pokémon
+                            {t('pokedex.find')}
                         </button>
                     </form>
                     <SelectType
@@ -170,23 +172,23 @@ const PokedexPage = () => {
                         aria-pressed={showFavorites}
                         onClick={handleFavoritesFilter}
                     >
-                        <span aria-hidden='true'>♥</span> Favorites ({favoritePokemonIds.length})
+                        <span aria-hidden='true'>♥</span> {t('pokedex.favorites', { count: favoritePokemonIds.length })}
                     </button>
                 </div>
                 {searchTerm && (
                     <div className='activeSearch'>
-                        <span>Search: “{searchTerm}”</span>
-                        <button type='button' onClick={clearSearch}>Clear</button>
+                        <span>{t('pokedex.activeSearch', { term: searchTerm })}</span>
+                        <button type='button' onClick={clearSearch}>{t('pokedex.clear')}</button>
                     </div>
                 )}
             </section>
 
-            {isLoading && <p className='statusMessage' role='status'>Loading Pokémon...</p>}
+            {isLoading && <p className='statusMessage' role='status'>{t('pokedex.loading')}</p>}
 
             {error && (
                 <div className='statusMessage' role='alert'>
-                    <p>{error}</p>
-                    <button type='button' onClick={loadPokemons}>Try again</button>
+                    <p>{translateError(error)}</p>
+                    <button type='button' onClick={loadPokemons}>{t('pokedex.retry')}</button>
                 </div>
             )}
 
@@ -194,14 +196,14 @@ const PokedexPage = () => {
                 <p className='statusMessage'>
                     {showFavorites
                         ? favoritePokemonIds.length === 0
-                            ? 'You have no favorite Pokémon yet.'
-                            : 'No favorite Pokémon match the active filters.'
-                        : 'No Pokémon match your search.'}
+                            ? t('pokedex.noFavorites')
+                            : t('pokedex.noFavoriteMatches')
+                        : t('pokedex.noMatches')}
                 </p>
             )}
 
             {!isLoading && !error && currentPokemons.length > 0 && (
-                <section className='pokeContainer' aria-label='Pokémon results'>
+                <section className='pokeContainer' aria-label={t('pokedex.results')}>
                     {currentPokemons.map(pokemon => (
                         <PokeCard key={pokemon.url} url={pokemon.url} />
                     ))}
@@ -220,7 +222,7 @@ const PokedexPage = () => {
             )}
 
             {!isLoading && !error && (
-                <section className='pokedexFeatures' id='about' aria-label='About this Pokédex'>
+                <section className='pokedexFeatures' id='about' aria-label={t('pokedex.aboutLabel')}>
                     <article className='featureItem'>
                         <span className='featureIcon featureIconRed' aria-hidden='true'>
                             <img className='featureBallImage' src='/pokeball-icon.png' alt='' />
@@ -228,31 +230,31 @@ const PokedexPage = () => {
                         <div>
                             <strong>1,000+</strong>
                             <b>Pokémon</b>
-                            <p>Discover them all</p>
+                            <p>{t('pokedex.discover')}</p>
                         </div>
                     </article>
                     <article className='featureItem'>
                         <span className='featureIcon featureIconBlue' aria-hidden='true'>18</span>
                         <div>
                             <strong>18</strong>
-                            <b>Types</b>
-                            <p>Filter by type</p>
+                            <b>{t('pokedex.types')}</b>
+                            <p>{t('pokedex.filterByType')}</p>
                         </div>
                     </article>
                     <article className='featureItem'>
                         <span className='featureIcon featureIconGold' aria-hidden='true'>★</span>
                         <div>
                             <strong>{favoritePokemonIds.length}</strong>
-                            <b>Favorites</b>
-                            <p>Build your own team</p>
+                            <b>{t('pokedex.favoritesLabel')}</b>
+                            <p>{t('pokedex.buildTeam')}</p>
                         </div>
                     </article>
                     <article className='featureItem'>
                         <span className='featureIcon featureIconPurple' aria-hidden='true'>↻</span>
                         <div>
-                            <strong>Real-time</strong>
-                            <b>Data</b>
-                            <p>Powered by PokéAPI</p>
+                            <strong>{t('pokedex.realTime')}</strong>
+                            <b>{t('pokedex.data')}</b>
+                            <p>{t('pokedex.poweredBy')}</p>
                         </div>
                     </article>
                 </section>

@@ -1,0 +1,51 @@
+.preferenceControls {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.preferenceButton {
+    display: grid;
+    width: 42px;
+    min-width: 42px;
+    height: 42px;
+    min-height: 42px;
+    padding: 0;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.38);
+    border-radius: 50%;
+    background-color: rgba(20, 24, 30, 0.2);
+    box-shadow: none;
+    color: #ffffff;
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+.preferenceButton:hover:not(:disabled) {
+    background-color: rgba(255, 255, 255, 0.16);
+}
+
+.themeButton {
+    font-size: 1.45rem;
+}
+
+.homePreferences,
+.notFoundPreferences {
+    position: absolute;
+    z-index: 5;
+    top: 1rem;
+    right: 1rem;
+}
+
+.homePreferences .preferenceButton,
+.notFoundPreferences .preferenceButton {
+    border-color: var(--color-border);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    color: var(--color-ink);
+}
+
+.homePreferences .preferenceButton:hover:not(:disabled),
+.notFoundPreferences .preferenceButton:hover:not(:disabled) {
+    background-color: var(--color-soft);
+}

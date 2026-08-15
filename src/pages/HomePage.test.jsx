@@ -35,18 +35,18 @@ describe('HomePage trainer selection', () => {
     it('restores the selected trainer gender', () => {
         renderHomePage(TRAINER_GENDERS.FEMALE)
 
-        expect(screen.getByRole('radio', { name: 'Woman' })).toBeChecked()
-        expect(screen.getByRole('radio', { name: 'Man' })).not.toBeChecked()
+        expect(screen.getByRole('radio', { name: 'Mujer' })).toBeChecked()
+        expect(screen.getByRole('radio', { name: 'Hombre' })).not.toBeChecked()
     })
 
     it('stores the chosen gender together with the trainer name', () => {
         const store = renderHomePage()
 
-        fireEvent.click(screen.getByRole('radio', { name: 'Woman' }))
-        fireEvent.change(screen.getByRole('textbox', { name: 'Trainer name' }), {
+        fireEvent.click(screen.getByRole('radio', { name: 'Mujer' }))
+        fireEvent.change(screen.getByRole('textbox', { name: 'Nombre del entrenador' }), {
             target: { value: 'Misty' },
         })
-        fireEvent.click(screen.getByRole('button', { name: 'Catch them all!' }))
+        fireEvent.click(screen.getByRole('button', { name: '¡Atrápalos a todos!' }))
 
         expect(store.getState()).toMatchObject({
             trainerGender: TRAINER_GENDERS.FEMALE,

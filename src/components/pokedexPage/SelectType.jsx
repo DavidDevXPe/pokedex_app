@@ -1,11 +1,13 @@
 import { useEffect } from 'react'
 import PropTypes from 'prop-types'
 import useFetch from '../../hooks/useFetch'
+import useTranslation from '../../hooks/useTranslation'
 import './styles/selectType.css'
 
 const TYPE_LIST_URL = 'https://pokeapi.co/api/v2/type'
 
 const SelectType = ({ value, onTypeChange }) => {
+    const { t, translateType } = useTranslation()
     const {
         apiData: types,
         isLoading,
@@ -19,7 +21,7 @@ const SelectType = ({ value, onTypeChange }) => {
 
     return (
     <div className='selectorGroup'>
-        <label htmlFor='pokemonType'>Type</label>
+        <label htmlFor='pokemonType'>{t('select.type')}</label>
         <select
             id='pokemonType'
             value={value}
@@ -27,12 +29,12 @@ const SelectType = ({ value, onTypeChange }) => {
             className='selector'
             disabled={isLoading}
         >
-            <option value='all'>All Pokémon</option>
+            <option value='all'>{t('select.all')}</option>
             {types?.results.map(type => (
-                <option value={type.name} key={type.url}>{type.name}</option>
+                <option value={type.name} key={type.url}>{translateType(type.name)}</option>
             ))}
         </select>
-        {error && <span className='selectorError' role='alert'>Types unavailable</span>}
+        {error && <span className='selectorError' role='alert'>{t('select.unavailable')}</span>}
     </div>
     )
 }

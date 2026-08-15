@@ -23,12 +23,12 @@ const renderFavoriteButton = initialFavorites => {
 describe('FavoriteButton', () => {
     it('adds and removes a Pokémon from favorites', () => {
         const store = renderFavoriteButton([])
-        const addButton = screen.getByRole('button', { name: 'Add Pikachu to favorites' })
+        const addButton = screen.getByRole('button', { name: 'Añadir a Pikachu a favoritos' })
 
         expect(addButton).toHaveAttribute('aria-pressed', 'false')
         fireEvent.click(addButton)
 
-        const removeButton = screen.getByRole('button', { name: 'Remove Pikachu from favorites' })
+        const removeButton = screen.getByRole('button', { name: 'Quitar a Pikachu de favoritos' })
         expect(removeButton).toHaveAttribute('aria-pressed', 'true')
         expect(store.getState().favoritePokemonIds).toEqual([25])
 

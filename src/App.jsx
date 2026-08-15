@@ -2,7 +2,9 @@ import { lazy, Suspense, useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
 import './styles/pokemonTypes.css'
+import './styles/theme.css'
 import ProtectedRoutes from './pages/ProtectedRoutes'
+import useTranslation from './hooks/useTranslation'
 
 const HomePage = lazy(() => import('./pages/HomePage'))
 const PokedexPage = lazy(() => import('./pages/PokedexPage'))
@@ -11,13 +13,14 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
 function App() {
   const { pathname } = useLocation()
+  const { t } = useTranslation()
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [pathname])
 
   return (
-    <Suspense fallback={<p className='routeLoading' role='status'>Loading page...</p>}>
+    <Suspense fallback={<p className='routeLoading' role='status'>{t('app.loading')}</p>}>
       <Routes>
         <Route path='/' element={<HomePage/>}/>
         <Route element={<ProtectedRoutes/>}>

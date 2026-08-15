@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { getPokemonArtwork } from '../utils/pokedex'
+import useTranslation from '../hooks/useTranslation'
 
 const PokemonArtwork = ({ pokemon, alt, className, loading = 'eager' }) => {
+    const { t } = useTranslation()
     const source = getPokemonArtwork(pokemon)
     const [failedSource, setFailedSource] = useState(null)
     const isUnavailable = !source || failedSource === source
@@ -12,9 +14,9 @@ const PokemonArtwork = ({ pokemon, alt, className, loading = 'eager' }) => {
             <span
                 className={`pokemonArtworkFallback ${className}`}
                 role='img'
-                aria-label={`${alt}. Artwork unavailable`}
+                aria-label={`${alt}. ${t('artwork.unavailable')}`}
             >
-                Artwork unavailable
+                {t('artwork.unavailable')}
             </span>
         )
     }

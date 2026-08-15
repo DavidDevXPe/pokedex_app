@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleFavoritePokemon } from '../store/slices/favoritePokemonIds.slice'
+import useTranslation from '../hooks/useTranslation'
 
 const FavoriteButton = ({ pokemonId, pokemonName, className = '' }) => {
     const dispatch = useDispatch()
     const favoritePokemonIds = useSelector(store => store.favoritePokemonIds ?? [])
+    const { t } = useTranslation()
     const isFavorite = favoritePokemonIds.includes(pokemonId)
     const accessibleLabel = isFavorite
-        ? `Remove ${pokemonName} from favorites`
-        : `Add ${pokemonName} to favorites`
+        ? t('favorite.remove', { name: pokemonName })
+        : t('favorite.add', { name: pokemonName })
 
     return (
         <button

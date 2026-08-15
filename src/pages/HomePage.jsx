@@ -4,6 +4,8 @@ import { setTrainerName } from '../store/slices/trainerName.slice'
 import { setTrainerGender } from '../store/slices/trainerGender.slice'
 import { useNavigate } from 'react-router-dom'
 import useDocumentTitle from '../hooks/useDocumentTitle'
+import useTranslation from '../hooks/useTranslation'
+import PreferenceControls from '../components/PreferenceControls'
 import {
     getTrainerAvatarPath,
     TRAINER_GENDERS,
@@ -19,15 +21,16 @@ const HomePage = () => {
     const [validationError, setValidationError] = useState('')
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { t } = useTranslation()
 
-    useDocumentTitle('Welcome | Pokédex')
+    useDocumentTitle(t('home.documentTitle'))
 
     const handleSubmit = e => {
         e.preventDefault()
         const trainerName = textInput.current.value.trim()
 
         if (trainerName.length < 3) {
-            setValidationError('Enter a name with at least 3 characters.')
+            setValidationError(t('home.validation'))
             textInput.current.focus()
             return
         }
@@ -39,17 +42,18 @@ const HomePage = () => {
     }
   return (
     <main className='hpWrapper'>
+        <PreferenceControls className='homePreferences' />
         <img src='/pokedex.png' alt='Pokédex' />
 
-        <h1 className='hpTitle'>Welcome trainer!</h1>
-        <h2>Choose your trainer and give us your name</h2>
+        <h1 className='hpTitle'>{t('home.title')}</h1>
+        <h2>{t('home.subtitle')}</h2>
         <form onSubmit={handleSubmit} className='hpForm'>
             <fieldset className='trainerGenderPicker'>
-                <legend>Select your trainer</legend>
+                <legend>{t('home.selectTrainer')}</legend>
                 <div className='trainerGenderOptions'>
                     {[
-                        { value: TRAINER_GENDERS.FEMALE, label: 'Woman' },
-                        { value: TRAINER_GENDERS.MALE, label: 'Man' },
+                        { value: TRAINER_GENDERS.FEMALE, label: t('home.woman') },
+                        { value: TRAINER_GENDERS.MALE, label: t('home.man') },
                     ].map(option => (
                         <label
                             className={`trainerGenderOption ${trainerGender === option.value ? 'selected' : ''}`}
@@ -69,17 +73,17 @@ const HomePage = () => {
                 </div>
             </fieldset>
             <div className='hpNameRow'>
-                <label className='srOnly' htmlFor='trainerName'>Trainer name</label>
+                <label className='srOnly' htmlFor='trainerName'>{t('home.nameLabel')}</label>
                 <input
                     id='trainerName'
                     type='text'
                     ref={textInput}
-                    placeholder='Your name...'
+                    placeholder={t('home.namePlaceholder')}
                     minLength='3'
                     required
                     aria-describedby={validationError ? 'trainerNameError' : undefined}
                 />
-                <button type='submit'>Catch them all!</button>
+                <button type='submit'>{t('home.submit')}</button>
             </div>
         </form>
         {validationError && (

@@ -11,4 +11,6 @@ afterEach(() => {
     cleanup()
     window.sessionStorage.clear()
     window.localStorage.clear()
+    document.documentElement.lang = 'es'
+    document.documentElement.dataset.theme = 'light'
 })

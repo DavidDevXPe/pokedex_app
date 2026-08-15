@@ -17,7 +17,7 @@ describe('Pagination', () => {
 
         expect(screen.getByRole('button', { name: '5' })).toHaveAttribute('aria-current', 'page')
 
-        fireEvent.click(screen.getByRole('button', { name: 'Next' }))
+        fireEvent.click(screen.getByRole('button', { name: 'Siguiente' }))
 
         expect(onPageChange).toHaveBeenCalledWith(6)
     })
@@ -32,6 +32,6 @@ describe('Pagination', () => {
             />,
         )
 
-        expect(screen.getByRole('button', { name: 'Previous' })).toBeDisabled()
+        expect(screen.getByRole('button', { name: 'Anterior' })).toBeDisabled()
     })
 })

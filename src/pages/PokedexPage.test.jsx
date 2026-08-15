@@ -93,11 +93,11 @@ describe('PokedexPage URL state', () => {
     it('filters favorites and stores that choice in the URL', () => {
         renderPage('/pokedex', [1, 3])
 
-        fireEvent.click(screen.getByRole('button', { name: 'Favorites (2)' }))
+        fireEvent.click(screen.getByRole('button', { name: 'Favoritos (2)' }))
 
         expect(screen.getByTestId('location-search')).toHaveTextContent('?favorites=1')
         expect(screen.getAllByTestId('pokemon-card')).toHaveLength(2)
-        expect(screen.getByRole('button', { name: 'Favorites (2)' }))
+        expect(screen.getByRole('button', { name: 'Favoritos (2)' }))
             .toHaveAttribute('aria-pressed', 'true')
     })
 })

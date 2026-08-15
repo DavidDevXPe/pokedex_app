@@ -1,0 +1,162 @@
+:root[data-theme='dark'] {
+  color: #f4f6f8;
+  background-color: #0d1117;
+  color-scheme: dark;
+  --color-ink: #f4f6f8;
+  --color-muted: #abb5c4;
+  --color-surface: #181e27;
+  --color-border: #35404e;
+  --color-canvas: #0d1117;
+  --color-soft: #252d38;
+  --shadow-sm: 0 7px 18px rgba(0, 0, 0, 0.34);
+  --shadow-md: 0 18px 42px rgba(0, 0, 0, 0.46);
+}
+
+:root[data-theme='dark'] .hpWrapper {
+  background: radial-gradient(circle at 50% 30%, #242c37 0%, #151b23 46%, #0d1117 100%);
+}
+
+:root[data-theme='dark'] .trainerGenderOption {
+  border-color: var(--color-border);
+  background-color: rgba(24, 30, 39, 0.94);
+  box-shadow: var(--shadow-sm);
+}
+
+:root[data-theme='dark'] .trainerGenderOption.selected {
+  border-color: #ef4451;
+  color: #ff8b94;
+}
+
+:root[data-theme='dark'] .formError,
+:root[data-theme='dark'] .selectorError {
+  color: #ff9ca3;
+}
+
+:root[data-theme='dark'] .pokedex {
+  background-color: #0d1117;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(174, 188, 207, 0.12) 1.2px, transparent 1.3px),
+    linear-gradient(180deg, rgba(19, 25, 33, 0.96), rgba(13, 17, 23, 0.99));
+}
+
+:root[data-theme='dark'] .pokemonSearchForm,
+:root[data-theme='dark'] .selector,
+:root[data-theme='dark'] .favoriteFilter,
+:root[data-theme='dark'] .activeSearch,
+:root[data-theme='dark'] .statusMessage,
+:root[data-theme='dark'] .pokedexFeatures,
+:root[data-theme='dark'] .pagination {
+  border-color: var(--color-border);
+  background-color: rgba(24, 30, 39, 0.96);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-ink);
+}
+
+:root[data-theme='dark'] .pokemonSearchForm input {
+  background-color: transparent;
+}
+
+:root[data-theme='dark'] .searchIcon {
+  border-color: #e3e8ef;
+}
+
+:root[data-theme='dark'] .searchIcon::after {
+  background-color: #e3e8ef;
+}
+
+:root[data-theme='dark'] .favoriteFilter:hover:not(:disabled),
+:root[data-theme='dark'] .pageButton:hover:not(:disabled),
+:root[data-theme='dark'] .pageButton:focus-visible {
+  background-color: var(--color-soft);
+}
+
+:root[data-theme='dark'] .featureItem + .featureItem,
+:root[data-theme='dark'] .featureItem:nth-child(n + 3) {
+  border-color: var(--color-border);
+}
+
+:root[data-theme='dark'] .featureItem strong,
+:root[data-theme='dark'] .featureItem b {
+  color: var(--color-ink);
+}
+
+:root[data-theme='dark'] .pokeCard {
+  border-color: var(--color-border);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+:root[data-theme='dark'] .pokeCardBody {
+  background-color: var(--color-surface);
+}
+
+:root[data-theme='dark'] .pokeCard h3,
+:root[data-theme='dark'] .pokeStats li {
+  color: var(--color-ink);
+}
+
+:root[data-theme='dark'] .statTrack,
+:root[data-theme='dark'] .back {
+  background-color: #303946;
+}
+
+:root[data-theme='dark'] .cardFavorite,
+:root[data-theme='dark'] .favoriteButton {
+  border-color: var(--color-border);
+  background-color: rgba(24, 30, 39, 0.88);
+  color: #c6ced9;
+}
+
+:root[data-theme='dark'] .cardFavorite:hover:not(:disabled),
+:root[data-theme='dark'] .favoriteButton:hover:not(:disabled) {
+  background-color: #2a3340;
+  color: #ff7781;
+}
+
+:root[data-theme='dark'] .favoriteButton.isFavorite {
+  color: #ff4b58;
+}
+
+:root[data-theme='dark'] .pokemonArtworkFallback {
+  border-color: rgba(174, 188, 207, 0.4);
+  background-color: rgba(24, 30, 39, 0.82);
+}
+
+:root[data-theme='dark'] .detailBackLink,
+:root[data-theme='dark'] .detailStatusLink {
+  border-color: var(--color-border);
+  background-color: rgba(24, 30, 39, 0.94);
+  color: var(--color-ink);
+}
+
+:root[data-theme='dark'] .detailBackLink:hover {
+  background-color: var(--color-soft);
+}
+
+:root[data-theme='dark'] .profileCard > .pokemonArtworkFallback {
+  background-color: rgba(24, 30, 39, 0.94);
+}
+
+:root[data-theme='dark'] .linea {
+  background-color: #596574;
+}
+
+:root[data-theme='dark'] .movement {
+  background-color: var(--color-soft);
+}
+
+:root[data-theme='dark'] .notFoundPage {
+  background: radial-gradient(circle at center, #242c37 0%, #151b23 52%, #0d1117 100%);
+}
+
+:root[data-theme='dark'] .homePreferences .preferenceButton,
+:root[data-theme='dark'] .notFoundPreferences .preferenceButton {
+  border-color: var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+}
+
+:root[data-theme='dark'] .homePreferences .preferenceButton:hover:not(:disabled),
+:root[data-theme='dark'] .notFoundPreferences .preferenceButton:hover:not(:disabled) {
+  background-color: var(--color-soft);
+}

@@ -167,15 +167,25 @@
 }
 
 .pokeTypes .pokemonTypeBadgeAsset {
-    padding: 0;
-    overflow: hidden;
-    background: transparent;
+    display: inline-flex;
+    padding: 0.2rem 0.55rem 0.2rem 0.2rem;
+    align-items: center;
+    gap: 0.3rem;
 }
 
-.pokemonTypeBadgeAsset img {
+.typeAssetIcon {
+    width: 22px;
+    min-width: 22px;
+    height: 22px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.typeAssetIcon img {
     width: auto;
-    height: 28px;
-    object-fit: contain;
+    max-width: none;
+    height: 22px;
+    object-fit: initial;
 }
 
 .pokeStats {

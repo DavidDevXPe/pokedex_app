@@ -17,19 +17,19 @@ describe('MoveSet', () => {
 
         expect(screen.getAllByRole('listitem')).toHaveLength(24)
 
-        const toggle = screen.getByRole('button', { name: 'Show all 30 moves' })
+        const toggle = screen.getByRole('button', { name: 'Mostrar los 30 movimientos' })
         expect(toggle).toHaveAttribute('aria-expanded', 'false')
         fireEvent.click(toggle)
 
         expect(screen.getAllByRole('listitem')).toHaveLength(30)
-        expect(screen.getByRole('button', { name: 'Show fewer moves' }))
+        expect(screen.getByRole('button', { name: 'Mostrar menos movimientos' }))
             .toHaveAttribute('aria-expanded', 'true')
     })
 
     it('renders an empty state without an expansion control', () => {
         render(<MoveSet pokeData={createPokemon(0)} />)
 
-        expect(screen.getByText('No moves are available for this Pokémon.')).toBeInTheDocument()
+        expect(screen.getByText('No hay movimientos disponibles para este Pokémon.')).toBeInTheDocument()
         expect(screen.queryByRole('button')).not.toBeInTheDocument()
     })
 })

@@ -51,7 +51,7 @@ describe('ProtectedRoutes', () => {
     it('lets the current trainer return home and clear access', () => {
         renderProtectedRoute('Ash')
 
-        fireEvent.click(screen.getByRole('button', { name: 'Change trainer' }))
+        fireEvent.click(screen.getByRole('button', { name: 'Cambiar entrenador' }))
 
         expect(screen.getByText('Home page')).toBeInTheDocument()
     })
@@ -59,8 +59,8 @@ describe('ProtectedRoutes', () => {
     it('shows the avatar selected by the trainer', () => {
         renderProtectedRoute('Misty', TRAINER_GENDERS.FEMALE)
 
-        expect(screen.getByRole('button', { name: 'Change trainer' }).querySelector('img'))
+        expect(screen.getByRole('button', { name: 'Cambiar entrenador' }).querySelector('img'))
             .toHaveAttribute('src', '/assets/trainers/female.png')
-        expect(screen.getByText('Woman trainer')).toBeInTheDocument()
+        expect(screen.getByText('Entrenadora')).toBeInTheDocument()
     })
 })

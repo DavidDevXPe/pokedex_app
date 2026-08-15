@@ -1,11 +1,13 @@
 import { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
 import { formatPokemonName } from '../../utils/pokedex'
+import useTranslation from '../../hooks/useTranslation'
 import './styles/moveSet.css'
 
 const INITIAL_VISIBLE_MOVES = 24
 
 const MoveSet = ({ pokeData }) => {
+  const { t } = useTranslation()
   const [isExpanded, setIsExpanded] = useState(false)
   const moves = useMemo(
     () => [...pokeData.moves].sort((firstMove, secondMove) => (
@@ -18,10 +20,10 @@ const MoveSet = ({ pokeData }) => {
 
   return (
     <div className='moveContainer'>
-        <h2>Moves <span>({moves.length})</span></h2>
+        <h2>{t('moves.title')} <span>({moves.length})</span></h2>
 
         {moves.length === 0 ? (
-          <p className='emptyMoves'>No moves are available for this Pokémon.</p>
+          <p className='emptyMoves'>{t('moves.empty')}</p>
         ) : (
           <ul id='pokemonMoves' className='movementWrapper'>
             {visibleMoves.map(move => (
@@ -40,7 +42,9 @@ const MoveSet = ({ pokeData }) => {
             aria-controls='pokemonMoves'
             onClick={() => setIsExpanded(currentValue => !currentValue)}
           >
-            {isExpanded ? 'Show fewer moves' : `Show all ${moves.length} moves`}
+            {isExpanded
+              ? t('moves.showFewer')
+              : t('moves.showAll', { count: moves.length })}
           </button>
         )}
     </div>

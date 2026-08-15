@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-const DEFAULT_TITLE = 'Pokédex | Pokémon Explorer'
+const DEFAULT_TITLE = 'Pokédex | Explorador Pokémon'
 
 const useDocumentTitle = title => {
     useEffect(() => {
