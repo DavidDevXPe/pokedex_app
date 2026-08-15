@@ -156,7 +156,7 @@ const PokedexPage = () => {
                             placeholder='Pokémon name...'
                         />
                         <button type='submit'>
-                            <span className='buttonBall' aria-hidden='true'></span>
+                            <img className='buttonBallImage' src='/pokeball-icon.png' alt='' aria-hidden='true' />
                             Find Pokémon
                         </button>
                     </form>
@@ -223,7 +223,7 @@ const PokedexPage = () => {
                 <section className='pokedexFeatures' id='about' aria-label='About this Pokédex'>
                     <article className='featureItem'>
                         <span className='featureIcon featureIconRed' aria-hidden='true'>
-                            <span className='featureBall'></span>
+                            <img className='featureBallImage' src='/pokeball-icon.png' alt='' />
                         </span>
                         <div>
                             <strong>1,000+</strong>

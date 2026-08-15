@@ -30,28 +30,11 @@
     line-height: 1;
 }
 
-.brandBall {
-    position: relative;
-    display: inline-block;
+.brandBallImage {
     width: 0.8em;
+    height: 0.8em;
     margin: 0 0.04em;
-    aspect-ratio: 1;
-    overflow: hidden;
-    border: 0.09em solid #ffffff;
-    border-radius: 50%;
-    background: linear-gradient(#ffffff 0 44%, #1c2025 44% 56%, #ffffff 56%);
-}
-
-.brandBall i {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 34%;
-    aspect-ratio: 1;
-    border: 0.08em solid #1c2025;
-    border-radius: 50%;
-    background-color: #ffffff;
-    transform: translate(-50%, -50%);
+    object-fit: contain;
 }
 
 .headerNav {
@@ -86,26 +69,10 @@
     color: #ffffff;
 }
 
-.navBall {
-    position: relative;
+.navBallImage {
     width: 20px;
-    aspect-ratio: 1;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    background: linear-gradient(#ef3340 0 44%, #22262b 44% 56%, #ffffff 56%);
-}
-
-.navBall::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 6px;
-    aspect-ratio: 1;
-    border: 2px solid #22262b;
-    border-radius: 50%;
-    background-color: #ffffff;
-    content: '';
-    transform: translate(-50%, -50%);
+    height: 20px;
+    object-fit: contain;
 }
 
 .trainerSwitch {
@@ -179,39 +146,15 @@
     background-color: #17191c;
 }
 
-.headerDot {
+.headerBallImage {
     position: absolute;
     top: 50%;
     left: 50%;
-    display: flex;
     width: 70px;
-    aspect-ratio: 1;
-    align-items: center;
-    justify-content: center;
-    border: 7px solid #17191c;
-    border-radius: 50%;
-    background: linear-gradient(#ef3340 0 45%, #ffffff 45% 100%);
-    box-shadow: 0 4px 8px rgba(22, 24, 28, 0.16);
+    height: 70px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 5px rgba(22, 24, 28, 0.24));
     transform: translate(-50%, -50%);
-}
-
-.headerDot::before {
-    position: absolute;
-    right: 0;
-    left: 0;
-    height: 7px;
-    background-color: #17191c;
-    content: '';
-}
-
-.headerDot2 {
-    position: relative;
-    z-index: 1;
-    width: 34%;
-    aspect-ratio: 1;
-    border: 5px solid #17191c;
-    border-radius: 50%;
-    background-color: #ffffff;
 }
 
 @media (max-width: 880px) {
@@ -257,12 +200,8 @@
         display: none;
     }
 
-    .headerDot {
+    .headerBallImage {
         width: 56px;
-        border-width: 6px;
-    }
-
-    .headerDot2 {
-        border-width: 4px;
+        height: 56px;
     }
 }

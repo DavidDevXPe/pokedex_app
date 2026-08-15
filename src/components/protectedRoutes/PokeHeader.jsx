@@ -19,13 +19,13 @@ const PokeHeader = () => {
         <div className='headerInner'>
           <Link className='headerBrand' to='/pokedex' aria-label='Go to the Pokédex'>
             <span>P</span>
-            <span className='brandBall' aria-hidden='true'><i></i></span>
+            <img className='brandBallImage' src='/pokeball-icon.png' alt='' aria-hidden='true' />
             <span>KÉDEX</span>
           </Link>
 
           <nav className='headerNav' aria-label='Pokédex sections'>
             <Link className='headerNavLink active' to='/pokedex'>
-              <span className='navBall' aria-hidden='true'></span>
+              <img className='navBallImage' src='/pokeball-icon.png' alt='' aria-hidden='true' />
               Pokémon
             </Link>
             <Link className='headerNavLink' to='/pokedex#filters'>Types</Link>
@@ -49,9 +49,7 @@ const PokeHeader = () => {
         </div>
 
         <div className='headerRail' aria-hidden='true'>
-          <div className='headerDot'>
-              <div className='headerDot2'></div>
-          </div>
+          <img className='headerBallImage' src='/pokeball-icon.png' alt='' />
         </div>
     </header>
   )

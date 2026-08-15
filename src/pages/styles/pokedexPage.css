@@ -81,26 +81,10 @@
     transform-origin: left center;
 }
 
-.buttonBall {
-    position: relative;
+.buttonBallImage {
     width: 22px;
-    aspect-ratio: 1;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    background: linear-gradient(#ffffff 0 43%, #20242a 43% 57%, #ffffff 57%);
-}
-
-.buttonBall::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 6px;
-    aspect-ratio: 1;
-    border: 2px solid #20242a;
-    border-radius: 50%;
-    background-color: #ffffff;
-    content: '';
-    transform: translate(-50%, -50%);
+    height: 22px;
+    object-fit: contain;
 }
 
 .favoriteFilter {
@@ -245,36 +229,11 @@
     font-size: 1.8rem;
 }
 
-.featureBall {
-    position: relative;
-    width: 27px;
-    aspect-ratio: 1;
-    border: 3px solid #ffffff;
-    border-radius: 50%;
-}
-
-.featureBall::before {
-    position: absolute;
-    top: 50%;
-    right: -3px;
-    left: -3px;
-    height: 3px;
-    background-color: #ffffff;
-    content: '';
-    transform: translateY(-50%);
-}
-
-.featureBall::after {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 7px;
-    aspect-ratio: 1;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    background-color: #d20a17;
-    content: '';
-    transform: translate(-50%, -50%);
+.featureBallImage {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 3px rgba(51, 0, 5, 0.25));
 }
 
 .featureItem div {
