@@ -1,5 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap");
 
+:root {
+  color: #20242a;
+  background-color: #f6f7f9;
+  font-family: "Nunito", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --color-primary: #d93f3f;
+  --color-primary-dark: #a92727;
+  --color-ink: #20242a;
+  --color-muted: #667085;
+  --color-surface: #ffffff;
+  --color-border: #d9dde3;
+  --shadow-sm: 0 4px 12px rgba(31, 41, 55, 0.12);
+  --shadow-md: 0 14px 35px rgba(31, 41, 55, 0.14);
+}
+
 *,
 *::before,
 *::after {
@@ -8,59 +24,86 @@
   margin: 0;
 }
 
-body{
-  background-color: #FBFBFB;
-  
-    font-family: "Nunito", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
-    font-style: normal;
-  
-  
+html {
+  min-width: 320px;
+  scroll-behavior: smooth;
+}
+
+body,
+#root {
+  min-width: 320px;
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+body {
+  background-color: #f6f7f9;
+  color: var(--color-ink);
+  font-weight: 400;
 }
 
 img {
+  display: block;
   max-width: 100%;
-  max-height: 100%;
-  display: inline-block;
+  height: auto;
   object-fit: contain;
 }
 
 input,
-button{
-  display: inline-block;
-  font-family: inherit;
-  cursor: pointer;
-  border: none;
-}
-
-ul{
-  list-style: none;
-}
-
-a{
-  color: inherit;
-  text-decoration: none;
+button,
+select {
+  min-height: 44px;
+  border: 1px solid transparent;
+  font: inherit;
 }
 
 input {
-  background-color: #FFFFFF;
-  box-shadow: 0px 4px 9px 0px rgba(138, 136, 136, 0.75);
+  padding: 0.85rem 1rem;
+  border-color: var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-ink);
+  cursor: text;
 }
 
 button {
-  background-color: #D93F3F ;
-  color: #FFFFFF;
-  border-radius: 0 5px 5px 0;
-  padding: 1rem;
-  box-shadow: 0px 4px 9px 0px rgba(138, 136, 136, 0.75);
-
+  padding: 0.85rem 1.1rem;
+  border-radius: 0.6rem;
+  background-color: var(--color-primary);
+  box-shadow: var(--shadow-sm);
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background-color 160ms ease, transform 160ms ease;
 }
 
-input {
-  padding: 1rem;
-  border-radius: 5px 0 0 5px;
-  border-right: 2px solid black;
+button:hover:not(:disabled) {
+  background-color: var(--color-primary-dark);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+}
+
+input:focus-visible,
+button:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid #f4c430;
+  outline-offset: 3px;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .srOnly {
@@ -79,4 +122,17 @@ input {
   margin-top: 1rem;
   color: #a40000;
   font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
 }

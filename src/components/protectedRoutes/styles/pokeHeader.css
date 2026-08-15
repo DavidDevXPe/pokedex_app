@@ -1,33 +1,49 @@
 .headerBar {
-    background-color: #DC1A1A;
-    width: 100%;
-    height: 100px;
-    top: 0;
-    border-bottom: 2rem solid black ;
-    display: flex;
+    position: relative;
     z-index: 10;
+    display: flex;
+    width: 100%;
+    height: clamp(86px, 12vw, 116px);
+    padding: 0.85rem clamp(1rem, 5vw, 3rem);
+    align-items: center;
+    border-bottom: clamp(20px, 3vw, 32px) solid #171717;
+    background-color: #dc1a1a;
 }
 
+.headerBar > img {
+    width: clamp(190px, 34vw, 360px);
+    max-height: 74px;
+}
 
 .headerDot {
-    height: 70px;
-    width: 70px;
-    top: 3rem;
-    right: 3rem;
     position: absolute;
-    background-color: white;
-    border: 8px solid black;
-    border-radius: 50%;
+    right: clamp(1rem, 5vw, 3rem);
+    bottom: clamp(-30px, -3vw, -20px);
+    z-index: 11;
     display: flex;
+    width: clamp(54px, 8vw, 72px);
+    aspect-ratio: 1;
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    border: clamp(6px, 1vw, 8px) solid #171717;
+    border-radius: 50%;
+    background-color: #ffffff;
 }
 
 .headerDot2 {
-    height: 35px;
-    width: 35px;
-    background-color: #212121;
+    width: 50%;
+    aspect-ratio: 1;
+    border: 5px solid #171717;
     border-radius: 50%;
-    border: 5px solid black;
+    background-color: #2b2f35;
+}
+
+@media (max-width: 480px) {
+    .headerBar {
+        padding-left: 0.75rem;
+    }
+
+    .headerBar > img {
+        width: min(210px, 62vw);
+    }
 }

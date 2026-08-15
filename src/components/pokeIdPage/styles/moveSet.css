@@ -1,18 +1,31 @@
+.moveContainer {
+    padding: clamp(0.25rem, 3vw, 1rem);
+}
+
+.moveContainer h2 {
+    margin-bottom: 1.5rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
 .movementWrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 0.65rem;
 }
 
-.movement{
-    background-color: lightgray;   
-    border-radius: 50px;
-    padding: 5px 20px;
+.movement {
+    max-width: 100%;
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    background-color: #e9edf2;
+    font-size: 0.9rem;
     font-weight: 600;
+    overflow-wrap: anywhere;
 }
-.moveContainer{
-    padding: 2rem;
-}
-.moveContainer h2{
-    margin-bottom: 2rem;
+
+@media (max-width: 480px) {
+    .movement {
+        flex: 1 1 auto;
+        text-align: center;
+    }
 }

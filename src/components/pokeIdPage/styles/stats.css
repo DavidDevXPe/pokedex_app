@@ -1,23 +1,33 @@
-.back{
-    width: 100%;
-    height: 2rem;
-    background-color: #e1e1e1;
-    border-radius: 5px;
+.statWrapper {
+    margin-bottom: 1.25rem;
 }
 
-.bar{
-    background: linear-gradient(270deg,#d98021,#f6b54c);
-    height: 100%;
-    border-radius: 5px;
-}
-.statInfo{
+.statInfo {
     display: flex;
+    margin-bottom: 0.4rem;
     justify-content: space-between;
+    gap: 1rem;
+}
+
+.statInfo h3 {
+    overflow-wrap: anywhere;
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
 }
 
 .statInfo span {
-    font-weight: bold;
+    font-weight: 700;
 }
-.statWrapper{
-    margin-bottom: 1.5rem;
+
+.back {
+    width: 100%;
+    height: clamp(1rem, 3vw, 1.6rem);
+    overflow: hidden;
+    border-radius: 999px;
+    background-color: #e1e5ea;
+}
+
+.bar {
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #f6b54c, #d98021);
 }

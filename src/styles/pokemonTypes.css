@@ -1,0 +1,129 @@
+.pokemonTypeSurface {
+  background: linear-gradient(155deg, var(--type-accent, #8b95a5) 0%, var(--type-soft, #eef1f5) 100%);
+}
+
+.pokemonTypeTitle {
+  color: var(--type-title, #3f4752);
+}
+
+.pokemonTypeBadge {
+  background-color: var(--type-accent, #8b95a5);
+  color: var(--type-contrast, #ffffff);
+}
+
+.type-normal {
+  --type-accent: #9199a1;
+  --type-soft: #eceff1;
+  --type-title: #50565c;
+}
+
+.type-fire {
+  --type-accent: #e85d44;
+  --type-soft: #ffe2d5;
+  --type-title: #963622;
+}
+
+.type-water {
+  --type-accent: #4f91d7;
+  --type-soft: #dceeff;
+  --type-title: #285f9a;
+}
+
+.type-electric {
+  --type-accent: #e7b90d;
+  --type-soft: #fff4b8;
+  --type-title: #735c00;
+  --type-contrast: #2c2500;
+}
+
+.type-grass {
+  --type-accent: #5aa75e;
+  --type-soft: #ddf2df;
+  --type-title: #326d37;
+}
+
+.type-ice {
+  --type-accent: #46bfc1;
+  --type-soft: #d9f7f7;
+  --type-title: #247477;
+}
+
+.type-fighting {
+  --type-accent: #ce4963;
+  --type-soft: #f8dce2;
+  --type-title: #8b2f43;
+}
+
+.type-poison {
+  --type-accent: #a85db7;
+  --type-soft: #efdff3;
+  --type-title: #713d7c;
+}
+
+.type-ground {
+  --type-accent: #d48b4b;
+  --type-soft: #f7e5d4;
+  --type-title: #895529;
+}
+
+.type-flying {
+  --type-accent: #88a7db;
+  --type-soft: #e5edfa;
+  --type-title: #516c9b;
+}
+
+.type-psychic {
+  --type-accent: #ed6b84;
+  --type-soft: #fce0e6;
+  --type-title: #9b3f53;
+}
+
+.type-bug {
+  --type-accent: #91a62f;
+  --type-soft: #edf2d4;
+  --type-title: #5b691b;
+}
+
+.type-rock {
+  --type-accent: #b29b59;
+  --type-soft: #f1ead4;
+  --type-title: #74632f;
+}
+
+.type-ghost {
+  --type-accent: #6f6ca5;
+  --type-soft: #e5e4f2;
+  --type-title: #484574;
+}
+
+.type-dragon {
+  --type-accent: #596bc7;
+  --type-soft: #dfe4fb;
+  --type-title: #354595;
+}
+
+.type-dark {
+  --type-accent: #5b5361;
+  --type-soft: #e6e2e8;
+  --type-title: #37313c;
+}
+
+.type-steel {
+  --type-accent: #5c93a4;
+  --type-soft: #dcebef;
+  --type-title: #386473;
+}
+
+.type-fairy {
+  --type-accent: #dc79b3;
+  --type-soft: #f8e0ee;
+  --type-title: #934d76;
+}
+
+.type-stellar,
+.type-unknown,
+.type-shadow {
+  --type-accent: #62748a;
+  --type-soft: #e2e8f0;
+  --type-title: #3d4a5a;
+}

@@ -43,16 +43,16 @@ const PokeIdPage = () => {
 
   return (
     <article className='idWrapper'>
-      <div className={`${primaryType} typeBox`} aria-hidden='true'></div>
-      <div className='idCard'>
+      <div className={`typeBox pokemonTypeSurface type-${primaryType}`} aria-hidden='true'></div>
+      <div className='idCard profileCard'>
         <img
           src={pokeData.sprites.other['official-artwork'].front_default}
           alt={`${pokeData.name} official artwork`}
         />
-        <h2 className={`${primaryType} title id`}>#{pokeData.id}</h2>
+        <h2 className={`pokemonTypeTitle type-${primaryType} id`}>#{pokeData.id}</h2>
         <div className='divider'>
           <div className="linea">&nbsp;</div>
-          <h3 className={`${primaryType} title`}>{formattedName}</h3>
+          <h3 className={`pokemonTypeTitle type-${primaryType}`}>{formattedName}</h3>
           <div className="linea">&nbsp;</div>
         </div>
         <ul className='pokeSize'>
@@ -74,7 +74,7 @@ const PokeIdPage = () => {
 
       </div>
 
-      <div className='idCard'>
+      <div className='idCard movesCard'>
         <div className='moveSet'>
           <MoveSet 
           pokeData={pokeData}

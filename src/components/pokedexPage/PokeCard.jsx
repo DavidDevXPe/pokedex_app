@@ -36,10 +36,13 @@ const PokeCard = ({url}) => {
   return (
     <Link
       to={`/pokedex/${pokemon.id}`}
-      className='pokeCard'
+      className={`pokeCard type-${primaryType}`}
       aria-label={`View details for ${pokemon.name}`}
     >
-      <div className={primaryType} aria-hidden='true'></div>
+      <div
+        className={`pokeCardBackdrop pokemonTypeSurface type-${primaryType}`}
+        aria-hidden='true'
+      ></div>
       <figure>
         <img
           src={pokemon.sprites.other['official-artwork'].front_default}

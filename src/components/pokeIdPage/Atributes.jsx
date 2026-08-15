@@ -9,7 +9,12 @@ const Atributes = ({ pokeData }) => {
                 <ul className='aBoxer'>
                     {
                         pokeData?.types.map(type => (
-                            <li key={type.slot} className={`aBox b${type.type.name}`} >{type.type.name}</li>
+                            <li
+                                key={type.slot}
+                                className={`aBox pokemonTypeBadge type-${type.type.name}`}
+                            >
+                                {type.type.name}
+                            </li>
                         ))
                     }
                 </ul>

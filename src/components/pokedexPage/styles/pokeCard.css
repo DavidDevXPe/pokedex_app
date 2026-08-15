@@ -1,162 +1,114 @@
-.pokeCard {
-    border: 5px solid;
-    width: 250px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border-radius: 25px;
-    cursor: pointer;
-    gap: 5px;
-    transition: .25s;
-    position: relative;
-}
-.pokeCard:hover{
-    transform: scale(1.05);
-    transition: .25s;
-}
-.pokeCard div{
-    position: absolute;
-    width: 100%;
-    height: 150px;
-    border-radius: 20px 20px 0 0 ;
-}
-.pokeCard figure {
-    width: 150px;
-    position: relative;
-}
-.pokeCard hr {
-    width: 85%;
+.pokeContainer {
+    display: grid;
+    width: min(1240px, 100%);
+    margin: 0 auto;
+    padding: 0 clamp(1rem, 4vw, 2rem);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: clamp(1rem, 3vw, 1.75rem);
 }
 
-.pokeContainer{
+.pokeCard {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-evenly;
-    gap: 20px;
+    width: 100%;
+    max-width: 285px;
+    min-height: 430px;
+    margin: 0 auto;
+    overflow: hidden;
+    align-items: center;
+    flex-direction: column;
+    gap: 0.35rem;
+    border: 2px solid var(--type-accent, var(--color-border));
+    border-radius: 1.25rem;
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: box-shadow 180ms ease, transform 180ms ease;
+}
+
+.pokeCardBackdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 155px;
+}
+
+.pokeCard figure {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 170px;
+    height: 175px;
+    margin-top: 0.5rem;
+    place-items: center;
+}
+
+.pokeCard figure img {
+    width: 100%;
+    height: 100%;
+}
+
+.pokeCard h3 {
+    margin-top: 0.35rem;
+    font-size: 1.35rem;
+    text-transform: capitalize;
 }
 
 .pokeTypes {
     display: flex;
+    color: var(--color-muted);
 }
 
-.slot2::before{
+.slot2::before {
     content: ' / ';
 }
 
-.pokeStats{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    grid-template-rows: repeat(2,1fr);
-    padding: 15px;
+.pokeCard > p {
+    color: #8a929d;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+}
+
+.pokeCard hr {
     width: 85%;
-    gap: 10px;
+    margin: 0.5rem 0;
+    border: 0;
+    border-top: 1px solid var(--color-border);
+}
+
+.pokeStats {
+    display: grid;
+    width: 88%;
+    padding: 0.5rem 0 1rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
 }
 
 .pokeStats li {
     display: flex;
-    flex-direction: column;
+    min-width: 0;
     align-items: center;
+    flex-direction: column;
+    color: var(--color-muted);
+    font-size: 0.78rem;
+    text-align: center;
+    text-transform: uppercase;
 }
 
-/*valores dinamicos */ 
-
-.grass {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(45,253,70,0.8660968660968661) 100%);
-}
-
-.fire {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(249,10,10,0.8660968660968661) 100%);
-}
-
-.water {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(10,34,249,0.8660968660968661) 100%);
-}
-
-.bug {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(206,249,10,0.8660968660968661) 100%);
-}
-
-.flying {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(10,206,249,0.8660968660968661) 100%);
-}
-
-.normal {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(249,165,10,0.8660968660968661) 100%);
-}
-
-.poison {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(169,10,249,0.8660968660968661) 100%);
-}
-
-.ground {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(249,108,10,0.8660968660968661) 100%);
-}
-
-.electric {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(230,249,10,0.8660968660968661) 100%);
-}
-
-.rock {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(198,61,0,0.8660968660968661) 100%);
-}
-
-.steel {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(120,119,119,0.8660968660968661) 100%);
-}
-
-.ice {
-    background: rgb(255,255,255);
-background: linear-gradient(0deg, rgba(255,255,255,0.44729344729344733) 0%, rgba(16,148,138,0.8660968660968661) 100%);
-}
-
-.dragon {
-    background: rgb(156,82,180);
-background: linear-gradient(0deg, rgba(156,82,180,0.04843304843304841) 2%, rgba(63,94,251,1) 44%, rgba(252,70,107,1) 100%);
-}
-
-.ghost {
-    background: rgb(156,82,180);
-background: linear-gradient(0deg, rgba(156,82,180,0.04843304843304841) 2%, rgba(45,3,167,1) 54%, rgba(198,70,252,1) 88%);
-}
-
-.dark {
-    background: rgb(156,82,180);
-background: linear-gradient(0deg, rgba(156,82,180,0.04843304843304841) 2%, rgba(14,2,51,1) 78%, rgba(189,1,1,1) 100%);
-}
-
-.fighting {
-    background: rgb(156,82,180);
-background: linear-gradient(0deg, rgba(156,82,180,0.04843304843304841) 2%, rgba(121,8,8,1) 68%, rgba(255,0,0,1) 100%);
-}
-
-.psychic {
-    background: rgb(156,82,180);
-background: linear-gradient(0deg, rgba(156,82,180,0.04843304843304841) 2%, rgba(179,59,175,1) 68%, rgba(255,0,174,1) 100%);
-}
-
-.fairy{
-    background: rgb(156,82,180);
-background: linear-gradient(0deg, rgba(156,82,180,0.04843304843304841) 2%, rgba(255,148,252,1) 68%, rgba(255,143,219,1) 100%);
+.pokeStats span {
+    color: var(--color-ink);
+    font-size: 1rem;
+    font-weight: 700;
 }
 
 .pokeCard:focus-visible {
-    outline: 4px solid #FAC100;
+    outline: 4px solid #fac100;
     outline-offset: 3px;
 }
 
 .pokeCardStatus {
-    min-height: 420px;
+    min-height: 430px;
     justify-content: center;
     padding: 1rem;
     text-align: center;
@@ -164,5 +116,17 @@ background: linear-gradient(0deg, rgba(156,82,180,0.04843304843304841) 2%, rgba(
 
 .pokeCardStatus button {
     margin-top: 1rem;
-    border-radius: 5px;
+}
+
+@media (hover: hover) {
+    .pokeCard:hover {
+        box-shadow: var(--shadow-md);
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 520px) {
+    .pokeCard {
+        max-width: 330px;
+    }
 }

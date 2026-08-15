@@ -25,7 +25,7 @@ const HomePage = () => {
         navigate('/pokedex');
     }
   return (
-    <div className='hpWrapper'>
+    <main className='hpWrapper'>
         <img src='/pokedex.png' alt='Pokédex' />
 
         <h1 className='hpTitle'>Welcome trainer!</h1>
@@ -52,7 +52,7 @@ const HomePage = () => {
             <div className='hpDot2'></div>
           </div>
         </footer>
-    </div>
+    </main>
   )
 }
 

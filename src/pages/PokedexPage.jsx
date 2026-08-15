@@ -68,10 +68,10 @@ const PokedexPage = () => {
     )
 
     return (
-        <div className='pokedex'>
+        <main className='pokedex'>
             <section className='pokeHeader'>
                 <h3><span>Welcome {trainerName}!</span> Here you will find your favorite pokémon</h3>
-                <div>
+                <div className='pokeControls'>
                     <form onSubmit={handleSubmit}>
                         <label className='srOnly' htmlFor='pokemonSearch'>Search a Pokémon</label>
                         <input
@@ -120,7 +120,7 @@ const PokedexPage = () => {
                     />
                 </section>
             )}
-        </div>
+        </main>
     )
 }
 
