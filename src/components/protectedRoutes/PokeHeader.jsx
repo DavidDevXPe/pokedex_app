@@ -7,7 +7,6 @@ const PokeHeader = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const trainerName = useSelector(store => store.trainerName)
-  const trainerInitial = trainerName.trim().charAt(0).toUpperCase()
 
   const handleChangeTrainer = () => {
     dispatch(setTrainerName(''))
@@ -39,7 +38,12 @@ const PokeHeader = () => {
             title='Change trainer'
             onClick={handleChangeTrainer}
           >
-            <span className='trainerAvatar' aria-hidden='true'>{trainerInitial}</span>
+            <img
+              className='trainerAvatar'
+              src='/trainer-avatar.png'
+              alt=''
+              aria-hidden='true'
+            />
             <span className='trainerIdentity'>
               <strong>{trainerName}</strong>
               <small>Trainer</small>
