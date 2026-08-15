@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import useFetch from '../../hooks/useFetch'
 import { Link, useLocation } from 'react-router-dom'
 import { formatPokemonName } from '../../utils/pokedex'
+import PokemonArtwork from '../PokemonArtwork'
 import './styles/pokeCard.css'
 
 const PokeCard = ({url}) => {
@@ -49,8 +50,9 @@ const PokeCard = ({url}) => {
         aria-hidden='true'
       ></div>
       <figure>
-        <img
-          src={pokemon.sprites.other['official-artwork'].front_default}
+        <PokemonArtwork
+          pokemon={pokemon}
+          className='cardArtwork'
           alt={`${formattedName} official artwork`}
           loading='lazy'
         />
@@ -59,7 +61,7 @@ const PokeCard = ({url}) => {
         <ul className='pokeTypes'>
           {
             pokemon.types.map(type=> (
-              <li key={type.type.url} className={`slot${type.slot}`}>{type.type.name} </li>
+              <li key={type.type.url} className={`slot${type.slot}`}>{formatPokemonName(type.type.name)} </li>
             ))
           }
         </ul>
@@ -68,7 +70,7 @@ const PokeCard = ({url}) => {
         <ul className='pokeStats'>
           {
             pokemon.stats.map(stat => (
-              <li key={stat.stat.url}>{stat.stat.name} <span>{stat.base_stat}</span></li>
+              <li key={stat.stat.url}>{formatPokemonName(stat.stat.name)} <span>{stat.base_stat}</span></li>
             ))
           }
         </ul>

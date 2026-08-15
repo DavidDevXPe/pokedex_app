@@ -44,7 +44,7 @@
     place-items: center;
 }
 
-.pokeCard figure img {
+.pokeCard figure .cardArtwork {
     width: 100%;
     height: 100%;
 }

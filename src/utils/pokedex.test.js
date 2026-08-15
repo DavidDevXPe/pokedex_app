@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
     filterPokemons,
     formatPokemonName,
+    getPokemonArtwork,
     getPageFromSearchParams,
     getPokedexReturnPath,
     normalizeSearch,
@@ -38,5 +39,20 @@ describe('Pokédex utilities', () => {
         expect(getPokedexReturnPath('/pokedex?type=grass&page=2')).toBe('/pokedex?type=grass&page=2')
         expect(getPokedexReturnPath('/admin')).toBe('/pokedex')
         expect(getPokedexReturnPath(undefined)).toBe('/pokedex')
+    })
+
+    it('uses the best available artwork source', () => {
+        const pokemon = {
+            sprites: {
+                front_default: '/sprite.png',
+                other: {
+                    'official-artwork': { front_default: null },
+                    home: { front_default: '/home.png' },
+                },
+            },
+        }
+
+        expect(getPokemonArtwork(pokemon)).toBe('/home.png')
+        expect(getPokemonArtwork({ sprites: {} })).toBeNull()
     })
 })

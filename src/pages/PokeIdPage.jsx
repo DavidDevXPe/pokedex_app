@@ -7,6 +7,7 @@ import './styles/pokeIdPage.css'
 import Atributes from '../components/pokeIdPage/Atributes'
 import Stats from '../components/pokeIdPage/Stats'
 import MoveSet from '../components/pokeIdPage/MoveSet'
+import PokemonArtwork from '../components/PokemonArtwork'
 
 const PokeIdPage = () => {
   const { id } = useParams()
@@ -15,12 +16,19 @@ const PokeIdPage = () => {
     apiData: pokeData,
     isLoading,
     error,
+    statusCode,
     getApi: getPokeData,
   } = useFetch()
   const formattedName = pokeData ? formatPokemonName(pokeData.name) : ''
   const returnPath = getPokedexReturnPath(location.state?.from)
 
-  useDocumentTitle(formattedName ? `${formattedName} | Pokédex` : 'Pokémon details | Pokédex')
+  const pageTitle = statusCode === 404
+    ? 'Pokémon not found | Pokédex'
+    : formattedName
+      ? `${formattedName} | Pokédex`
+      : 'Pokémon details | Pokédex'
+
+  useDocumentTitle(pageTitle)
 
   const loadPokemon = useCallback(() => {
     getPokeData(`https://pokeapi.co/api/v2/pokemon/${id}`)
@@ -37,8 +45,14 @@ const PokeIdPage = () => {
   if (error) {
     return (
       <div className='detailStatus' role='alert'>
+        {statusCode === 404 && <h1>Pokémon not found</h1>}
         <p>{error}</p>
-        <button type='button' onClick={loadPokemon}>Try again</button>
+        <div className='detailStatusActions'>
+          {statusCode !== 404 && (
+            <button type='button' onClick={loadPokemon}>Try again</button>
+          )}
+          <Link className='detailStatusLink' to={returnPath}>Back to results</Link>
+        </div>
       </div>
     )
   }
@@ -51,8 +65,9 @@ const PokeIdPage = () => {
       <Link className='detailBackLink' to={returnPath}>← Back to results</Link>
       <div className={`typeBox pokemonTypeSurface type-${primaryType}`} aria-hidden='true'></div>
       <div className='idCard profileCard'>
-        <img
-          src={pokeData.sprites.other['official-artwork'].front_default}
+        <PokemonArtwork
+          pokemon={pokeData}
+          className='detailArtwork'
           alt={`${formattedName} official artwork`}
         />
         <h2 className={`pokemonTypeTitle type-${primaryType} id`}>#{pokeData.id}</h2>
@@ -82,7 +97,8 @@ const PokeIdPage = () => {
 
       <div className='idCard movesCard'>
         <div className='moveSet'>
-          <MoveSet 
+          <MoveSet
+          key={pokeData.id}
           pokeData={pokeData}
           />
         </div>

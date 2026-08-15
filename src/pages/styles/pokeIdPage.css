@@ -54,12 +54,17 @@
     margin-top: -64px;
 }
 
-.profileCard > img {
+.profileCard > .detailArtwork {
     position: relative;
     z-index: 2;
     width: clamp(190px, 34vw, 300px);
     margin-top: clamp(-175px, -16vw, -120px);
     filter: drop-shadow(0 16px 12px rgba(31, 41, 55, 0.18));
+}
+
+.profileCard > .pokemonArtworkFallback {
+    aspect-ratio: 1;
+    background-color: rgba(255, 255, 255, 0.94);
 }
 
 .id {
@@ -141,8 +146,28 @@
     text-align: center;
 }
 
-.detailStatus button {
+.detailStatus h1 {
+    margin-bottom: 0.75rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+}
+
+.detailStatusActions {
+    display: flex;
     margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.detailStatusLink {
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 0.6rem;
+    background-color: var(--color-surface);
+    color: var(--color-primary-dark);
+    font-weight: 700;
 }
 
 @media (max-width: 640px) {

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { formatPokemonName } from '../../utils/pokedex'
 import './styles/stats.css'
 
 const MAX_BASE_STAT = 255
@@ -11,7 +12,7 @@ const Stats = ({pokeData}) => {
             pokeData?.stats.map(stat => (
                 <div key={stat.stat.name} className='statWrapper'>
                     <div className='statInfo'>
-                    <h3>{stat.stat.name.toUpperCase()}:</h3>
+                    <h3>{formatPokemonName(stat.stat.name)}:</h3>
                     <span>{stat.base_stat}</span>
                     </div>
                     <div

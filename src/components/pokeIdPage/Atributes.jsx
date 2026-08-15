@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types'
+import { formatPokemonName } from '../../utils/pokedex'
 import './styles/atributes.css'
 
 const Atributes = ({ pokeData }) => {
@@ -13,7 +14,7 @@ const Atributes = ({ pokeData }) => {
                                 key={type.slot}
                                 className={`aBox pokemonTypeBadge type-${type.type.name}`}
                             >
-                                {type.type.name}
+                                {formatPokemonName(type.type.name)}
                             </li>
                         ))
                     }
@@ -25,7 +26,7 @@ const Atributes = ({ pokeData }) => {
                 <ul className='aBoxer'>
                     {
                         pokeData?.abilities.map(ability => (
-                            <li key={ability.slot} className='aBox'>{ability.ability.name}</li>
+                            <li key={ability.slot} className='aBox'>{formatPokemonName(ability.ability.name)}</li>
                         ))
                     }
                 </ul>

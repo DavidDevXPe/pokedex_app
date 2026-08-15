@@ -133,6 +133,19 @@ a {
   font-weight: 700;
 }
 
+.pokemonArtworkFallback {
+  display: grid;
+  padding: 1rem;
+  place-items: center;
+  border: 2px dashed rgba(102, 112, 133, 0.45);
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.72);
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -5,16 +5,17 @@ const responseCache = new Map()
 
 const getErrorMessage = (error) => {
     if (error.response?.status === 404) {
-        return 'No se encontró la información solicitada.'
+        return 'The requested information could not be found.'
     }
 
-    return 'No fue posible conectarse con PokéAPI. Inténtalo nuevamente.'
+    return 'Could not connect to PokéAPI. Please try again.'
 }
 
 const useFetch = () => {
     const [apiData, setApiData] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [statusCode, setStatusCode] = useState(null)
     const controllerRef = useRef(null)
 
     const request = useCallback(async (url, transform = data => data) => {
@@ -23,6 +24,7 @@ const useFetch = () => {
         if (responseCache.has(url)) {
             setApiData(transform(responseCache.get(url)))
             setError(null)
+            setStatusCode(null)
             setIsLoading(false)
             return
         }
@@ -31,6 +33,7 @@ const useFetch = () => {
         controllerRef.current = controller
         setApiData(null)
         setError(null)
+        setStatusCode(null)
         setIsLoading(true)
 
         try {
@@ -40,6 +43,7 @@ const useFetch = () => {
         } catch (requestError) {
             if (requestError.code !== 'ERR_CANCELED') {
                 setError(getErrorMessage(requestError))
+                setStatusCode(requestError.response?.status ?? null)
             }
         } finally {
             if (controllerRef.current === controller) {
@@ -62,7 +66,7 @@ const useFetch = () => {
 
     useEffect(() => () => controllerRef.current?.abort(), [])
 
-    return { apiData, isLoading, error, getApi, getApiType }
+    return { apiData, isLoading, error, statusCode, getApi, getApiType }
 }
 
 export default useFetch

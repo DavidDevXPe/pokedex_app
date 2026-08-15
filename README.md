@@ -18,6 +18,7 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 - Persistencia del entrenador durante la sesión.
 - Búsqueda, tipo y página guardados en la URL.
 - Retorno desde el detalle conservando los filtros y la página activa.
+- Detalles resilientes con fallback de imagen y movimientos expandibles.
 - Carga diferida de páginas para reducir el JavaScript inicial.
 - Página 404 para rutas inexistentes.
 

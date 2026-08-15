@@ -7,6 +7,12 @@
     font-size: clamp(1.5rem, 4vw, 2rem);
 }
 
+.moveContainer h2 span {
+    color: var(--color-muted);
+    font-size: 0.75em;
+    font-weight: 600;
+}
+
 .movementWrapper {
     display: flex;
     flex-wrap: wrap;
@@ -21,6 +27,15 @@
     font-size: 0.9rem;
     font-weight: 600;
     overflow-wrap: anywhere;
+}
+
+.emptyMoves {
+    color: var(--color-muted);
+}
+
+.moveToggle {
+    display: block;
+    margin: 1.5rem auto 0;
 }
 
 @media (max-width: 480px) {

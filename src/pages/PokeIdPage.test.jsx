@@ -1,14 +1,18 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import PokeIdPage from './PokeIdPage'
 
 const apiMocks = vi.hoisted(() => ({
     getApi: vi.fn(),
+    result: null,
 }))
 
 vi.mock('../hooks/useFetch', () => ({
-    default: () => ({
+    default: () => apiMocks.result,
+}))
+
+const createSuccessfulResult = () => ({
         apiData: {
             id: 122,
             name: 'mr-mime',
@@ -25,9 +29,9 @@ vi.mock('../hooks/useFetch', () => ({
         },
         isLoading: false,
         error: null,
+        statusCode: null,
         getApi: apiMocks.getApi,
-    }),
-}))
+})
 
 vi.mock('../components/pokeIdPage/Atributes', () => ({
     default: () => <div>Attributes</div>,
@@ -50,6 +54,11 @@ const renderDetails = initialEntry => render(
 )
 
 describe('PokeIdPage navigation', () => {
+    beforeEach(() => {
+        apiMocks.getApi.mockClear()
+        apiMocks.result = createSuccessfulResult()
+    })
+
     it('preserves the result filters in its back link', async () => {
         renderDetails({
             pathname: '/pokedex/122',
@@ -70,5 +79,22 @@ describe('PokeIdPage navigation', () => {
 
         expect(screen.getByRole('link', { name: '← Back to results' }))
             .toHaveAttribute('href', '/pokedex')
+    })
+
+    it('shows a useful state for a Pokémon that does not exist', () => {
+        apiMocks.result = {
+            apiData: null,
+            isLoading: false,
+            error: 'The requested information could not be found.',
+            statusCode: 404,
+            getApi: apiMocks.getApi,
+        }
+
+        renderDetails('/pokedex/not-a-pokemon')
+
+        expect(screen.getByRole('heading', { name: 'Pokémon not found' })).toBeInTheDocument()
+        expect(screen.queryByRole('button', { name: 'Try again' })).not.toBeInTheDocument()
+        expect(screen.getByRole('link', { name: 'Back to results' })).toHaveAttribute('href', '/pokedex')
+        expect(document.title).toBe('Pokémon not found | Pokédex')
     })
 })

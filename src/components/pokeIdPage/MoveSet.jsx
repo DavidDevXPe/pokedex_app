@@ -1,18 +1,48 @@
+import { useMemo, useState } from 'react'
 import PropTypes from 'prop-types'
+import { formatPokemonName } from '../../utils/pokedex'
 import './styles/moveSet.css'
 
-const MoveSet = ({pokeData}) => {
+const INITIAL_VISIBLE_MOVES = 24
+
+const MoveSet = ({ pokeData }) => {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const moves = useMemo(
+    () => [...pokeData.moves].sort((firstMove, secondMove) => (
+      firstMove.move.name.localeCompare(secondMove.move.name)
+    )),
+    [pokeData.moves],
+  )
+  const visibleMoves = isExpanded ? moves : moves.slice(0, INITIAL_VISIBLE_MOVES)
+  const hasMoreMoves = moves.length > INITIAL_VISIBLE_MOVES
+
   return (
     <div className='moveContainer'>
-        <h2>Movements</h2>
+        <h2>Moves <span>({moves.length})</span></h2>
 
-        <div className='movementWrapper'>
-        {
-            pokeData?.moves.map(move => (
-                <span key={move.move.url} className='movement'>{move.move.name}</span>
-            ))
-        }
-        </div>
+        {moves.length === 0 ? (
+          <p className='emptyMoves'>No moves are available for this Pokémon.</p>
+        ) : (
+          <ul id='pokemonMoves' className='movementWrapper'>
+            {visibleMoves.map(move => (
+              <li key={move.move.url} className='movement'>
+                {formatPokemonName(move.move.name)}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {hasMoreMoves && (
+          <button
+            className='moveToggle'
+            type='button'
+            aria-expanded={isExpanded}
+            aria-controls='pokemonMoves'
+            onClick={() => setIsExpanded(currentValue => !currentValue)}
+          >
+            {isExpanded ? 'Show fewer moves' : `Show all ${moves.length} moves`}
+          </button>
+        )}
     </div>
   )
 }

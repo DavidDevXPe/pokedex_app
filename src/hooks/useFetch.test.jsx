@@ -33,6 +33,7 @@ describe('useFetch', () => {
 
         expect(result.current.apiData).toEqual({ id: 25, name: 'pikachu' })
         expect(result.current.error).toBeNull()
+        expect(result.current.statusCode).toBeNull()
         expect(result.current.isLoading).toBe(false)
     })
 
@@ -45,7 +46,8 @@ describe('useFetch', () => {
         })
 
         expect(result.current.apiData).toBeNull()
-        expect(result.current.error).toMatch(/No se encontró/)
+        expect(result.current.error).toMatch(/could not be found/i)
+        expect(result.current.statusCode).toBe(404)
     })
 
     it('cancels the active request when the consumer unmounts', () => {
