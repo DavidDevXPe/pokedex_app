@@ -13,6 +13,8 @@ describe('PreferenceControls', () => {
         )
 
         expect(document.documentElement).toHaveAttribute('lang', 'es')
+        expect(screen.getByRole('button', { name: 'Cambiar a modo oscuro' })
+            .querySelector('.themeIcon')).toBeInTheDocument()
         fireEvent.click(screen.getByRole('button', { name: 'Cambiar a inglés' }))
         expect(screen.getByRole('button', { name: 'Switch to Spanish' })).toBeInTheDocument()
 

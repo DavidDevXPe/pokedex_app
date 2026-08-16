@@ -17,12 +17,12 @@ describe('PokemonArtwork', () => {
         render(
             <PokemonArtwork
                 pokemon={pokemon}
-                alt='Render 3D de Pikachu'
+                alt='Imagen de Pikachu'
                 className='testArtwork'
             />,
         )
 
-        expect(screen.getByRole('img', { name: 'Render 3D de Pikachu' }))
+        expect(screen.getByRole('img', { name: 'Imagen de Pikachu' }))
             .toHaveAttribute('src', '/home.png')
     })
 
@@ -30,12 +30,12 @@ describe('PokemonArtwork', () => {
         render(
             <PokemonArtwork
                 pokemon={pokemon}
-                alt='Render 3D de Pikachu'
+                alt='Imagen de Pikachu'
                 className='testArtwork'
             />,
         )
 
-        fireEvent.error(screen.getByRole('img', { name: 'Render 3D de Pikachu' }))
+        fireEvent.error(screen.getByRole('img', { name: 'Imagen de Pikachu' }))
 
         expect(screen.getByRole('img', { name: /Imagen no disponible/ }))
             .toHaveTextContent('Imagen no disponible')

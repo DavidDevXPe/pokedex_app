@@ -21,7 +21,21 @@ const FavoriteButton = ({ pokemonId, pokemonName, className = '' }) => {
             title={accessibleLabel}
             onClick={() => dispatch(toggleFavoritePokemon(pokemonId))}
         >
-            <span aria-hidden='true'>{isFavorite ? '♥' : '♡'}</span>
+            <svg
+                className='favoriteIcon'
+                viewBox='0 0 24 24'
+                aria-hidden='true'
+                focusable='false'
+            >
+                <path
+                    d='M20.8 8.7c0 5.1-8.8 10.1-8.8 10.1S3.2 13.8 3.2 8.7A4.7 4.7 0 0 1 12 6.3a4.7 4.7 0 0 1 8.8 2.4Z'
+                    fill={isFavorite ? 'currentColor' : 'none'}
+                    stroke='currentColor'
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='1.9'
+                />
+            </svg>
         </button>
     )
 }

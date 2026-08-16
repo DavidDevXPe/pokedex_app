@@ -26,7 +26,22 @@
 }
 
 .themeButton {
-    font-size: 1.45rem;
+    line-height: 1;
+}
+
+.themeIcon {
+    display: block;
+    width: 20px;
+    height: 20px;
+    margin: auto;
+    overflow: visible;
+}
+
+@media (max-width: 560px) {
+    .themeIcon {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 .homePreferences,

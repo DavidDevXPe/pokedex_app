@@ -36,7 +36,30 @@ const PreferenceControls = ({ className = '' }) => {
                 aria-pressed={theme === THEMES.DARK}
                 onClick={toggleTheme}
             >
-                <span aria-hidden='true'>{theme === THEMES.LIGHT ? '\u263E' : '\u2600'}</span>
+                <svg
+                    className='themeIcon'
+                    viewBox='0 0 24 24'
+                    aria-hidden='true'
+                    focusable='false'
+                >
+                    {theme === THEMES.LIGHT ? (
+                        <path
+                            d='M20.2 15.7A8.5 8.5 0 0 1 8.3 3.8 8.5 8.5 0 1 0 20.2 15.7Z'
+                            fill='currentColor'
+                        />
+                    ) : (
+                        <>
+                            <circle cx='12' cy='12' r='4.25' fill='currentColor' />
+                            <path
+                                d='M12 2.25V5M12 19v2.75M2.25 12H5M19 12h2.75M5.1 5.1l1.95 1.95M16.95 16.95l1.95 1.95M18.9 5.1l-1.95 1.95M7.05 16.95 5.1 18.9'
+                                fill='none'
+                                stroke='currentColor'
+                                strokeLinecap='round'
+                                strokeWidth='1.8'
+                            />
+                        </>
+                    )}
+                </svg>
             </button>
         </div>
     )

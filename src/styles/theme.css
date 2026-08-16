@@ -105,17 +105,27 @@
   background-color: #303946;
 }
 
-:root[data-theme='dark'] .cardFavorite,
-:root[data-theme='dark'] .favoriteButton {
+:root[data-theme='dark'] .favoriteButton:not(.cardFavorite) {
   border-color: var(--color-border);
   background-color: rgba(24, 30, 39, 0.88);
   color: #c6ced9;
 }
 
-:root[data-theme='dark'] .cardFavorite:hover:not(:disabled),
-:root[data-theme='dark'] .favoriteButton:hover:not(:disabled) {
+:root[data-theme='dark'] .favoriteButton:not(.cardFavorite):hover:not(:disabled) {
   background-color: #2a3340;
   color: #ff7781;
+}
+
+:root[data-theme='dark'] .cardFavorite {
+  border-color: transparent;
+  background-color: transparent;
+  box-shadow: none;
+  color: #202938;
+}
+
+:root[data-theme='dark'] .cardFavorite:hover:not(:disabled) {
+  background-color: transparent;
+  color: #c80f1d;
 }
 
 :root[data-theme='dark'] .favoriteButton.isFavorite {

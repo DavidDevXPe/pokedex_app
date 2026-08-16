@@ -208,6 +208,14 @@ a {
   color: #df1423;
 }
 
+.favoriteIcon {
+  display: block;
+  width: 1em;
+  height: 1em;
+  overflow: visible;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
