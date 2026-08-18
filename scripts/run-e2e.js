@@ -1,4 +1,3 @@
-/* eslint-env node */
 import { spawn } from 'node:child_process'
 import { once } from 'node:events'
 import { fileURLToPath } from 'node:url'

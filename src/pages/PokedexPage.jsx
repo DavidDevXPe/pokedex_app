@@ -37,6 +37,7 @@ const PokedexPage = () => {
     const currentPage = getPageFromSearchParams(searchParams)
     const showFavorites = searchParams.get('favorites') === '1'
     const [searchInput, setSearchInput] = useState(searchTerm)
+    const [syncedSearchTerm, setSyncedSearchTerm] = useState(searchTerm)
     const resultsHeadingRef = useRef(null)
     const previousResultCountRef = useRef(null)
     const prefersReducedMotion = usePrefersReducedMotion()
@@ -79,9 +80,10 @@ const PokedexPage = () => {
         loadPokemons()
     }, [loadPokemons])
 
-    useEffect(() => {
+    if (searchTerm !== syncedSearchTerm) {
+        setSyncedSearchTerm(searchTerm)
         setSearchInput(searchTerm)
-    }, [searchTerm])
+    }
 
     useEffect(() => {
         if (requestedType === selectedType) return

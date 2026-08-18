@@ -1,4 +1,3 @@
-/* eslint-env node */
 import { defineConfig, devices } from '@playwright/test'
 
 const externalBaseURL = process.env.E2E_BASE_URL?.trim()
