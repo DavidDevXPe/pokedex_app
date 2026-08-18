@@ -1,6 +1,6 @@
 # Avisos de terceros
 
-Este archivo documenta recursos y servicios de terceros utilizados por la aplicación. No concede una licencia sobre el código de este repositorio ni sustituye los términos de cada proveedor.
+Este archivo documenta recursos y servicios de terceros utilizados por la aplicación. No concede una licencia sobre el código de este repositorio (distribuido bajo la licencia MIT, ver [LICENSE](LICENSE)) ni sustituye los términos de cada proveedor.
 
 ## PokéAPI y contenido de Pokémon
 
@@ -20,13 +20,13 @@ La fuente se carga de forma remota y no se redistribuye dentro de este repositor
 
 Las dependencias de producción y desarrollo declaradas en `package.json` pertenecen a sus respectivos autores y se distribuyen bajo sus propias licencias. Sus versiones resueltas se encuentran en `package-lock.json`; cualquier distribución debe conservar los avisos exigidos por esas licencias.
 
-## Procedencia pendiente de confirmar
+## Activos generados por IA
 
-Antes de publicar el proyecto como producto final, se debe registrar la fuente y licencia concreta de los recursos locales de `public/`, en especial:
+Los recursos locales de `public/` fueron generados mediante herramientas de inteligencia artificial para este proyecto, en especial:
 
 - `pokedex.png`, `pokeball-icon.png`, `favicon.png` y `favicon.svg`;
 - `header.png` y `Border.PNG`;
 - los avatares de `public/assets/trainers/`;
 - las insignias de `public/assets/types/`.
 
-Hasta completar esa revisión, estos recursos no deben presentarse como creaciones originales ni como activos con una licencia abierta determinada.
+Antes de un uso comercial, el titular debe verificar los términos de la herramienta de IA utilizada para generarlos, ya que las condiciones de uso comercial y de titularidad varían según el proveedor.

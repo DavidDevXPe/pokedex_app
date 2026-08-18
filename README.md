@@ -155,12 +155,7 @@ La aplicación usa `HashRouter`, por lo que sus rutas internas no requieren regl
 
 `index.html` incluye descripción, directivas de indexación, Open Graph, Twitter Cards y un aviso para navegadores sin JavaScript. `public/site.webmanifest` aporta metadatos básicos de instalación y `public/robots.txt` permite el rastreo.
 
-No se declara todavía `canonical` ni `og:url`, porque ambos deben contener la URL pública definitiva. Cuando exista el dominio final:
-
-1. añade una URL canónica absoluta;
-2. añade `og:url` con esa misma URL;
-3. sustituye las imágenes sociales relativas por una imagen absoluta optimizada para compartir;
-4. valora añadir un sitemap con URLs absolutas.
+`index.html` declara `canonical` y `og:url` apuntando al despliegue en Vercel (`https://pokedex-app-mu-livid.vercel.app/`), y las imágenes sociales (`og:image`, `twitter:image`) usan esa misma URL absoluta. Si el proyecto pasa a un dominio propio o a GitHub Pages como destino principal, actualiza estas URLs en consecuencia.
 
 En un GitHub Pages de proyecto, `robots.txt` queda dentro de `/pokedex_app/`; si se configura un dominio propio conviene revisar también el archivo servido en la raíz del host.
 
@@ -191,4 +186,6 @@ Consulta [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) para ver atribuciones,
 
 ## Licencia
 
-La licencia del código de este repositorio está **pendiente de elección por su titular**. No debe inferirse una licencia abierta por la ausencia de un archivo `LICENSE`. Antes de distribuir o aceptar contribuciones, el titular debe seleccionar una licencia compatible con el objetivo del proyecto y añadir su texto completo.
+El código de este repositorio se distribuye bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para el texto completo.
+
+Esta licencia cubre únicamente el código fuente. Los datos e ilustraciones de PokéAPI, la fuente Inter y los activos locales de `public/` mantienen sus propios términos; consulta [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
