@@ -29,7 +29,7 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 
 ## Tecnologías
 
-- React 18
+- React 19
 - React Router
 - Redux Toolkit y React Redux
 - Axios
