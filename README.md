@@ -155,7 +155,7 @@ La aplicación usa `HashRouter`, por lo que sus rutas internas no requieren regl
 
 `index.html` incluye descripción, directivas de indexación, Open Graph, Twitter Cards y un aviso para navegadores sin JavaScript. `public/site.webmanifest` aporta metadatos básicos de instalación y `public/robots.txt` permite el rastreo.
 
-`index.html` declara `canonical` y `og:url` apuntando al despliegue en Vercel (`https://pokedex-app-mu-livid.vercel.app/`), y las imágenes sociales (`og:image`, `twitter:image`) usan esa misma URL absoluta. Si el proyecto pasa a un dominio propio o a GitHub Pages como destino principal, actualiza estas URLs en consecuencia.
+`index.html` declara `canonical` y `og:url` apuntando al despliegue en Netlify (`https://pokedex08.netlify.app/`), y las imágenes sociales (`og:image`, `twitter:image`) usan esa misma URL absoluta. Si el proyecto pasa a un dominio propio o a GitHub Pages como destino principal, actualiza estas URLs en consecuencia.
 
 En un GitHub Pages de proyecto, `robots.txt` queda dentro de `/pokedex_app/`; si se configura un dominio propio conviene revisar también el archivo servido en la raíz del host.
 
