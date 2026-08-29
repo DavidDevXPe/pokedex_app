@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import useFetch from '../../hooks/useFetch'
 import { Link, useLocation } from 'react-router-dom'
-import { formatPokemonName } from '../../utils/pokedex'
+import { formatPokemonName, getPokemonIdFromUrl } from '../../utils/pokedex'
 import { getPokemonTypeAsset } from '../../utils/pokemonTypeAssets'
 import PokemonArtwork from '../PokemonArtwork'
 import FavoriteButton from '../FavoriteButton'
@@ -11,15 +11,19 @@ import './styles/pokeCard.css'
 
 const MAX_STAT_PREVIEW = 180
 
-const PokeCard = ({url}) => {
+const PokeCard = ({ pokemonSummary }) => {
     const cardRef = useRef(null)
     const [shouldLoad, setShouldLoad] = useState(
       () => typeof IntersectionObserver === 'undefined',
     )
     const location = useLocation()
     const { t, translateStat, translateType } = useTranslation()
+    const pokemonId = getPokemonIdFromUrl(pokemonSummary.url)
+    const formattedName = formatPokemonName(pokemonSummary.name)
+    const routeIdentifier = pokemonId ?? pokemonSummary.name
+    const returnPath = `${location.pathname}${location.search}`
     const {
-      apiData: pokemon,
+      apiData: pokemonDetails,
       isLoading,
       error,
       getApi: getPokemon,
@@ -43,62 +47,96 @@ const PokeCard = ({url}) => {
     }, [shouldLoad])
 
     useEffect(() => {
-      if (shouldLoad) getPokemon(url)
-    }, [getPokemon, shouldLoad, url])
+      if (shouldLoad) getPokemon(pokemonSummary.url)
+    }, [getPokemon, pokemonSummary.url, shouldLoad])
 
-    if (!shouldLoad || isLoading || (!pokemon && !error)) {
+    const resolvedPokemonId = pokemonId ?? pokemonDetails?.id ?? null
+    const displayId = resolvedPokemonId === null
+      ? null
+      : String(resolvedPokemonId).padStart(3, '0')
+    const detailsLinkProps = {
+      to: `/pokedex/${routeIdentifier}`,
+      state: { from: returnPath },
+      className: 'pokeCardLink',
+      'aria-label': t('card.viewDetails', { name: formattedName }),
+    }
+
+    const cardHeader = (
+      <>
+        {displayId && <span className='pokeNumber'>#{displayId}</span>}
+        <span className='cardBallMark' aria-hidden='true'></span>
+        {resolvedPokemonId !== null && (
+          <FavoriteButton
+            className='cardFavorite'
+            pokemonId={resolvedPokemonId}
+            pokemonName={formattedName}
+          />
+        )}
+      </>
+    )
+
+    if (!shouldLoad || isLoading || (!pokemonDetails && !error)) {
       return (
         <article
           ref={cardRef}
-          className='pokeCard pokeCardStatus pokeCardSkeleton'
-          aria-hidden='true'
+          className='pokeCard pokeCardSkeleton'
+          aria-busy='true'
         >
-          <span className='cardSkeletonArtwork'></span>
-          <span className='cardSkeletonLine cardSkeletonTitle'></span>
-          <span className='cardSkeletonLine'></span>
-          <span className='cardSkeletonLine'></span>
+          {cardHeader}
+          <Link {...detailsLinkProps}>
+            <figure className='cardSkeletonFigure' aria-hidden='true'>
+              <span className='cardSkeletonArtwork'></span>
+            </figure>
+            <div className='pokeCardBody'>
+              <h3>{formattedName}</h3>
+              <div className='cardSkeletonDetails' aria-hidden='true'>
+                <span className='cardSkeletonLine'></span>
+                <span className='cardSkeletonLine'></span>
+                <span className='cardSkeletonLine'></span>
+              </div>
+            </div>
+          </Link>
         </article>
       )
     }
 
     if (error) {
       return (
-        <article className='pokeCard pokeCardStatus'>
-          <p>{t('card.error')}</p>
-          <button type='button' onClick={() => getPokemon(url)}>{t('pokedex.retry')}</button>
+        <article ref={cardRef} className='pokeCard'>
+          {cardHeader}
+          <Link {...detailsLinkProps}>
+            <div className='pokeCardBody pokeCardErrorBody'>
+              <h3>{formattedName}</h3>
+              <p role='alert'>{t('card.error', { name: formattedName })}</p>
+            </div>
+          </Link>
+          <button
+            className='cardRetry'
+            type='button'
+            aria-label={t('card.retry', { name: formattedName })}
+            onClick={() => getPokemon(pokemonSummary.url)}
+          >
+            {t('pokedex.retry')}
+          </button>
         </article>
       )
     }
 
-    if (!pokemon) return null
+    if (!pokemonDetails) return null
 
-    const primaryType = pokemon.types?.[0]?.type.name ?? 'normal'
-    const formattedName = formatPokemonName(pokemon.name)
-    const returnPath = `${location.pathname}${location.search}`
-    const displayId = String(pokemon.id).padStart(3, '0')
+    const primaryType = pokemonDetails.types?.[0]?.type.name ?? 'normal'
 
   return (
     <article className={`pokeCard type-${primaryType}`}>
-      <span className='pokeNumber'>#{displayId}</span>
-      <span className='cardBallMark' aria-hidden='true'></span>
-      <FavoriteButton
-        className='cardFavorite'
-        pokemonId={pokemon.id}
-        pokemonName={formattedName}
-      />
-      <Link
-        to={`/pokedex/${pokemon.id}`}
-        state={{ from: returnPath }}
-        className='pokeCardLink'
-        aria-label={t('card.viewDetails', { name: formattedName })}
-      >
+      {cardHeader}
+      <Link {...detailsLinkProps}>
         <div
           className={`pokeCardBackdrop pokemonTypeSurface type-${primaryType}`}
           aria-hidden='true'
         ></div>
         <figure>
           <PokemonArtwork
-            pokemon={pokemon}
+            pokemon={pokemonDetails}
             className='cardArtwork'
             alt={t('card.renderAlt', { name: formattedName })}
             loading='lazy'
@@ -107,7 +145,7 @@ const PokeCard = ({url}) => {
           <div className='pokeCardBody'>
             <h3>{formattedName}</h3>
             <ul className='pokeTypes' aria-label={t('card.typesLabel', { name: formattedName })}>
-              {pokemon.types.map(type => {
+              {pokemonDetails.types.map(type => {
                 const typeName = type.type.name
                 const typeAsset = getPokemonTypeAsset(typeName)
 
@@ -127,7 +165,7 @@ const PokeCard = ({url}) => {
               })}
             </ul>
             <ul className='pokeStats' aria-label={t('card.statsLabel', { name: formattedName })}>
-              {pokemon.stats.map(stat => (
+              {pokemonDetails.stats.map(stat => (
                 <li key={stat.stat.url}>
                   <span className='statLabel'>
                     {translateStat(stat.stat.name)}
@@ -149,7 +187,10 @@ const PokeCard = ({url}) => {
 }
 
 PokeCard.propTypes = {
-  url: PropTypes.string.isRequired,
+  pokemonSummary: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    url: PropTypes.string.isRequired,
+  }).isRequired,
 }
 
 export default PokeCard

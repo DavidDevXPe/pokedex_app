@@ -6,10 +6,12 @@ const dictionaries = {
         'app.errorTitle': 'Algo salió mal',
         'app.errorDescription': 'La Pokédex encontró un error inesperado. Recarga la página para continuar.',
         'app.reload': 'Recargar Pokédex',
+        'app.skipToContent': 'Saltar al contenido principal',
         'preferences.toEnglish': 'Cambiar a inglés',
         'preferences.toSpanish': 'Cambiar a español',
         'preferences.toDark': 'Cambiar a modo oscuro',
         'preferences.toLight': 'Cambiar a modo claro',
+        'preferences.darkMode': 'Modo oscuro',
         'home.documentTitle': 'Bienvenido | Pokédex',
         'home.title': '¡Bienvenido, entrenador!',
         'home.subtitle': 'Elige tu entrenador y dinos tu nombre',
@@ -19,7 +21,9 @@ const dictionaries = {
         'home.nameLabel': 'Nombre del entrenador',
         'home.namePlaceholder': 'Tu nombre...',
         'home.submit': '¡Atrápalos a todos!',
-        'home.validation': 'Escribe un nombre de al menos 3 caracteres.',
+        'home.validationRequired': 'Escribe el nombre de tu entrenador.',
+        'home.validationMin': 'El nombre debe tener al menos {min} caracteres.',
+        'home.validationMax': 'El nombre no puede superar los {max} caracteres.',
         'header.goToPokedex': 'Ir a la Pokédex',
         'header.sections': 'Secciones de la Pokédex',
         'header.pokemon': 'Pokémon',
@@ -33,7 +37,8 @@ const dictionaries = {
         'pokedex.searchLabel': 'Buscar un Pokémon',
         'pokedex.searchPlaceholder': 'Nombre del Pokémon...',
         'pokedex.find': 'Buscar Pokémon',
-        'pokedex.favorites': 'Favoritos ({count})',
+        'pokedex.favorites.one': 'Favorito ({count})',
+        'pokedex.favorites.other': 'Favoritos ({count})',
         'pokedex.favoritesLabel': 'Favoritos',
         'pokedex.activeSearch': 'Búsqueda: “{term}”',
         'pokedex.clear': 'Limpiar',
@@ -44,7 +49,8 @@ const dictionaries = {
         'pokedex.noMatches': 'Ningún Pokémon coincide con tu búsqueda.',
         'pokedex.results': 'Resultados de Pokémon',
         'pokedex.resultsHeading': 'Resultados de la Pokédex',
-        'pokedex.resultsSummary': '{count} resultados. Página {page} de {totalPages}.',
+        'pokedex.resultsSummary.one': '{count} resultado. Página {page} de {totalPages}.',
+        'pokedex.resultsSummary.other': '{count} resultados. Página {page} de {totalPages}.',
         'pokedex.aboutLabel': 'Acerca de esta Pokédex',
         'pokedex.discover': 'Descúbrelos todos',
         'pokedex.types': 'Tipos',
@@ -61,13 +67,15 @@ const dictionaries = {
         'pagination.next': 'Siguiente',
         'pagination.page': 'Página {page}',
         'card.loading': 'Cargando...',
-        'card.error': 'No se pudo cargar este Pokémon.',
+        'card.error': 'No se pudieron cargar los datos de {name}.',
+        'card.retry': 'Reintentar cargar los datos de {name}',
         'card.viewDetails': 'Ver detalles de {name}',
         'card.renderAlt': 'Imagen de {name}',
         'card.typesLabel': 'Tipos de {name}',
         'card.statsLabel': 'Estadísticas base de {name}',
         'favorite.add': 'Añadir a {name} a favoritos',
         'favorite.remove': 'Quitar a {name} de favoritos',
+        'favorite.label': 'Favorito: {name}',
         'artwork.unavailable': 'Imagen no disponible',
         'detail.notFoundDocument': 'Pokémon no encontrado | Pokédex',
         'detail.document': 'Detalles del Pokémon | Pokédex',
@@ -84,7 +92,8 @@ const dictionaries = {
         'moves.title': 'Movimientos',
         'moves.empty': 'No hay movimientos disponibles para este Pokémon.',
         'moves.showFewer': 'Mostrar menos movimientos',
-        'moves.showAll': 'Mostrar los {count} movimientos',
+        'moves.showAll.one': 'Mostrar el movimiento',
+        'moves.showAll.other': 'Mostrar los {count} movimientos',
         'notFound.document': 'Página no encontrada | Pokédex',
         'notFound.title': 'Esta ruta escapó de la Pokédex',
         'notFound.description': 'La página que buscas no existe o fue trasladada.',
@@ -98,10 +107,12 @@ const dictionaries = {
         'app.errorTitle': 'Something went wrong',
         'app.errorDescription': 'The Pokédex encountered an unexpected error. Reload the page to continue.',
         'app.reload': 'Reload Pokédex',
+        'app.skipToContent': 'Skip to main content',
         'preferences.toEnglish': 'Switch to English',
         'preferences.toSpanish': 'Switch to Spanish',
         'preferences.toDark': 'Switch to dark mode',
         'preferences.toLight': 'Switch to light mode',
+        'preferences.darkMode': 'Dark mode',
         'home.documentTitle': 'Welcome | Pokédex',
         'home.title': 'Welcome trainer!',
         'home.subtitle': 'Choose your trainer and give us your name',
@@ -111,7 +122,9 @@ const dictionaries = {
         'home.nameLabel': 'Trainer name',
         'home.namePlaceholder': 'Your name...',
         'home.submit': 'Catch them all!',
-        'home.validation': 'Enter a name with at least 3 characters.',
+        'home.validationRequired': 'Enter your trainer name.',
+        'home.validationMin': 'The name must contain at least {min} characters.',
+        'home.validationMax': 'The name cannot contain more than {max} characters.',
         'header.goToPokedex': 'Go to the Pokédex',
         'header.sections': 'Pokédex sections',
         'header.pokemon': 'Pokémon',
@@ -125,7 +138,8 @@ const dictionaries = {
         'pokedex.searchLabel': 'Search a Pokémon',
         'pokedex.searchPlaceholder': 'Pokémon name...',
         'pokedex.find': 'Find Pokémon',
-        'pokedex.favorites': 'Favorites ({count})',
+        'pokedex.favorites.one': 'Favorite ({count})',
+        'pokedex.favorites.other': 'Favorites ({count})',
         'pokedex.favoritesLabel': 'Favorites',
         'pokedex.activeSearch': 'Search: “{term}”',
         'pokedex.clear': 'Clear',
@@ -136,7 +150,8 @@ const dictionaries = {
         'pokedex.noMatches': 'No Pokémon match your search.',
         'pokedex.results': 'Pokémon results',
         'pokedex.resultsHeading': 'Pokédex results',
-        'pokedex.resultsSummary': '{count} results. Page {page} of {totalPages}.',
+        'pokedex.resultsSummary.one': '{count} result. Page {page} of {totalPages}.',
+        'pokedex.resultsSummary.other': '{count} results. Page {page} of {totalPages}.',
         'pokedex.aboutLabel': 'About this Pokédex',
         'pokedex.discover': 'Discover them all',
         'pokedex.types': 'Types',
@@ -153,13 +168,15 @@ const dictionaries = {
         'pagination.next': 'Next',
         'pagination.page': 'Page {page}',
         'card.loading': 'Loading...',
-        'card.error': 'Could not load this Pokémon.',
+        'card.error': 'Could not load the data for {name}.',
+        'card.retry': 'Retry loading the data for {name}',
         'card.viewDetails': 'View details for {name}',
         'card.renderAlt': 'Image of {name}',
         'card.typesLabel': '{name} types',
         'card.statsLabel': '{name} base stats',
         'favorite.add': 'Add {name} to favorites',
         'favorite.remove': 'Remove {name} from favorites',
+        'favorite.label': 'Favorite: {name}',
         'artwork.unavailable': 'Artwork unavailable',
         'detail.notFoundDocument': 'Pokémon not found | Pokédex',
         'detail.document': 'Pokémon details | Pokédex',
@@ -176,7 +193,8 @@ const dictionaries = {
         'moves.title': 'Moves',
         'moves.empty': 'No moves are available for this Pokémon.',
         'moves.showFewer': 'Show fewer moves',
-        'moves.showAll': 'Show all {count} moves',
+        'moves.showAll.one': 'Show the move',
+        'moves.showAll.other': 'Show all {count} moves',
         'notFound.document': 'Page not found | Pokédex',
         'notFound.title': 'This route escaped the Pokédex',
         'notFound.description': 'The page you are looking for does not exist or has moved.',
@@ -210,19 +228,45 @@ const statNames = {
     },
 }
 
-const interpolate = (template, values) => Object.entries(values).reduce(
-    (translated, [key, value]) => translated.replaceAll(`{${key}}`, String(value)),
+const getLocale = language => (
+    language === LANGUAGES.ENGLISH ? 'en' : 'es'
+)
+
+const formatInterpolationValue = (locale, value) => (
+    typeof value === 'number' && Number.isFinite(value)
+        ? new Intl.NumberFormat(locale).format(value)
+        : String(value)
+)
+
+const interpolate = (template, values, locale) => Object.entries(values).reduce(
+    (translated, [key, value]) => translated.replaceAll(
+        `{${key}}`,
+        formatInterpolationValue(locale, value),
+    ),
     template,
 )
 
 export const translate = (language, key, values = {}) => {
-    const normalizedLanguage = language === LANGUAGES.ENGLISH ? 'en' : 'es'
-    const template = dictionaries[normalizedLanguage][key]
+    const locale = getLocale(language)
+    const count = Number(values.count)
+    const pluralKey = Number.isFinite(count)
+        ? `${key}.${new Intl.PluralRules(locale).select(count)}`
+        : null
+    const fallbackPluralKey = Number.isFinite(count) ? `${key}.other` : null
+    const template = (pluralKey && dictionaries[locale][pluralKey])
+        ?? dictionaries[locale][key]
+        ?? (fallbackPluralKey && dictionaries[locale][fallbackPluralKey])
+        ?? (pluralKey && dictionaries.es[pluralKey])
         ?? dictionaries.es[key]
+        ?? (fallbackPluralKey && dictionaries.es[fallbackPluralKey])
         ?? key
 
-    return interpolate(template, values)
+    return interpolate(template, values, locale)
 }
+
+export const formatLocalizedNumber = (language, value, options) => (
+    new Intl.NumberFormat(getLocale(language), options).format(value)
+)
 
 export const translatePokemonType = (language, typeName) => {
     const normalizedLanguage = language === LANGUAGES.ENGLISH ? 'en' : 'es'

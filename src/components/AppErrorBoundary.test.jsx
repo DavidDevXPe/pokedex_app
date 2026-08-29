@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import AppErrorBoundary from './AppErrorBoundary'
 
@@ -39,5 +39,29 @@ describe('AppErrorBoundary', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Reload' }))
     expect(onReset).toHaveBeenCalledOnce()
+  })
+
+  it('recovers when any part of the route location changes', async () => {
+    const boundaryProps = {
+      actionLabel: 'Reload',
+      description: 'Try again.',
+      onReset: () => {},
+      title: 'Something went wrong',
+    }
+    const { rerender } = render(
+      <AppErrorBoundary {...boundaryProps} resetKey='/pokedex?search=pi#filters'>
+        <ThrowingChild />
+      </AppErrorBoundary>,
+    )
+
+    rerender(
+      <AppErrorBoundary {...boundaryProps} resetKey='/pokedex?search=pika#about'>
+        <p>Recovered route</p>
+      </AppErrorBoundary>,
+    )
+
+    await waitFor(() => {
+      expect(screen.getByText('Recovered route')).toBeInTheDocument()
+    })
   })
 })

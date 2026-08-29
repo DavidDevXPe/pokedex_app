@@ -13,16 +13,25 @@ import {
 import { getPublicAssetUrl } from '../utils/publicAsset'
 import './styles/homePage.css'
 
+const TRAINER_NAME_MIN_LENGTH = 3
+const TRAINER_NAME_MAX_LENGTH = 40
+
 const HomePage = () => {
     const textInput = useRef();
     const storedGender = useSelector(store => store.trainerGender)
     const [trainerGender, selectTrainerGender] = useState(
         storedGender ?? TRAINER_GENDERS.MALE,
     )
-    const [validationError, setValidationError] = useState('')
+    const [validationErrorKey, setValidationErrorKey] = useState('')
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { t } = useTranslation()
+    const validationError = validationErrorKey
+        ? t(validationErrorKey, {
+            min: TRAINER_NAME_MIN_LENGTH,
+            max: TRAINER_NAME_MAX_LENGTH,
+        })
+        : ''
 
     useDocumentTitle(t('home.documentTitle'))
 
@@ -30,25 +39,37 @@ const HomePage = () => {
         e.preventDefault()
         const trainerName = textInput.current.value.trim()
 
-        if (trainerName.length < 3) {
-            setValidationError(t('home.validation'))
+        if (!trainerName) {
+            setValidationErrorKey('home.validationRequired')
             textInput.current.focus()
             return
         }
 
-        setValidationError('')
+        if (trainerName.length < TRAINER_NAME_MIN_LENGTH) {
+            setValidationErrorKey('home.validationMin')
+            textInput.current.focus()
+            return
+        }
+
+        if (trainerName.length > TRAINER_NAME_MAX_LENGTH) {
+            setValidationErrorKey('home.validationMax')
+            textInput.current.focus()
+            return
+        }
+
+        setValidationErrorKey('')
         dispatch(setTrainerGender(trainerGender))
         dispatch(setTrainerName(trainerName))
         navigate('/pokedex');
     }
   return (
-    <main className='hpWrapper'>
+    <main id='main-content' className='hpWrapper'>
         <PreferenceControls className='homePreferences' />
         <img src={getPublicAssetUrl('pokedex.png')} alt='Pokédex' />
 
         <h1 className='hpTitle'>{t('home.title')}</h1>
         <h2>{t('home.subtitle')}</h2>
-        <form onSubmit={handleSubmit} className='hpForm'>
+        <form onSubmit={handleSubmit} className='hpForm' noValidate>
             <fieldset className='trainerGenderPicker'>
                 <legend>{t('home.selectTrainer')}</legend>
                 <div className='trainerGenderOptions'>
@@ -80,8 +101,8 @@ const HomePage = () => {
                     type='text'
                     ref={textInput}
                     placeholder={t('home.namePlaceholder')}
-                    minLength='3'
-                    maxLength='40'
+                    minLength={TRAINER_NAME_MIN_LENGTH}
+                    maxLength={TRAINER_NAME_MAX_LENGTH}
                     autoComplete='nickname'
                     required
                     aria-invalid={Boolean(validationError)}
@@ -93,11 +114,11 @@ const HomePage = () => {
         {validationError && (
           <p id='trainerNameError' className='formError' role='alert'>{validationError}</p>
         )}
-        <footer className='hpBar'>
+        <div className='hpBar' aria-hidden='true'>
           <div className='hpDot'>
             <div className='hpDot2'></div>
           </div>
-        </footer>
+        </div>
     </main>
   )
 }

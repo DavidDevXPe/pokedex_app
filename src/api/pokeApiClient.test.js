@@ -145,6 +145,28 @@ describe('PokéAPI client', () => {
         expect(axios.get).toHaveBeenCalledTimes(2)
     })
 
+    it('stops applying a validator after its subscriber is released', async () => {
+        let resolveRequest
+        axios.get.mockReturnValueOnce(new Promise(resolve => {
+            resolveRequest = resolve
+        }))
+
+        const releasedRequest = subscribeToApiRequest(
+            'https://example.test/pokemon/25',
+            () => false,
+        )
+        const activeRequest = subscribeToApiRequest(
+            'https://example.test/pokemon/25/',
+            data => data?.id === 25,
+        )
+
+        releasedRequest.release()
+        resolveRequest({ data: { id: 25 } })
+
+        await expect(activeRequest.promise).resolves.toEqual({ id: 25 })
+        activeRequest.release()
+    })
+
     it('classifies HTTP, timeout and network failures', () => {
         expect(normalizeApiError({ response: { status: 404 } }).toDetails())
             .toMatchObject({

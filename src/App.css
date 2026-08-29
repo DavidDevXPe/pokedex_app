@@ -7,10 +7,10 @@
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --color-primary: #df1423;
-  --color-primary-dark: #b90815;
+  --color-primary: #c20e1c;
+  --color-primary-dark: #940a14;
   --color-ink: #191c20;
-  --color-muted: #667085;
+  --color-muted: #505a6b;
   --color-surface: #ffffff;
   --color-border: #d9dde3;
   --color-canvas: #f6f7f9;
@@ -135,6 +135,25 @@ a {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+.skipLink {
+  position: fixed;
+  z-index: 100;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-ink);
+  box-shadow: var(--shadow-md);
+  color: #ffffff;
+  font-weight: 800;
+  transform: translateY(calc(-100% - 1rem));
+  transition: transform 160ms ease;
+}
+
+.skipLink:focus {
+  transform: translateY(0);
 }
 
 .formError {

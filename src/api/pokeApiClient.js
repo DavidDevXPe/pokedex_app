@@ -205,7 +205,10 @@ const createPendingRequest = (url, cacheKey) => {
         }
 
         const hasInvalidPayload = [...entry.validators].some(
-            validateResponse => !safelyValidateResponse(validateResponse, response.data),
+            subscription => !safelyValidateResponse(
+                subscription.validateResponse,
+                response.data,
+            ),
         )
         if (hasInvalidPayload) throw createInvalidResponseError()
 
@@ -261,7 +264,8 @@ export const subscribeToApiRequest = (url, validateResponse = () => true) => {
         entry = createPendingRequest(url, cacheKey)
     }
 
-    entry.validators.add(validateResponse)
+    const validatorSubscription = { validateResponse }
+    entry.validators.add(validatorSubscription)
     entry.subscriberCount += 1
     let released = false
 
@@ -273,6 +277,7 @@ export const subscribeToApiRequest = (url, validateResponse = () => true) => {
             if (released) return
 
             released = true
+            entry.validators.delete(validatorSubscription)
             entry.subscriberCount = Math.max(0, entry.subscriberCount - 1)
 
             if (entry.subscriberCount === 0 && !entry.settled) {

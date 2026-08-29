@@ -12,34 +12,82 @@ const PokedexPage = lazy(() => import('./pages/PokedexPage'))
 const PokeIdPage = lazy(() => import('./pages/PokeIdPage'))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'))
 
+const MAIN_CONTENT_ID = 'main-content'
+
+const focusContent = (element, { scroll = false } = {}) => {
+  if (!element) return false
+
+  if (!element.hasAttribute('tabindex')) {
+    element.setAttribute('tabindex', '-1')
+  }
+
+  if (scroll) {
+    element.scrollIntoView?.({ behavior: 'auto', block: 'start' })
+  }
+
+  element.focus({ preventScroll: true })
+  return true
+}
+
+export const SkipLink = () => {
+  const { t } = useTranslation()
+
+  const handleClick = event => {
+    event.preventDefault()
+    focusContent(document.getElementById(MAIN_CONTENT_ID), { scroll: true })
+  }
+
+  return (
+    <a className='skipLink' href={`#${MAIN_CONTENT_ID}`} onClick={handleClick}>
+      {t('app.skipToContent')}
+    </a>
+  )
+}
+
 export const RouteFocusManager = () => {
-  const { pathname } = useLocation()
-  const previousPathname = useRef(pathname)
+  const { hash, pathname } = useLocation()
+  const previousLocation = useRef({ hash, pathname })
 
   useEffect(() => {
-    const routeChanged = previousPathname.current !== pathname
-    previousPathname.current = pathname
-    window.scrollTo({ top: 0, behavior: 'auto' })
-
-    if (!routeChanged) return undefined
+    const routeChanged = previousLocation.current.pathname !== pathname
+    const hashChanged = previousLocation.current.hash !== hash
+    previousLocation.current = { hash, pathname }
 
     let observer
     let animationFrame
 
-    const focusMainContent = () => {
-      const mainContent = document.querySelector('main')
-      if (!mainContent) return false
+    const getHashTargetId = () => {
+      if (!hash) return ''
 
-      mainContent.setAttribute('tabindex', '-1')
-      mainContent.focus({ preventScroll: true })
-      return true
+      try {
+        return decodeURIComponent(hash.slice(1))
+      } catch {
+        return hash.slice(1)
+      }
+    }
+
+    const targetId = getHashTargetId()
+    const shouldFocus = Boolean(targetId) || routeChanged || hashChanged
+
+    if (!targetId) {
+      window.scrollTo({ top: 0, behavior: 'auto' })
+    }
+
+    if (!shouldFocus) return undefined
+
+    const focusNavigationTarget = () => {
+      const target = targetId
+        ? document.getElementById(targetId)
+        : document.getElementById(MAIN_CONTENT_ID)
+
+      return focusContent(target, { scroll: Boolean(targetId) })
     }
 
     animationFrame = window.requestAnimationFrame(() => {
-      if (focusMainContent()) return
+      if (focusNavigationTarget()) return
 
       observer = new MutationObserver(() => {
-        if (!focusMainContent()) return
+        if (!focusNavigationTarget()) return
         observer.disconnect()
       })
       observer.observe(document.getElementById('root') ?? document.body, {
@@ -52,23 +100,24 @@ export const RouteFocusManager = () => {
       window.cancelAnimationFrame(animationFrame)
       observer?.disconnect()
     }
-  }, [pathname])
+  }, [hash, pathname])
 
   return null
 }
 
 function App() {
   const { t } = useTranslation()
-  const { pathname } = useLocation()
+  const { hash, pathname, search } = useLocation()
 
   return (
     <>
+      <SkipLink />
       <RouteFocusManager />
       <AppErrorBoundary
         actionLabel={t('app.reload')}
         description={t('app.errorDescription')}
         onReset={() => window.location.reload()}
-        resetKey={pathname}
+        resetKey={`${pathname}${search}${hash}`}
         title={t('app.errorTitle')}
       >
         <Suspense fallback={<p className='routeLoading' role='status'>{t('app.loading')}</p>}>

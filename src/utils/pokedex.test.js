@@ -48,6 +48,9 @@ describe('Pokédex utilities', () => {
         expect(getPageFromSearchParams(new URLSearchParams('page=3'))).toBe(3)
         expect(getPageFromSearchParams(new URLSearchParams('page=-4'))).toBe(1)
         expect(getPageFromSearchParams(new URLSearchParams('page=abc'))).toBe(1)
+        expect(getPageFromSearchParams(new URLSearchParams('page=2abc'))).toBe(1)
+        expect(getPageFromSearchParams(new URLSearchParams('page=2.5'))).toBe(1)
+        expect(getPageFromSearchParams(new URLSearchParams(`page=${Number.MAX_SAFE_INTEGER + 1}`))).toBe(1)
     })
 
     it('formats API names for display', () => {

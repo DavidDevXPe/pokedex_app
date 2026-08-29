@@ -29,7 +29,7 @@
     grid-template-columns: minmax(0, 1fr) auto;
     border: 1px solid #e0e5eb;
     border-radius: 1rem;
-    background-color: rgba(255, 255, 255, 0.96);
+    background-color: var(--color-surface);
     box-shadow: 0 10px 24px rgba(31, 41, 55, 0.1);
 }
 
@@ -51,8 +51,8 @@
     justify-content: center;
     gap: 0.7rem;
     border-radius: 0.8rem;
-    background: linear-gradient(145deg, #ee2732, #d20a17);
-    box-shadow: 0 7px 16px rgba(207, 14, 27, 0.24);
+    background: linear-gradient(145deg, #b70d1a, #920711);
+    box-shadow: 0 7px 16px rgba(146, 7, 17, 0.28);
 }
 
 .searchIcon {
@@ -92,7 +92,7 @@
     padding-inline: 1.1rem;
     border-color: #e0e5eb;
     border-radius: 1rem;
-    background-color: rgba(255, 255, 255, 0.96);
+    background-color: var(--color-surface);
     box-shadow: 0 10px 24px rgba(31, 41, 55, 0.1);
     color: #5b6470;
     white-space: nowrap;
@@ -108,8 +108,8 @@
 }
 
 .favoriteFilter.active {
-    border-color: #d20a17;
-    background: linear-gradient(145deg, #ee2732, #d20a17);
+    border-color: #920711;
+    background: linear-gradient(145deg, #b70d1a, #920711);
     color: #ffffff;
 }
 
@@ -180,7 +180,7 @@
     scroll-margin-top: 125px;
     border: 1px solid #e2e6ec;
     border-radius: 1.35rem;
-    background-color: rgba(255, 255, 255, 0.96);
+    background-color: var(--color-surface);
     box-shadow: 0 12px 30px rgba(31, 41, 55, 0.1);
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 0.75rem;
@@ -216,16 +216,17 @@
 }
 
 .featureIconBlue {
-    background: linear-gradient(145deg, #39a9e5, #0873b8);
+    background-color: #086aa8;
 }
 
 .featureIconGold {
-    background: linear-gradient(145deg, #ffcc3a, #e59a00);
+    background-color: #e6a800;
+    color: #1f2937;
     font-size: 1.75rem;
 }
 
 .featureIconPurple {
-    background: linear-gradient(145deg, #b84ad2, #7a159d);
+    background-color: #781394;
     font-size: 1.8rem;
 }
 
@@ -281,6 +282,7 @@
 .resultsHeading {
     width: min(1400px, calc(100% - 2.5rem));
     margin: 0 auto 1rem;
+    scroll-margin-top: 125px;
     border-radius: 0.35rem;
     color: var(--color-ink);
     font-size: clamp(1.35rem, 2.2vw, 1.8rem);
@@ -297,7 +299,8 @@
     }
 
     .pokeHeader,
-    .pokedexFeatures {
+    .pokedexFeatures,
+    .resultsHeading {
         scroll-margin-top: 165px;
     }
 }

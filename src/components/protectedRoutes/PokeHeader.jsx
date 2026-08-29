@@ -22,6 +22,7 @@ const PokeHeader = () => {
   const trainerRole = trainerGender === TRAINER_GENDERS.FEMALE
     ? t('header.womanTrainer')
     : t('header.manTrainer')
+  const changeTrainerLabel = `${trainerName}, ${trainerRole}. ${t('header.changeTrainer')}`
   const isPokedexPage = pathname === '/pokedex'
   const isPokemonCurrent = isPokedexPage && !hash
   const isTypesCurrent = isPokedexPage && hash === '#filters'
@@ -38,7 +39,11 @@ const PokeHeader = () => {
   return (
     <header className='headerBar'>
         <div className='headerInner'>
-          <Link className='headerBrand' to='/pokedex' aria-label={t('header.goToPokedex')}>
+          <Link
+            className='headerBrand'
+            to='/pokedex'
+            aria-label={`Pokédex. ${t('header.goToPokedex')}`}
+          >
             <span>P</span>
             <img className='brandBallImage' src={POKEBALL_ASSET_URL} alt='' aria-hidden='true' />
             <span>KÉDEX</span>
@@ -74,7 +79,7 @@ const PokeHeader = () => {
           <button
             className='trainerSwitch'
             type='button'
-            aria-label={t('header.changeTrainer')}
+            aria-label={changeTrainerLabel}
             title={t('header.changeTrainer')}
             onClick={handleChangeTrainer}
           >

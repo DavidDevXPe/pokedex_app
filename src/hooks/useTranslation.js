@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 import { usePreferences } from '../contexts/preferences'
 import {
     getErrorTranslationKey,
+    formatLocalizedNumber,
     translate,
     translatePokemonStat,
     translatePokemonType,
@@ -12,6 +13,7 @@ const useTranslation = () => {
 
     return useMemo(() => ({
         language,
+        formatNumber: (value, options) => formatLocalizedNumber(language, value, options),
         t: (key, values) => translate(language, key, values),
         translateError: error => translate(language, getErrorTranslationKey(error)),
         translateStat: statName => translatePokemonStat(language, statName),

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import useFetch from '../hooks/useFetch'
 import useDocumentTitle from '../hooks/useDocumentTitle'
 import useTranslation from '../hooks/useTranslation'
@@ -27,7 +27,6 @@ const POKEBALL_ASSET_URL = getPublicAssetUrl('pokeball-icon.png')
 const PokedexPage = () => {
     const trainerName = useSelector(store => store.trainerName)
     const favoritePokemonIds = useSelector(store => store.favoritePokemonIds ?? [])
-    const location = useLocation()
     const [searchParams, setSearchParams] = useSearchParams()
     const searchTerm = normalizeSearch(searchParams.get('search') ?? '')
     const requestedType = normalizeSearch(searchParams.get('type') ?? ALL_POKEMONS) || ALL_POKEMONS
@@ -39,7 +38,7 @@ const PokedexPage = () => {
     const [searchInput, setSearchInput] = useState(searchTerm)
     const [syncedSearchTerm, setSyncedSearchTerm] = useState(searchTerm)
     const resultsHeadingRef = useRef(null)
-    const previousResultCountRef = useRef(null)
+    const previousFavoriteCountRef = useRef(favoritePokemonIds.length)
     const prefersReducedMotion = usePrefersReducedMotion()
     const { t, translateError } = useTranslation()
     const {
@@ -51,6 +50,25 @@ const PokedexPage = () => {
     } = useFetch()
 
     useDocumentTitle(t('pokedex.documentTitle'))
+
+    const focusResultsHeading = useCallback(() => {
+        const heading = resultsHeadingRef.current
+        if (!heading) return
+
+        heading.focus({ preventScroll: true })
+
+        if (typeof heading.scrollIntoView === 'function') {
+            heading.scrollIntoView({
+                behavior: prefersReducedMotion ? 'auto' : 'smooth',
+                block: 'start',
+            })
+        } else {
+            window.scrollTo({
+                top: 0,
+                behavior: prefersReducedMotion ? 'auto' : 'smooth',
+            })
+        }
+    }, [prefersReducedMotion])
 
     const updateSearchParams = useCallback((updates, options = {}) => {
         setSearchParams(currentParams => {
@@ -90,16 +108,6 @@ const PokedexPage = () => {
         updateSearchParams({ type: null, page: null }, { replace: true })
     }, [requestedType, selectedType, updateSearchParams])
 
-    useEffect(() => {
-        const sectionId = location.hash.slice(1)
-        if (!sectionId) return
-
-        document.getElementById(sectionId)?.scrollIntoView({
-            behavior: prefersReducedMotion ? 'auto' : 'smooth',
-            block: 'start',
-        })
-    }, [location.hash, prefersReducedMotion])
-
     const searchedPokemons = useMemo(
         () => filterPokemons(pokemons?.results ?? [], searchTerm),
         [pokemons, searchTerm],
@@ -113,13 +121,13 @@ const PokedexPage = () => {
     const totalPages = Math.max(1, Math.ceil(filteredPokemons.length / POKEMON_PER_PAGE))
 
     useEffect(() => {
-        const previousCount = previousResultCountRef.current
-        previousResultCountRef.current = filteredPokemons.length
+        const previousCount = previousFavoriteCountRef.current
+        previousFavoriteCountRef.current = favoritePokemonIds.length
 
-        if (showFavorites && previousCount !== null && filteredPokemons.length < previousCount) {
-            resultsHeadingRef.current?.focus({ preventScroll: true })
+        if (showFavorites && favoritePokemonIds.length < previousCount) {
+            focusResultsHeading()
         }
-    }, [filteredPokemons.length, showFavorites])
+    }, [favoritePokemonIds.length, focusResultsHeading, showFavorites])
 
     useEffect(() => {
         if (!pokemons || isLoading || currentPage <= totalPages) return
@@ -146,10 +154,7 @@ const PokedexPage = () => {
 
     const handlePageChange = page => {
         updateSearchParams({ page: page === 1 ? null : page })
-        window.scrollTo({
-            top: 0,
-            behavior: prefersReducedMotion ? 'auto' : 'smooth',
-        })
+        focusResultsHeading()
     }
 
     const handleFavoritesFilter = () => {
@@ -172,7 +177,7 @@ const PokedexPage = () => {
     )
 
     return (
-        <main className='pokedex' aria-busy={isLoading}>
+        <main id='main-content' className='pokedex' aria-busy={isLoading}>
             <section className='pokeHeader' id='filters'>
                 <h1 className='srOnly'>{t('pokedex.heading', { name: trainerName })}</h1>
                 <div className='pokeControls'>
@@ -251,7 +256,7 @@ const PokedexPage = () => {
                     aria-label={t('pokedex.results')}
                 >
                     {currentPokemons.map(pokemon => (
-                        <PokeCard key={pokemon.url} url={pokemon.url} />
+                        <PokeCard key={pokemon.url} pokemonSummary={pokemon} />
                     ))}
                 </section>
             )}

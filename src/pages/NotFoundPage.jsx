@@ -13,7 +13,7 @@ const NotFoundPage = () => {
     useDocumentTitle(t('notFound.document'))
 
     return (
-        <main className='notFoundPage'>
+        <main id='main-content' className='notFoundPage'>
             <PreferenceControls className='notFoundPreferences' />
             <div className='notFoundBall' aria-hidden='true'>
                 <span></span>

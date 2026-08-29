@@ -11,12 +11,13 @@ const FavoriteButton = ({ pokemonId, pokemonName, className = '' }) => {
     const accessibleLabel = isFavorite
         ? t('favorite.remove', { name: pokemonName })
         : t('favorite.add', { name: pokemonName })
+    const toggleLabel = t('favorite.label', { name: pokemonName })
 
     return (
         <button
             className={`favoriteButton ${isFavorite ? 'isFavorite' : ''} ${className}`.trim()}
             type='button'
-            aria-label={accessibleLabel}
+            aria-label={toggleLabel}
             aria-pressed={isFavorite}
             title={accessibleLabel}
             onClick={() => dispatch(toggleFavoritePokemon(pokemonId))}

@@ -13,15 +13,18 @@ describe('PreferenceControls', () => {
         )
 
         expect(document.documentElement).toHaveAttribute('lang', 'es')
-        expect(screen.getByRole('button', { name: 'Cambiar a modo oscuro' })
-            .querySelector('.themeIcon')).toBeInTheDocument()
-        fireEvent.click(screen.getByRole('button', { name: 'Cambiar a inglés' }))
-        expect(screen.getByRole('button', { name: 'Switch to Spanish' })).toBeInTheDocument()
+        const themeButton = screen.getByRole('button', { name: 'Modo oscuro' })
+        expect(themeButton.querySelector('.themeIcon')).toBeInTheDocument()
+        expect(themeButton).toHaveAttribute('aria-pressed', 'false')
+        fireEvent.click(screen.getByRole('button', { name: 'EN: Cambiar a inglés' }))
+        expect(screen.getByRole('button', { name: 'ES: Switch to Spanish' })).toBeInTheDocument()
 
-        fireEvent.click(screen.getByRole('button', { name: 'Switch to dark mode' }))
+        fireEvent.click(screen.getByRole('button', { name: 'Dark mode' }))
 
         await waitFor(() => {
             expect(document.documentElement).toHaveAttribute('data-theme', 'dark')
+            expect(screen.getByRole('button', { name: 'Dark mode' }))
+                .toHaveAttribute('aria-pressed', 'true')
             expect(JSON.parse(window.localStorage.getItem(PREFERENCES_STORAGE_KEY))).toEqual({
                 language: 'en',
                 theme: 'dark',

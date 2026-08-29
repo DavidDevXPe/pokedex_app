@@ -12,7 +12,7 @@ import FavoriteButton from '../components/FavoriteButton'
 import useTranslation from '../hooks/useTranslation'
 
 const PokeIdPage = () => {
-  const { t, translateError } = useTranslation()
+  const { t, translateError, formatNumber } = useTranslation()
   const { id } = useParams()
   const location = useLocation()
   const {
@@ -34,7 +34,7 @@ const PokeIdPage = () => {
   useDocumentTitle(pageTitle)
 
   const loadPokemon = useCallback(() => {
-    getPokeData(`https://pokeapi.co/api/v2/pokemon/${id}`)
+    getPokeData(`https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(id)}`)
   }, [getPokeData, id])
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const PokeIdPage = () => {
 
   if (isLoading) {
     return (
-      <main className='detailStatus'>
+      <main id='main-content' className='detailStatus'>
         <h1 className='srOnly'>{t('detail.document')}</h1>
         <p role='status'>{t('detail.loading')}</p>
       </main>
@@ -52,7 +52,7 @@ const PokeIdPage = () => {
 
   if (error) {
     return (
-      <main className='detailStatus'>
+      <main id='main-content' className='detailStatus'>
         <h1 className={statusCode === 404 ? '' : 'srOnly'}>
           {statusCode === 404 ? t('detail.notFound') : t('detail.document')}
         </h1>
@@ -72,8 +72,20 @@ const PokeIdPage = () => {
   if (!pokeData) return null
 
   const primaryType = pokeData.types[0]?.type.name ?? 'normal'
+  const weight = formatNumber(pokeData.weight / 10, {
+    style: 'unit',
+    unit: 'kilogram',
+    unitDisplay: 'short',
+    maximumFractionDigits: 1,
+  })
+  const height = formatNumber(pokeData.height / 10, {
+    style: 'unit',
+    unit: 'meter',
+    unitDisplay: 'short',
+    maximumFractionDigits: 1,
+  })
   return (
-    <main className='idWrapper'>
+    <main id='main-content' className='idWrapper'>
       <Link className='detailBackLink' to={returnPath}>{t('detail.back')}</Link>
       <div className={`typeBox pokemonTypeSurface type-${primaryType}`} aria-hidden='true'></div>
       <section className='idCard profileCard' aria-labelledby='pokemonDetailTitle'>
@@ -96,8 +108,8 @@ const PokeIdPage = () => {
           <div className='linea' aria-hidden='true'></div>
         </div>
         <ul className='pokeSize'>
-          <li>{t('detail.weight')} <span>{pokeData.weight / 10} kg</span></li>
-          <li>{t('detail.height')} <span>{pokeData.height / 10} m</span></li>
+          <li>{t('detail.weight')} <span>{weight}</span></li>
+          <li>{t('detail.height')} <span>{height}</span></li>
         </ul>
 
         <div className='atributes'>

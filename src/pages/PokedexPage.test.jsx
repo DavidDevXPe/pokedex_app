@@ -1,9 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import PokedexPage from './PokedexPage'
+import favoritePokemonIds, {
+    toggleFavoritePokemon,
+} from '../store/slices/favoritePokemonIds.slice'
 
 const apiMocks = vi.hoisted(() => ({
     getApi: vi.fn(),
@@ -38,12 +41,13 @@ const LocationDisplay = () => {
     return <output data-testid='location-search'>{location.search}</output>
 }
 
-const renderPage = (initialEntry, favoritePokemonIds = []) => {
+const renderPage = (initialEntry, initialFavoritePokemonIds = []) => {
     const store = configureStore({
         reducer: {
             trainerName: () => 'Ash',
-            favoritePokemonIds: () => favoritePokemonIds,
+            favoritePokemonIds,
         },
+        preloadedState: { favoritePokemonIds: initialFavoritePokemonIds },
     })
 
     render(
@@ -63,6 +67,8 @@ const renderPage = (initialEntry, favoritePokemonIds = []) => {
             </MemoryRouter>
         </Provider>,
     )
+
+    return store
 }
 
 describe('PokedexPage URL state', () => {
@@ -88,6 +94,8 @@ describe('PokedexPage URL state', () => {
 
         expect(screen.getByTestId('location-search')).toHaveTextContent('?page=2')
         expect(screen.getAllByTestId('pokemon-card')).toHaveLength(6)
+        expect(screen.getByRole('heading', { name: 'Resultados de la Pokédex' }))
+            .toHaveFocus()
     })
 
     it('filters favorites and stores that choice in the URL', () => {
@@ -109,5 +117,17 @@ describe('PokedexPage URL state', () => {
         })
         expect(apiMocks.getApi).toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon/?limit=1500')
         expect(apiMocks.getApiType).not.toHaveBeenCalled()
+    })
+
+    it('moves focus to visible results after removing a filtered favorite', async () => {
+        const store = renderPage('/pokedex?favorites=1', [1, 3])
+
+        act(() => store.dispatch(toggleFavoritePokemon(1)))
+
+        await waitFor(() => {
+            expect(screen.getByRole('heading', { name: 'Resultados de la Pokédex' }))
+                .toHaveFocus()
+        })
+        expect(screen.getAllByTestId('pokemon-card')).toHaveLength(1)
     })
 })

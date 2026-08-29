@@ -19,7 +19,7 @@
 }
 
 .hpTitle {
-    color: #d92238;
+    color: #b3142c;
     font-size: clamp(2rem, 5vw, 3.25rem);
     line-height: 1.05;
 }
@@ -68,7 +68,7 @@
     gap: 0.65rem;
     border: 2px solid #dce1e8;
     border-radius: 1rem;
-    background-color: rgba(255, 255, 255, 0.88);
+    background-color: var(--color-surface);
     box-shadow: 0 7px 18px rgba(31, 41, 55, 0.09);
     color: var(--color-muted);
     cursor: pointer;
@@ -83,9 +83,9 @@
 }
 
 .trainerGenderOption.selected {
-    border-color: #d92238;
+    border-color: #b3142c;
     box-shadow: 0 8px 20px rgba(217, 34, 56, 0.18);
-    color: #a40e20;
+    color: #861022;
 }
 
 .trainerGenderOption:focus-within {
@@ -94,11 +94,13 @@
 }
 
 .trainerGenderOption input {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    opacity: 0;
-    pointer-events: none;
+    width: 1.2rem;
+    min-width: 1.2rem;
+    height: 1.2rem;
+    min-height: 1.2rem;
+    margin: 0;
+    accent-color: #b3142c;
+    cursor: pointer;
 }
 
 .trainerGenderOption img {
@@ -201,5 +203,22 @@
 
     .hpForm {
         margin-top: 1rem;
+    }
+}
+
+@media (forced-colors: active) {
+    .trainerGenderOption {
+        border-color: CanvasText;
+        box-shadow: none;
+        forced-color-adjust: auto;
+    }
+
+    .trainerGenderOption.selected {
+        border-color: Highlight;
+        color: CanvasText;
+    }
+
+    .trainerGenderOption input {
+        accent-color: Highlight;
     }
 }

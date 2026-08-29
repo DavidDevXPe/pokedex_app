@@ -76,6 +76,8 @@ describe('PokeIdPage navigation', () => {
             .toHaveAttribute('href', '/pokedex?search=mime&type=psychic&page=2')
         expect(screen.getByRole('main')).toBeInTheDocument()
         expect(screen.getByRole('heading', { level: 1, name: 'Mr Mime' })).toBeInTheDocument()
+        expect(screen.getByText(/54,5\s*kg/)).toBeInTheDocument()
+        expect(screen.getByText(/1,3\s*m/)).toBeInTheDocument()
         expect(document.title).toBe('Mr Mime | Pokédex')
     })
 
@@ -84,6 +86,15 @@ describe('PokeIdPage navigation', () => {
 
         expect(screen.getByRole('link', { name: '← Volver a resultados' }))
             .toHaveAttribute('href', '/pokedex')
+    })
+
+    it('encodes route parameters before requesting PokéAPI', async () => {
+        renderDetails('/pokedex/mr%20mime')
+
+        await waitFor(() => {
+            expect(apiMocks.getApi)
+                .toHaveBeenCalledWith('https://pokeapi.co/api/v2/pokemon/mr%20mime')
+        })
     })
 
     it('shows a useful state for a Pokémon that does not exist', () => {

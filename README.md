@@ -41,8 +41,8 @@ El proyecto consume datos de [PokéAPI](https://pokeapi.co/) y está construido 
 
 ## Requisitos
 
-- Node.js 22.22.2 o superior, o Node.js 24.15 o superior.
-- npm.
+- Node.js `^22.22.2`, `^24.15.0` o `>=26.0.0`, de acuerdo con `package.json`.
+- npm `>=10.9.0`; el gestor declarado para reproducir el lockfile es npm 11.13.0.
 - Conexión a internet para consultar PokéAPI y cargar la fuente Inter.
 
 ## Instalación
@@ -91,7 +91,8 @@ src/
 └── main.jsx          Punto de entrada de React
 e2e/                   Smoke tests de Playwright
 public/                Activos estáticos, manifest y robots.txt
-.github/workflows/     Validación y despliegue automatizados
+.github/workflows/     Validación automatizada
+netlify.toml           Build, cabeceras y caché de producción
 ```
 
 ## Rutas
@@ -115,53 +116,35 @@ npm run test:e2e
 npm audit
 ```
 
-La aplicación utiliza `HashRouter`, por lo que la carpeta `dist/` puede desplegarse en un alojamiento estático sin configurar redirecciones de rutas.
+La aplicación utiliza `HashRouter`, por lo que Netlify puede servir la carpeta `dist/` sin configurar redirecciones para las rutas internas.
 
 El workflow `.github/workflows/quality.yml` ejecuta lint, cobertura con umbrales, build, auditoría de dependencias y pruebas E2E en las ramas de trabajo y en cada pull request dirigido a `main`.
 
-## Base pública y compilación para subrutas
+## Despliegue en Netlify
 
-Vite usa `/` como base predeterminada. Para alojar la aplicación dentro de una subruta, define `VITE_BASE_PATH` con barras inicial y final:
+El destino público del proyecto es [https://pokedex08.netlify.app/](https://pokedex08.netlify.app/). `netlify.toml` mantiene la configuración de producción dentro del repositorio:
 
-```bash
-VITE_BASE_PATH=/pokedex_app/ npm run build
-```
+- ejecuta `npm run build` con Node.js 24.15.0;
+- publica la carpeta `dist/` desde la raíz del dominio;
+- aplica cabeceras de seguridad compatibles con PokéAPI, los sprites oficiales y Google Fonts;
+- evita almacenar HTML obsoleto y aplica caché inmutable a los bundles JavaScript y CSS versionados de `dist/assets/`;
+- sirve `site.webmanifest` con su tipo MIME correspondiente.
 
-En PowerShell:
+Al conectar el repositorio en Netlify no es necesario duplicar el comando de build ni el directorio de publicación en la interfaz. Tampoco debe definirse `VITE_BASE_PATH`: el despliegue oficial se sirve desde `/`. La aplicación utiliza `HashRouter`, por lo que las rutas internas no necesitan reglas de redirección.
 
-```powershell
-$env:VITE_BASE_PATH = '/pokedex_app/'
-npm.cmd run build
-```
+Antes de publicar, ejecuta localmente los comandos indicados en «Calidad y compilación». Netlify se ocupa del build y la publicación; GitHub Actions conserva únicamente las comprobaciones de calidad.
 
-La configuración acepta también `./` para generar rutas relativas. Las referencias de la interfaz a archivos de `public/` pasan por `src/utils/publicAsset.js`, por lo que respetan la base configurada sin mantener una lista manual de nombres.
+## SEO y manifest web
 
-## Despliegue en GitHub Pages
+`index.html` incluye descripción, directivas de indexación, URL canónica, Open Graph, Twitter Cards y un aviso para navegadores sin JavaScript. Las URLs canónica y sociales apuntan al despliegue oficial en Netlify, y `public/robots.txt` permite rastrear el documento público.
 
-El workflow `.github/workflows/deploy-pages.yml` valida, audita, ejecuta los E2E sobre la subruta, compila y publica `dist/` al hacer push a `main` o al ejecutarse manualmente. Está preparado para el repositorio `pokedex_app` con `VITE_BASE_PATH=/pokedex_app/`.
+`public/site.webmanifest` aporta nombre, colores e iconos para la integración que ofrezca cada navegador. El proyecto no se presenta como una PWA con funcionamiento sin conexión: no registra un service worker ni almacena las respuestas de PokéAPI para uso offline.
 
-Para activarlo:
-
-1. Abre **Settings → Pages** en GitHub.
-2. Selecciona **GitHub Actions** como fuente de publicación.
-3. Envía los cambios a `main` o ejecuta **Deploy to GitHub Pages** desde la pestaña Actions.
-4. Usa la URL que devuelve el job `deploy`; el README no fija un usuario, organización ni dominio final.
-
-Si el repositorio cambia de nombre, ajusta `VITE_BASE_PATH` en el workflow. Para un sitio de usuario u organización (`<usuario>.github.io`) o un dominio personalizado servido desde la raíz, utiliza `/`.
-
-La aplicación usa `HashRouter`, por lo que sus rutas internas no requieren reglas de reescritura en Pages.
-
-## SEO y aplicación instalable
-
-`index.html` incluye descripción, directivas de indexación, Open Graph, Twitter Cards y un aviso para navegadores sin JavaScript. `public/site.webmanifest` aporta metadatos básicos de instalación y `public/robots.txt` permite el rastreo.
-
-`index.html` declara `canonical` y `og:url` apuntando al despliegue en Netlify (`https://pokedex08.netlify.app/`), y las imágenes sociales (`og:image`, `twitter:image`) usan esa misma URL absoluta. Si el proyecto pasa a un dominio propio o a GitHub Pages como destino principal, actualiza estas URLs en consecuencia.
-
-En un GitHub Pages de proyecto, `robots.txt` queda dentro de `/pokedex_app/`; si se configura un dominio propio conviene revisar también el archivo servido en la raíz del host.
+No se declara un sitemap artificial para las rutas con fragmento (`/#/...`), porque los fragmentos no representan documentos independientes para los rastreadores. Si el sitio adopta rutas reales o un dominio distinto, deben revisarse conjuntamente el sitemap, la URL canónica y las etiquetas sociales.
 
 ## Pruebas E2E
 
-`playwright.config.js`, `scripts/run-e2e.js` y `e2e/smoke.spec.js` definen un recorrido determinista con PokéAPI simulada: entrada del entrenador, listado, detalle y ruta 404. Se ejecuta en escritorio y móvil, cubre los temas claro y oscuro y realiza auditorías WCAG 2.0–2.2 con axe-core. El comando compila la aplicación, levanta `vite preview` en el puerto 4173 y lo cierra al finalizar, también en Windows.
+`playwright.config.js`, `scripts/run-e2e.js` y `e2e/smoke.spec.js` definen recorridos deterministas con PokéAPI simulada: entrada y validación del entrenador, listado, búsqueda, tipos, favoritos, paginación por teclado, detalle, cambio de idioma y ruta 404. Las 10 pruebas se ejecutan en escritorio y móvil, cubren los temas claro y oscuro y realizan auditorías WCAG 2.0–2.2 con axe-core. El comando compila la aplicación, levanta `vite preview` en el puerto 4173 y lo cierra al finalizar, también en Windows.
 
 Después de `npm ci`, instala Chromium una vez y ejecuta la suite:
 

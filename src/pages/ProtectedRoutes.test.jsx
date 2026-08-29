@@ -51,7 +51,7 @@ describe('ProtectedRoutes', () => {
     it('lets the current trainer return home and clear access', () => {
         renderProtectedRoute('Ash')
 
-        fireEvent.click(screen.getByRole('button', { name: 'Cambiar entrenador' }))
+        fireEvent.click(screen.getByRole('button', { name: /Cambiar entrenador/ }))
 
         expect(screen.getByText('Home page')).toBeInTheDocument()
     })
@@ -59,7 +59,7 @@ describe('ProtectedRoutes', () => {
     it('shows the avatar selected by the trainer', () => {
         renderProtectedRoute('Misty', TRAINER_GENDERS.FEMALE)
 
-        expect(screen.getByRole('button', { name: 'Cambiar entrenador' }).querySelector('img'))
+        expect(screen.getByRole('button', { name: /Misty, Entrenadora\. Cambiar entrenador/ }).querySelector('img'))
             .toHaveAttribute(
                 'src',
                 `${import.meta.env.BASE_URL}assets/trainers/female.png`,
@@ -78,5 +78,14 @@ describe('ProtectedRoutes', () => {
 
         expect(pokemonLink).not.toHaveAttribute('aria-current')
         expect(typesLink).toHaveAttribute('aria-current', 'location')
+    })
+
+    it('includes visible header text in custom accessible names', () => {
+        renderProtectedRoute('Ash')
+
+        expect(screen.getByRole('link', { name: /Pokédex.*Ir a la Pokédex/ }))
+            .toBeInTheDocument()
+        expect(screen.getByRole('button', { name: /Ash, Entrenador\. Cambiar entrenador/ }))
+            .toBeInTheDocument()
     })
 })

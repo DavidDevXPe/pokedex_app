@@ -22,7 +22,7 @@ class AppErrorBoundary extends Component {
       const { actionLabel, description, onReset, title } = this.props
 
       return (
-        <main className='fatalError'>
+        <main id='main-content' className='fatalError'>
           <div role='alert'>
             <h1>{title}</h1>
             <p>{description}</p>

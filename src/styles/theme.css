@@ -17,15 +17,19 @@
   background: radial-gradient(circle at 50% 30%, #242c37 0%, #151b23 46%, #0d1117 100%);
 }
 
+:root[data-theme='dark'] .hpTitle {
+  color: #ff929c;
+}
+
 :root[data-theme='dark'] .trainerGenderOption {
   border-color: var(--color-border);
-  background-color: rgba(24, 30, 39, 0.94);
+  background-color: var(--color-surface);
   box-shadow: var(--shadow-sm);
 }
 
 :root[data-theme='dark'] .trainerGenderOption.selected {
-  border-color: #ef4451;
-  color: #ff8b94;
+  border-color: #ff929c;
+  color: #ffb3b9;
 }
 
 :root[data-theme='dark'] .formError,
@@ -48,7 +52,7 @@
 :root[data-theme='dark'] .pokedexFeatures,
 :root[data-theme='dark'] .pagination {
   border-color: var(--color-border);
-  background-color: rgba(24, 30, 39, 0.96);
+  background-color: var(--color-surface);
   box-shadow: var(--shadow-sm);
   color: var(--color-ink);
 }
@@ -117,15 +121,15 @@
 }
 
 :root[data-theme='dark'] .cardFavorite {
-  border-color: transparent;
-  background-color: transparent;
-  box-shadow: none;
-  color: #202938;
+  border-color: #596574;
+  background-color: rgba(17, 24, 39, 0.96);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.28);
+  color: #f4f6f8;
 }
 
 :root[data-theme='dark'] .cardFavorite:hover:not(:disabled) {
-  background-color: transparent;
-  color: #c80f1d;
+  background-color: #252d38;
+  color: #ff929c;
 }
 
 :root[data-theme='dark'] .favoriteButton.isFavorite {
@@ -140,7 +144,7 @@
 :root[data-theme='dark'] .detailBackLink,
 :root[data-theme='dark'] .detailStatusLink {
   border-color: var(--color-border);
-  background-color: rgba(24, 30, 39, 0.94);
+  background-color: var(--color-surface);
   color: var(--color-ink);
 }
 
@@ -162,6 +166,10 @@
 
 :root[data-theme='dark'] .notFoundPage {
   background: radial-gradient(circle at center, #242c37 0%, #151b23 52%, #0d1117 100%);
+}
+
+:root[data-theme='dark'] .notFoundCode {
+  color: #ff929c;
 }
 
 :root[data-theme='dark'] .homePreferences .preferenceButton,

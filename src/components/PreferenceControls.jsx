@@ -16,22 +16,23 @@ const PreferenceControls = ({ className = '' }) => {
     const themeLabel = theme === THEMES.LIGHT
         ? t('preferences.toDark')
         : t('preferences.toLight')
+    const languageCode = nextLanguage.toUpperCase()
 
     return (
         <div className={`preferenceControls ${className}`.trim()}>
             <button
                 className='preferenceButton languageButton'
                 type='button'
-                aria-label={languageLabel}
+                aria-label={`${languageCode}: ${languageLabel}`}
                 title={languageLabel}
                 onClick={() => setLanguage(nextLanguage)}
             >
-                {nextLanguage.toUpperCase()}
+                {languageCode}
             </button>
             <button
                 className='preferenceButton themeButton'
                 type='button'
-                aria-label={themeLabel}
+                aria-label={t('preferences.darkMode')}
                 title={themeLabel}
                 aria-pressed={theme === THEMES.DARK}
                 onClick={toggleTheme}

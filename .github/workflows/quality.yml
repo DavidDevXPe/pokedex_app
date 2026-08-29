@@ -3,9 +3,7 @@ name: Quality checks
 on:
   push:
     branches:
-      - main
-      - 'feature/**'
-      - 'mejora/**'
+      - '**'
   pull_request:
     branches:
       - main

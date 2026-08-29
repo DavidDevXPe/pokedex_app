@@ -44,8 +44,11 @@ export const getPokedexReturnPath = from => (
 )
 
 export const getPageFromSearchParams = searchParams => {
-    const parsedPage = Number.parseInt(searchParams.get('page') ?? '1', 10)
-    return Number.isInteger(parsedPage) && parsedPage > 0 ? parsedPage : 1
+    const pageValue = searchParams.get('page') ?? '1'
+    if (!/^[1-9]\d*$/.test(pageValue)) return 1
+
+    const parsedPage = Number(pageValue)
+    return Number.isSafeInteger(parsedPage) ? parsedPage : 1
 }
 
 export const filterPokemons = (pokemons, searchTerm) => {

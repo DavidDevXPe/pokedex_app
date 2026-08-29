@@ -21,7 +21,7 @@ vi.mock('../../hooks/useFetch', () => ({
 
 vi.mock('../../hooks/useTranslation', () => ({
     default: () => ({
-        t: key => key,
+        t: (key, values = {}) => values.name ? `${key}: ${values.name}` : key,
         translateStat: statName => statName,
         translateType: typeName => typeName,
     }),
@@ -35,7 +35,11 @@ vi.mock('../PokemonArtwork', () => ({
     default: () => <img src='/api-home.png' alt='Imagen de Bulbasaur' />,
 }))
 
-const POKEMON_URL = 'https://pokeapi.co/api/v2/pokemon/25/'
+const POKEMON_URL = 'https://pokeapi.co/api/v2/pokemon/1/'
+const POKEMON_SUMMARY = {
+    name: 'bulbasaur',
+    url: POKEMON_URL,
+}
 const BULBASAUR = {
     id: 1,
     name: 'bulbasaur',
@@ -59,7 +63,7 @@ const BULBASAUR = {
 }
 const renderCard = () => render(
     <MemoryRouter>
-        <PokeCard url={POKEMON_URL} />
+        <PokeCard pokemonSummary={POKEMON_SUMMARY} />
     </MemoryRouter>,
 )
 
@@ -95,9 +99,15 @@ describe('PokeCard deferred loading', () => {
     it('waits for intersection before requesting the Pokémon', async () => {
         const { container } = renderCard()
         const skeleton = container.querySelector('.pokeCardSkeleton')
+        const detailsLink = screen.getByRole('link', {
+            name: 'card.viewDetails: Bulbasaur',
+        })
 
         expect(skeleton).toBeInTheDocument()
-        expect(skeleton).toHaveAttribute('aria-hidden', 'true')
+        expect(skeleton).toHaveAttribute('aria-busy', 'true')
+        expect(skeleton).not.toHaveAttribute('aria-hidden')
+        expect(screen.getByRole('heading', { name: 'Bulbasaur' })).toBeInTheDocument()
+        expect(detailsLink).toHaveAttribute('href', '/pokedex/1')
         expect(fetchMocks.getApi).not.toHaveBeenCalled()
         expect(observer.observe).toHaveBeenCalledWith(skeleton)
         expect(observer.options).toEqual({ rootMargin: '320px 0px' })
@@ -144,7 +154,7 @@ describe('PokeCard content', () => {
     it('renders the API artwork, types and six base statistics', () => {
         const { container } = renderCard()
         const card = container.querySelector('.pokeCard.type-grass')
-        const detailsLink = screen.getByRole('link', { name: 'card.viewDetails' })
+        const detailsLink = screen.getByRole('link', { name: 'card.viewDetails: Bulbasaur' })
         const favoriteButton = screen.getByRole('button', { name: 'Favorite' })
         const statBars = container.querySelectorAll('.statBar')
 
@@ -169,8 +179,11 @@ describe('PokeCard content', () => {
             expect(fetchMocks.getApi).toHaveBeenCalledTimes(1)
         })
 
-        fireEvent.click(screen.getByRole('button', { name: 'pokedex.retry' }))
+        fireEvent.click(screen.getByRole('button', { name: 'card.retry: Bulbasaur' }))
         expect(fetchMocks.getApi).toHaveBeenCalledTimes(2)
         expect(fetchMocks.getApi).toHaveBeenLastCalledWith(POKEMON_URL)
+        expect(screen.getByRole('alert')).toHaveTextContent('card.error: Bulbasaur')
+        expect(screen.getByRole('link', { name: 'card.viewDetails: Bulbasaur' }))
+            .toHaveAttribute('href', '/pokedex/1')
     })
 })

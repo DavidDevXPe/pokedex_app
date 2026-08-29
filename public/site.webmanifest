@@ -14,7 +14,14 @@
     "education",
     "reference"
   ],
+  "prefer_related_applications": false,
   "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
     {
       "src": "favicon.png",
       "sizes": "64x64",
@@ -26,6 +33,12 @@
       "sizes": "210x210",
       "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "maskable-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
     }
   ]
 }

@@ -11,8 +11,8 @@ const normalizeBasePath = value => {
   return `/${basePath.replace(/^\/+|\/+$/g, '')}/`
 }
 
-// VITE_BASE_PATH defaults to / and can target a static-hosting subdirectory,
-// for example /pokedex_app/ on GitHub Pages.
+// VITE_BASE_PATH defaults to / and can target a static-hosting subdirectory
+// when a secondary host serves the application below its domain root.
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), 'VITE_')
   const base = normalizeBasePath(env.VITE_BASE_PATH ?? '/')
@@ -22,6 +22,8 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     test: {
       environment: 'jsdom',
+      pool: 'threads',
+      maxWorkers: process.env.CI ? 4 : 2,
       setupFiles: './src/test/setup.js',
       globals: true,
       restoreMocks: true,
@@ -33,6 +35,12 @@ export default defineConfig(({ mode }) => {
         provider: 'v8',
         reporter: ['text', 'html', 'lcov'],
         reportsDirectory: 'coverage',
+        include: ['src/**/*.{js,jsx}'],
+        exclude: [
+          'src/**/*.test.{js,jsx}',
+          'src/test/**',
+          'src/main.jsx',
+        ],
         thresholds: {
           statements: 85,
           branches: 70,
